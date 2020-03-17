@@ -57,7 +57,13 @@ export class ApiResponse {
      *  @returns {boolean}
      */
     static isInvalid = (data: any): boolean => {
-        return data.dataInfo.status.toString().charAt(0) === '4' ? true : false;
+        if (data.dataInfo.status) {
+            return data.dataInfo.status.toString().charAt(0) === '4'
+                ? true
+                : false;
+        } else {
+            return data.status.toString().charAt(0) === '4' ? true : false;
+        }
     };
 
     /**
@@ -66,7 +72,13 @@ export class ApiResponse {
      *  @returns {boolean}
      */
     static causedAnError = (data: any): boolean => {
-        return data.dataInfo.status.toString().charAt(0) === '5' ? true : false;
+        if (data.dataInfo.status) {
+            return data.dataInfo.status.toString().charAt(0) === '5'
+                ? true
+                : false;
+        } else {
+            return data.status.toString().charAt(0) === '5' ? true : false;
+        }
     };
 
     /**
@@ -75,7 +87,7 @@ export class ApiResponse {
      *  @returns {boolean}
      */
     static getErrorMessage = (data: any): string => {
-        return data.dataInfo.detail;
+        return data.dataInfo.detail ? data.dataInfo.detail : data.dataInfo;
     };
 
     /**
@@ -84,6 +96,6 @@ export class ApiResponse {
      *  @returns {number} Get status of the http response
      */
     static getErrorCode = (data: any): number => {
-        return data.dataInfo.status;
+        return data.dataInfo.status ? data.dataInfo.status : data.status;
     };
 }

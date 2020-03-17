@@ -1,7 +1,7 @@
 require('dotenv').config('/.env');
 import { Sdk } from '../src';
 import { User } from '../src/models';
-import { ApiResponse } from '../src/models/ApiResponse'
+import { ApiResponse } from '../src/models/ApiResponse';
 
 if (
     process.env.SDK_ACCOUNTID &&
@@ -17,8 +17,8 @@ if (
     test('it gets the account based on account id', () => {
         return sdk.user.getAccount().then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true),
-            expect(data.success).toBe(true),
-            expect(data.dataInfo).toHaveProperty(
+                expect(data.success).toBe(true),
+                expect(data.dataInfo).toHaveProperty(
                     'client_id',
                     process.env.SDK_ACCOUNTID,
                 );
@@ -27,7 +27,15 @@ if (
 
     test('it gets all users of one account id', () => {
         return sdk.user.getAll().then((data: any) => {
-            expect(data).toBeDefined(); 
+            expect(data).toBeDefined();
+        });
+    });
+
+    test('it gets an error because of wrong token', () => {
+        return sdk.user.getAll().then((data: any) => {
+            expect(ApiResponse.isInvalid(data)).toBe(true),
+                expect(ApiResponse.getErrorMessage(data)).toBe('Unauthorized');
+            expect(ApiResponse.getErrorCode(data)).toEqual(401);
         });
     });
 
@@ -40,8 +48,10 @@ if (
     test('it gets an error message because of wrong username', () => {
         return sdk.user.getOne('paygreendfd').then((data: any) => {
             expect(ApiResponse.isInvalid(data)).toBe(true),
-            expect(ApiResponse.getErrorMessage(data)).toBe('Entity not found.')
-            expect(ApiResponse.getErrorCode(data)).toEqual(404)
+                expect(ApiResponse.getErrorMessage(data)).toBe(
+                    'Entity not found.',
+                );
+            expect(ApiResponse.getErrorCode(data)).toEqual(404);
         });
     });
 
@@ -87,7 +97,7 @@ if (
     test('it returns 204 status when deleting user', () => {
         return sdk.user.delete('user1').then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true),
-            expect(data.status).toEqual(204);
+                expect(data.status).toEqual(204);
         });
     });
 }
