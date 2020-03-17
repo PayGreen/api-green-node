@@ -1,0 +1,9 @@
+{
+    "endOfLine": "lf",
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 6,
+    "trailingComma": "all",
+    "jsxBracketSameLine": false,
+    "editor.formatOnSave": true
+}
