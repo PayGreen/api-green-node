@@ -1,0 +1,11 @@
+{
+    "presets": [
+        "@babel/env",
+        "@babel/typescript"
+    ],
+    "plugins": [
+        "decorator-metadata-typescript",
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose": true }]
+    ]
+}
