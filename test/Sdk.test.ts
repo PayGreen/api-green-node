@@ -1,21 +1,28 @@
 require('dotenv').config('/.env');
 import { Sdk } from '../src';
+import { Mode } from '../src/enums/Mode';
 
-if (process.env.SDK_ACCOUNTID && process.env.SDK_USERNAME && process.env.SDK_TOKEN) {
+if (
+    process.env.SDK_ACCOUNTID &&
+    process.env.SDK_USERNAME &&
+    process.env.SDK_PASSWORD
+) {
     const sdk = new Sdk(
         process.env.SDK_ACCOUNTID,
         process.env.SDK_USERNAME,
-        process.env.SDK_TOKEN,
+        process.env.SDK_PASSWORD,
+        Mode.DEV,
     );
 
     test('Sdk has properties config & identity', () => {
-        expect(sdk).toHaveProperty('config');
-        expect(sdk).toHaveProperty('identity');
+        expect(sdk).toHaveProperty('_config');
+        expect(sdk).toHaveProperty('_identity');
     });
 
     test('Sdk constructor initializes correctly with the parameters', () => {
         expect(sdk.accountId).toBe(process.env.SDK_ACCOUNTID);
         expect(sdk.userName).toBe(process.env.SDK_USERNAME);
-        expect(sdk.token).toBe(process.env.SDK_TOKEN);
+        expect(sdk.password).toBe(process.env.SDK_PASSWORD);
+        expect(sdk.mode).toBe('http://localhost')
     });
 }

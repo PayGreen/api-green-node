@@ -18,9 +18,9 @@ export class User extends MainBuilder {
      * GET ACCOUNT | /account/{accountId}
      * @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
-    getAccount = (): any => {
+    getAccount = (): Promise<IApiResponse> => {
         return axios
-            .get(`${this.config.host}/account/${this.identity.accountId}`, {
+            .get(`${this.mode}/account/${this.identity.accountId}`, {
                 headers: {
                     Authorization: `Bearer ${this.config.token}`,
                 },
@@ -37,14 +37,11 @@ export class User extends MainBuilder {
      */
     getAll = (): Promise<IApiResponse> => {
         return axios
-            .get(
-                `${this.config.host}/account/${this.identity.accountId}/user`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.config.token}`,
-                    },
+            .get(`${this.mode}/account/${this.identity.accountId}/user`, {
+                headers: {
+                    Authorization: `Bearer ${this.config.token}`,
                 },
-            )
+            })
             .then(res => {
                 return this.formatResponse(true, res.data, res.status);
             })
@@ -53,14 +50,15 @@ export class User extends MainBuilder {
 
     /**
      * GET ONE | /account/{accountId}/user/{userName}
-     *  @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to format a different user of the company account
+     *  @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
+     * can use a specific UserNameValue to format a different user of the company account
      *  @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
     getOne = (userNameValue?: string): Promise<IApiResponse> => {
         const userName = userNameValue ? userNameValue : this.identity.userName;
         return axios
             .get(
-                `${this.config.host}/account/${this.identity.accountId}/user/${userName}`,
+                `${this.mode}/account/${this.identity.accountId}/user/${userName}`,
                 {
                     headers: {
                         Authorization: `Bearer ${this.config.token}`,
@@ -82,7 +80,7 @@ export class User extends MainBuilder {
         const serializedUser = serialize(newUser);
         return axios
             .post(
-                `${this.config.host}/account/${this.identity.accountId}/user`,
+                `${this.mode}/account/${this.identity.accountId}/user`,
                 serializedUser,
                 {
                     headers: {
@@ -99,7 +97,8 @@ export class User extends MainBuilder {
     /**
      * UPDATE ONE | /account/{accountId}/user/{userName}
      *  @param {UserModel} UpdatedUser - Object containing all new user information
-     *  @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to modify a different user of the company account
+     *  @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
+     * can use a specific UserNameValue to modify a different user of the company account
      *  @returns {Promise.<IApiResponse>} Get object with new data updated
      */
     update = (
@@ -110,7 +109,7 @@ export class User extends MainBuilder {
         const userName = userNameValue ? userNameValue : this.identity.userName;
         return axios
             .put(
-                `${this.config.host}/account/${this.identity.accountId}/user/${userName}`,
+                `${this.mode}/account/${this.identity.accountId}/user/${userName}`,
                 serializedUpdatedUser,
                 {
                     headers: {
@@ -132,7 +131,7 @@ export class User extends MainBuilder {
     delete = (UserNameValue: string): Promise<IApiResponse> => {
         return axios
             .delete(
-                `${this.config.host}/account/${this.identity.accountId}/user/${UserNameValue}`,
+                `${this.mode}/account/${this.identity.accountId}/user/${UserNameValue}`,
                 {
                     headers: {
                         Authorization: `Bearer ${this.config.token}`,
