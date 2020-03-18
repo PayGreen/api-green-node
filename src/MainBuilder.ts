@@ -16,8 +16,8 @@ export class MainBuilder {
     public config: IConfig;
 
     /**
-     * * Mode of developement.
-     * @param {Mode} Mode - enum of the different developement modes
+     * * Mode of production.
+     * @param {Mode} Mode - enum of the different production modes
      */
     public mode: Mode;
 

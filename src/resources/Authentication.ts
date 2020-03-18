@@ -33,7 +33,7 @@ export class Authentication extends MainBuilder {
     /**
      * REFRESH TOKEN | /login
      * @returns {Promise.<IApiResponse>} Object with a renewed access token and
-     * a new 'refresh token' to get another new token after expiration
+     * a renewed 'refresh token' to get another new token after expiration
      */
     refreshToken = (): Promise<IApiResponse> => {
         const userData = {

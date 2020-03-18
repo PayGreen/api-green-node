@@ -14,12 +14,12 @@ if (
         Mode.DEV,
     );
 
-    test('Sdk has properties config & identity', () => {
+    test('Sdk has properties _config & _identity', () => {
         expect(sdk).toHaveProperty('_config');
         expect(sdk).toHaveProperty('_identity');
     });
 
-    test('Sdk constructor initializes correctly with the parameters', () => {
+    test('Sdk constructor initializes correctly with all the parameters', () => {
         expect(sdk.accountId).toBe(process.env.SDK_ACCOUNTID);
         expect(sdk.userName).toBe(process.env.SDK_USERNAME);
         expect(sdk.password).toBe(process.env.SDK_PASSWORD);
