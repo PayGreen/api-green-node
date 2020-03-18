@@ -1,6 +1,6 @@
-/** Api Response Model Class with all methods to format/select api responses */
-
 import { IApiResponse } from '../interfaces';
+
+/** Api Response Model Class with all methods to format/select api responses */
 export class ApiResponse {
     /**
      *  GLOBAL RESPONSE FORMATMETHOD |
@@ -43,59 +43,59 @@ export class ApiResponse {
     };
 
     /**
-     * IS SUCCESSFUL |
+     * IS SUCCESSFUL | verify if http response format = 2xx
      *  @param {any} data - response formatted from Api
      *  @returns {boolean}
      */
     static isSuccessful = (data: any): boolean => {
-        return data.status.toString().charAt(0) === '2' ? true : false;
+        return (
+            ApiResponse.getStatus(data)
+                .toString()
+                .charAt(0) === '2'
+        );
     };
 
     /**
-     * IS INVALID |
+     * IS INVALID | verify if http response format = 4xx
      *  @param {any} data - response formatted from Api
      *  @returns {boolean}
      */
     static isInvalid = (data: any): boolean => {
-        if (data.dataInfo.status) {
-            return data.dataInfo.status.toString().charAt(0) === '4'
-                ? true
-                : false;
-        } else {
-            return data.status.toString().charAt(0) === '4' ? true : false;
-        }
+        return (
+            ApiResponse.getStatus(data)
+                .toString()
+                .charAt(0) === '4'
+        );
     };
 
     /**
-     * CAUSED AN ERROR |
+     * CAUSED AN ERROR | verify if http response format = 5xx
      *  @param {any} data - response formatted from Api
      *  @returns {boolean}
      */
     static causedAnError = (data: any): boolean => {
-        if (data.dataInfo.status) {
-            return data.dataInfo.status.toString().charAt(0) === '5'
-                ? true
-                : false;
-        } else {
-            return data.status.toString().charAt(0) === '5' ? true : false;
-        }
+        return (
+            ApiResponse.getStatus(data)
+                .toString()
+                .charAt(0) === '5'
+        );
     };
 
     /**
      * GET ERROR MESSAGE |
      *  @param {any} data - response formatted from Api
-     *  @returns {boolean}
+     *  @returns {string} - error message details
      */
     static getErrorMessage = (data: any): string => {
         return data.dataInfo.detail ? data.dataInfo.detail : data.dataInfo;
     };
 
     /**
-     * GET ERROR CODE |
+     * GET STATUS |
      *  @param {any} data - response formatted from Api
      *  @returns {number} Get status of the http response
      */
-    static getErrorCode = (data: any): number => {
+    static getStatus = (data: any): number => {
         return data.dataInfo.status ? data.dataInfo.status : data.status;
     };
 }

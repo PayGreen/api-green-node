@@ -35,7 +35,7 @@ if (
         return sdk.user.getAll().then((data: any) => {
             expect(ApiResponse.isInvalid(data)).toBe(true),
                 expect(ApiResponse.getErrorMessage(data)).toBe('Unauthorized');
-            expect(ApiResponse.getErrorCode(data)).toEqual(401);
+            expect(ApiResponse.getStatus(data)).toEqual(401);
         });
     });
 
@@ -51,7 +51,7 @@ if (
                 expect(ApiResponse.getErrorMessage(data)).toBe(
                     'Entity not found.',
                 );
-            expect(ApiResponse.getErrorCode(data)).toEqual(404);
+            expect(ApiResponse.getStatus(data)).toEqual(404);
         });
     });
 
