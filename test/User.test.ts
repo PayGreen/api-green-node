@@ -1,6 +1,7 @@
 require('dotenv').config('/.env');
 import { Sdk } from '../src';
 import { User } from '../src/models';
+import { ApiResponse } from '../src/models/ApiResponse';
 
 if (
     process.env.SDK_ACCOUNTID &&
@@ -15,7 +16,8 @@ if (
 
     test('it gets the account based on account id', () => {
         return sdk.user.getAccount().then((data: any) => {
-            expect(data.success).toBe(true),
+            expect(ApiResponse.isSuccessful(data)).toBe(true),
+                expect(data.success).toBe(true),
                 expect(data.dataInfo).toHaveProperty(
                     'client_id',
                     process.env.SDK_ACCOUNTID,
@@ -29,9 +31,27 @@ if (
         });
     });
 
+    test('it gets an error because of wrong token', () => {
+        return sdk.user.getAll().then((data: any) => {
+            expect(ApiResponse.isInvalid(data)).toBe(true),
+                expect(ApiResponse.getErrorMessage(data)).toBe('Unauthorized');
+            expect(ApiResponse.getStatus(data)).toEqual(401);
+        });
+    });
+
     test('it gets one user based on his username', () => {
         return sdk.user.getOne('paygreen').then((data: any) => {
             expect(data.dataInfo).toHaveProperty('username', 'paygreen');
+        });
+    });
+
+    test('it gets an error message because of wrong username', () => {
+        return sdk.user.getOne('paygreendfd').then((data: any) => {
+            expect(ApiResponse.isInvalid(data)).toBe(true),
+                expect(ApiResponse.getErrorMessage(data)).toBe(
+                    'Entity not found.',
+                );
+            expect(ApiResponse.getStatus(data)).toEqual(404);
         });
     });
 
@@ -76,7 +96,8 @@ if (
 
     test('it returns 204 status when deleting user', () => {
         return sdk.user.delete('user1').then((data: any) => {
-            expect(data.dataInfo).toEqual(204);
+            expect(ApiResponse.isSuccessful(data)).toBe(true),
+                expect(data.status).toEqual(204);
         });
     });
 }

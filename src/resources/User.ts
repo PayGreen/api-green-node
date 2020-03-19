@@ -18,7 +18,7 @@ export class User extends MainBuilder {
      * GET ACCOUNT | /account/{accountId}
      * @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
-    getAccount = (): Promise<IApiResponse> => {
+    getAccount = (): any => {
         return axios
             .get(`${this.config.host}/account/${this.identity.accountId}`, {
                 headers: {
@@ -26,7 +26,7 @@ export class User extends MainBuilder {
                 },
             })
             .then(res => {
-                return this.formatResponse(true, res.data);
+                return this.formatResponse(true, res.data, res.status);
             })
             .catch(this.formatError);
     };
@@ -46,7 +46,7 @@ export class User extends MainBuilder {
                 },
             )
             .then(res => {
-                return this.formatResponse(true, res.data);
+                return this.formatResponse(true, res.data, res.status);
             })
             .catch(this.formatError);
     };
@@ -68,7 +68,7 @@ export class User extends MainBuilder {
                 },
             )
             .then(res => {
-                return this.formatResponse(true, res.data);
+                return this.formatResponse(true, res.data, res.status);
             })
             .catch(this.formatError);
     };
@@ -91,7 +91,7 @@ export class User extends MainBuilder {
                 },
             )
             .then(res => {
-                return this.formatResponse(true, res.data);
+                return this.formatResponse(true, res.data, res.status);
             })
             .catch(this.formatError);
     };
@@ -119,7 +119,7 @@ export class User extends MainBuilder {
                 },
             )
             .then(res => {
-                return this.formatResponse(true, res.data);
+                return this.formatResponse(true, res.data, res.status);
             })
             .catch(this.formatError);
     };
@@ -140,7 +140,11 @@ export class User extends MainBuilder {
                 },
             )
             .then(res => {
-                return this.formatResponse(true, res.status);
+                return this.formatResponse(
+                    true,
+                    'user deleted successfully',
+                    res.status,
+                );
             })
             .catch(this.formatError);
     };
