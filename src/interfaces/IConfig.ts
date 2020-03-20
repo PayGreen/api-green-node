@@ -1,4 +1,6 @@
+import { Mode } from '../enums';
 export interface IConfig {
-    host: string;
-    token: string | null;
+    token?: string | null;
+    refreshToken?: string | null;
+    mode?: Mode | null;
 }

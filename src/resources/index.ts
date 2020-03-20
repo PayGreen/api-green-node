@@ -1,3 +1,4 @@
 import { User } from './User';
+import { Authentication } from './Authentication';
 
-export default { User };
+export { Authentication, User };

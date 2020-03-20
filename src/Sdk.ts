@@ -1,58 +1,77 @@
-import { User } from './resources/User';
-import { IConfig, IIdentity } from './interfaces';
+import { Authentication, User } from './resources';
+import { IConfig, IIdentity, ITokens } from './interfaces';
+import { Host, Mode } from './enums';
 
 /** The Sdk Main Class to make APIGreen Calls. */
 export class Sdk {
     public user: User;
+    public authentication: Authentication;
 
-    private identity: IIdentity = {
+    private _identity: IIdentity = {
         accountId: '',
-        userName: '',
     };
 
-    private config: IConfig = {
-        host: 'http://localhost',
+    private _tokens: ITokens = {
         token: '',
+        refreshToken: '',
     };
+
+    private _mode: Mode;
+
+    private _host: string;
 
     /**
      * Create the user configuration.
-     * @param {string} accountId - The name of the accountId.
-     * @param {string} userName - The name of the userName.
-     * @param {string} tokenValue - The token to access API.
+     * @param {IConfig?} configObject -
      */
-    constructor(
-        accountId: string | null,
-        userName: string | null,
-        tokenValue: string | null,
-    ) {
-        this.identity.accountId = accountId;
-        this.identity.userName = userName;
-        this.config.token = tokenValue;
-        this.user = new User(this.config, this.identity);
+    constructor(configObject?: IConfig) {
+        if (configObject?.token) {this._tokens.token = configObject.token;}
+        if (configObject?.refreshToken)
+            {this._tokens.refreshToken = configObject.refreshToken;}
+        if (configObject?.mode != null) {
+            this._mode = configObject.mode;
+            this._host = Host[Mode[configObject.mode]];
+        } else {
+            this._mode = Mode.PROD;
+            this._host = Host[Mode[Mode.PROD]];
+        }
+        this.user = new User(this._tokens, this._identity, this._host);
+        this.authentication = new Authentication(
+            this._tokens,
+            this._identity,
+            this._host,
+        );
     }
 
     get accountId(): string | null {
-        return this.identity.accountId;
+        return this._identity.accountId;
     }
 
     set accountId(accountId: string | null) {
-        this.identity.accountId = accountId;
-    }
-
-    get userName(): string | null {
-        return this.identity.userName;
-    }
-
-    set userName(userName: string | null) {
-        this.identity.userName = userName;
+        this._identity.accountId = accountId;
     }
 
     get token(): string | null {
-        return this.config.token;
+        return this._tokens.token;
     }
 
     set token(token: string | null) {
-        this.config.token = token;
+        this._tokens.token = token;
+    }
+
+    get refreshToken(): string | null {
+        return this._tokens.refreshToken;
+    }
+
+    set refreshToken(refreshToken: string | null) {
+        this._tokens.refreshToken = refreshToken;
+    }
+
+    get mode(): Mode {
+        return this._mode;
+    }
+
+    set mode(mode: Mode) {
+        this._mode = mode;
     }
 }
