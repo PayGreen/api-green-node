@@ -1,5 +1,6 @@
 require('dotenv').config('/.env');
 import { User } from '../src/models';
+import { Country, Role } from '../src/enums';
 import { deserialize, serialize } from 'typescript-json-serializer';
 
 test('Add firstname of a user with User Model', () => {
@@ -13,22 +14,22 @@ test('Add complete profile of a user with User Model', () => {
         'bouffier2',
         'fanny2',
         'fb2',
-        'admin',
+        Role.ADMIN,
         'fb2',
         'fb2',
         'fb2@example.com',
-        'fr',
+        Country.FR,
     );
     expect(userTest).toMatchObject({
         lastname: 'bouffier2',
         firstname: 'fanny2',
         publicname: 'fb2',
-        role: 'admin',
+        role: 'ADMIN',
         username: 'fb2',
         password: 'fb2',
         contact: {
             email: 'fb2@example.com',
-            country: 'fr',
+            country: 'FR',
         },
     });
 });
@@ -38,12 +39,12 @@ test('deserialize received data to fit User Model', () => {
         lastname: 'bouffier2',
         firstname: 'fanny2',
         publicname: 'fb2',
-        role: 'admin',
+        role: 'ADMIN',
         username: 'fb2',
         password: 'fb2',
         contact: {
             email: 'fb2@example.com',
-            country: 'fr',
+            country: 'FR',
         },
     };
     const finalData = deserialize(data, User);
@@ -51,12 +52,12 @@ test('deserialize received data to fit User Model', () => {
         lastname: 'bouffier2',
         firstname: 'fanny2',
         publicname: 'fb2',
-        role: 'admin',
+        role: 'ADMIN',
         username: 'fb2',
         password: 'fb2',
         contact: {
             email: 'fb2@example.com',
-            country: 'fr',
+            country: 'FR',
         },
     });
 });
@@ -66,11 +67,11 @@ test('Verify method throws error with wrong email syntax', () => {
         'bouffier2',
         'fanny2',
         'fb2',
-        'admin',
+        Role.ADMIN,
         'fb2',
         'fb2',
         'fb2example.com',
-        'fr',
+        Country.FR,
     );
     expect(() => {
         userTest.verify(userTest);

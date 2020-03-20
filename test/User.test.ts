@@ -2,7 +2,7 @@ require('dotenv').config('/.env');
 import { Sdk } from '../src';
 import { User } from '../src/models';
 import { ApiResponse } from '../src/models/ApiResponse';
-import { Mode } from '../src/enums/Mode';
+import { Country, Mode, Role } from '../src/enums';
 
 const config = {
     token: process.env.SDK_TOKEN,
@@ -47,12 +47,12 @@ test('it returns the created user', () => {
         'coulon',
         'matthieu',
         'mattmatt',
-        'ADMIN',
+        Role.ADMIN,
         'mc',
         'mcpassword',
         'matt@example.com',
-        'fr',
-    );
+        Country.FR,
+        );
     return sdk.user.create(userTest).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
@@ -67,12 +67,12 @@ test('it returns the updated user based on his username', () => {
         'coulon',
         'newmatthieu',
         'mattmatt',
-        'ADMIN',
+        Role.ADMIN,
         'mc',
         'mcpassword',
         'matt@example.com',
-        'fr',
-    );
+        Country.FR,
+        );
     return sdk.user.update(userTest, 'mc').then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),
