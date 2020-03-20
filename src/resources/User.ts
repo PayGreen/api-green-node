@@ -2,6 +2,8 @@ import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import { User as UserModel } from '../models';
+import { Account as AccountEnum, User as UserEnum } from '../enums';
+
 import {
     serialize,
     deserialize,
@@ -23,9 +25,13 @@ export class User extends MainBuilder {
                 },
             })
             .then(res => {
+                const filteredData = this.ApiResponse.filterResponse(
+                    AccountEnum,
+                    res.data,
+                );
                 return this.ApiResponse.formatResponse(
                     true,
-                    res.data,
+                    filteredData,
                     res.status,
                 );
             })
@@ -124,9 +130,13 @@ export class User extends MainBuilder {
                 },
             )
             .then(res => {
+                const filteredData = this.ApiResponse.filterResponse(
+                    UserEnum,
+                    res.data,
+                );
                 return this.ApiResponse.formatResponse(
                     true,
-                    res.data,
+                    filteredData,
                     res.status,
                 );
             })

@@ -98,4 +98,21 @@ export class ApiResponse {
     static getStatus = (data: any): number => {
         return data.dataInfo.status ? data.dataInfo.status : data.status;
     };
+
+    /**
+     * FILTER API RESPONSE |
+     *  @param {any} enumKeys - enum with list of informations we want to return from Api response
+     *  @param {any} response - object containing the Api response
+     *  @returns {any} the new object filtered
+     */
+    static filterResponse = (enumKeys: any, response: any): any => {
+        const newResponse = {};
+        let newKeys = Object.keys(enumKeys);
+        for (let key in response) {
+            if (newKeys.includes(key)) {
+                newResponse[key] = response[key];
+            }
+        }
+        return newResponse;
+    };
 }

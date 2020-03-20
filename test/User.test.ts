@@ -29,7 +29,7 @@ test('it gets all users of one account id', () => {
 });
 
 test('it gets one user based on his username', () => {
-    return sdk.user.getOne().then((data: any) => {
+    return sdk.user.getOne('paygreen').then((data: any) => {
         expect(data.dataInfo).toHaveProperty('username', 'paygreen');
     });
 });
@@ -67,7 +67,7 @@ test('it returns the created user', () => {
 test('it returns the updated user based on his username', () => {
     const userTest = new User(
         'coulon',
-        'newmatthieu',
+        'new2matthieu',
         'mattmatt',
         Role.ADMIN,
         randomUserName,
@@ -77,7 +77,7 @@ test('it returns the updated user based on his username', () => {
     );
     return sdk.user.update(userTest, randomUserName).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
-            expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),
+            expect(data.dataInfo).toHaveProperty('firstname', 'new2matthieu'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
         expect(data.dataInfo).toHaveProperty('username', randomUserName);
     });
