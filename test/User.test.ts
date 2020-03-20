@@ -52,7 +52,7 @@ test('it returns the created user', () => {
         'mcpassword',
         'matt@example.com',
         Country.FR,
-        );
+    );
     return sdk.user.create(userTest).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
@@ -72,7 +72,7 @@ test('it returns the updated user based on his username', () => {
         'mcpassword',
         'matt@example.com',
         Country.FR,
-        );
+    );
     return sdk.user.update(userTest, 'mc').then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),

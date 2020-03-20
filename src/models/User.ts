@@ -51,10 +51,12 @@ export class User {
         this.lastname = lastName;
         this.firstname = firstname;
         this.publicname = publicname;
-        role != null ? this.role = Role[role] : this.role = null;
+        role != null ? (this.role = Role[role]) : (this.role = null);
         this.username = username;
         this.password = password;
-        country != null ? this.contact = new Contact(email, Country[country]) : this.contact = new Contact(email, null);
+        country != null
+            ? (this.contact = new Contact(email, Country[country]))
+            : (this.contact = new Contact(email, null));
     }
 
     /**
