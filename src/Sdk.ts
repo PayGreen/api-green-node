@@ -1,6 +1,6 @@
 import { Authentication, User } from './resources';
-import { IConfig, IIdentity } from './interfaces';
-import { Mode } from './enums/Mode';
+import { IConfig, IIdentity, ITokens } from './interfaces';
+import { Host, Mode } from './enums';
 
 /** The Sdk Main Class to make APIGreen Calls. */
 export class Sdk {
@@ -9,39 +9,37 @@ export class Sdk {
 
     private _identity: IIdentity = {
         accountId: '',
-        userName: '',
-        password: '',
     };
 
-    private _config: IConfig = {
+    private _tokens: ITokens = {
         token: '',
         refreshToken: '',
     };
 
-    private _mode: Mode = Mode.PROD;
+    private _mode: Mode;
+
+    private _host: string;
 
     /**
      * Create the user configuration.
-     * @param {string} accountId - The name of the accountId.
-     * @param {string} userName - The name of the userName.
-     * @param {string} password - The user's password.
-     * @param {Mode?} mode - Mode of production.
+     * @param {IConfig?} configObject -
      */
-    constructor(
-        accountId: string | null,
-        userName: string | null,
-        password: string | null,
-        mode?: Mode,
-    ) {
-        this._identity.accountId = accountId;
-        this._identity.userName = userName;
-        this._identity.password = password;
-        this._mode = mode || Mode.PROD;
-        this.user = new User(this._config, this._identity, this._mode);
+    constructor(configObject?: IConfig) {
+        if (configObject?.token) this._tokens.token = configObject.token;
+        if (configObject?.refreshToken)
+            this._tokens.refreshToken = configObject.refreshToken;
+        if (configObject?.mode != null) {
+            this._mode = configObject.mode;
+            this._host = Host[Mode[configObject.mode]];
+        } else {
+            this._mode = Mode.PROD;
+            this._host = Host[Mode[Mode.PROD]];
+        }
+        this.user = new User(this._tokens, this._identity, this._host);
         this.authentication = new Authentication(
-            this._config,
+            this._tokens,
             this._identity,
-            this._mode,
+            this._host,
         );
     }
 
@@ -53,36 +51,20 @@ export class Sdk {
         this._identity.accountId = accountId;
     }
 
-    get userName(): string | null {
-        return this._identity.userName;
-    }
-
-    set userName(userName: string | null) {
-        this._identity.userName = userName;
-    }
-
-    get password(): string | null {
-        return this._identity.password;
-    }
-
-    set password(password: string | null) {
-        this._identity.password = password;
-    }
-
     get token(): string | null {
-        return this._config.token;
+        return this._tokens.token;
     }
 
     set token(token: string | null) {
-        this._config.token = token;
+        this._tokens.token = token;
     }
 
     get refreshToken(): string | null {
-        return this._config.refreshToken;
+        return this._tokens.refreshToken;
     }
 
     set refreshToken(refreshToken: string | null) {
-        this._config.refreshToken = refreshToken;
+        this._tokens.refreshToken = refreshToken;
     }
 
     get mode(): Mode {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
-import { User as UserModel, ApiResponse } from '../models';
+import { User as UserModel } from '../models';
 import {
     serialize,
     deserialize,
@@ -11,24 +11,25 @@ import {
 
 /** User Class with all methods to request/modify users infos */
 export class User extends MainBuilder {
-    formatError = ApiResponse.formatError;
-    formatResponse = ApiResponse.formatResponse;
-
     /**
      * GET ACCOUNT | /account/{accountId}
      * @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
     getAccount = (): Promise<IApiResponse> => {
         return axios
-            .get(`${this.mode}/account/${this.identity.accountId}`, {
+            .get(`${this.host}/account/me`, {
                 headers: {
-                    Authorization: `Bearer ${this.config.token}`,
+                    Authorization: `Bearer ${this.tokens.token}`,
                 },
             })
             .then(res => {
-                return this.formatResponse(true, res.data, res.status);
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
             })
-            .catch(this.formatError);
+            .catch(this.ApiResponse.formatError);
     };
 
     /**
@@ -37,15 +38,19 @@ export class User extends MainBuilder {
      */
     getAll = (): Promise<IApiResponse> => {
         return axios
-            .get(`${this.mode}/account/${this.identity.accountId}/user`, {
+            .get(`${this.host}/account/me/user`, {
                 headers: {
-                    Authorization: `Bearer ${this.config.token}`,
+                    Authorization: `Bearer ${this.tokens.token}`,
                 },
             })
             .then(res => {
-                return this.formatResponse(true, res.data, res.status);
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
             })
-            .catch(this.formatError);
+            .catch(this.ApiResponse.formatError);
     };
 
     /**
@@ -55,20 +60,21 @@ export class User extends MainBuilder {
      *  @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
     getOne = (userNameValue?: string): Promise<IApiResponse> => {
-        const userName = userNameValue ? userNameValue : this.identity.userName;
+        const userName = userNameValue ? userNameValue : 'me';
         return axios
-            .get(
-                `${this.mode}/account/${this.identity.accountId}/user/${userName}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.config.token}`,
-                    },
+            .get(`${this.host}/account/me/user/${userName}`, {
+                headers: {
+                    Authorization: `Bearer ${this.tokens.token}`,
                 },
-            )
-            .then(res => {
-                return this.formatResponse(true, res.data, res.status);
             })
-            .catch(this.formatError);
+            .then(res => {
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
+            })
+            .catch(this.ApiResponse.formatError);
     };
 
     /**
@@ -79,19 +85,19 @@ export class User extends MainBuilder {
     create = (newUser: UserModel): Promise<IApiResponse> => {
         const serializedUser = serialize(newUser);
         return axios
-            .post(
-                `${this.mode}/account/${this.identity.accountId}/user`,
-                serializedUser,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.config.token}`,
-                    },
+            .post(`${this.host}/account/me/user`, serializedUser, {
+                headers: {
+                    Authorization: `Bearer ${this.tokens.token}`,
                 },
-            )
-            .then(res => {
-                return this.formatResponse(true, res.data, res.status);
             })
-            .catch(this.formatError);
+            .then(res => {
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
+            })
+            .catch(this.ApiResponse.formatError);
     };
 
     /**
@@ -106,21 +112,25 @@ export class User extends MainBuilder {
         userNameValue?: string,
     ): Promise<IApiResponse> => {
         const serializedUpdatedUser = serialize(UpdatedUser);
-        const userName = userNameValue ? userNameValue : this.identity.userName;
+        const userName = userNameValue ? userNameValue : 'me';
         return axios
             .put(
-                `${this.mode}/account/${this.identity.accountId}/user/${userName}`,
+                `${this.host}/account/me/user/${userName}`,
                 serializedUpdatedUser,
                 {
                     headers: {
-                        Authorization: `Bearer ${this.config.token}`,
+                        Authorization: `Bearer ${this.tokens.token}`,
                     },
                 },
             )
             .then(res => {
-                return this.formatResponse(true, res.data, res.status);
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
             })
-            .catch(this.formatError);
+            .catch(this.ApiResponse.formatError);
     };
 
     /**
@@ -130,21 +140,18 @@ export class User extends MainBuilder {
      */
     delete = (UserNameValue: string): Promise<IApiResponse> => {
         return axios
-            .delete(
-                `${this.mode}/account/${this.identity.accountId}/user/${UserNameValue}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.config.token}`,
-                    },
+            .delete(`${this.host}/account/me/user/${UserNameValue}`, {
+                headers: {
+                    Authorization: `Bearer ${this.tokens.token}`,
                 },
-            )
+            })
             .then(res => {
-                return this.formatResponse(
+                return this.ApiResponse.formatResponse(
                     true,
                     'user deleted successfully',
                     res.status,
                 );
             })
-            .catch(this.formatError);
+            .catch(this.ApiResponse.formatError);
     };
 }

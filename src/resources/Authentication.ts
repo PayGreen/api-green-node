@@ -1,53 +1,66 @@
 import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
-import { ApiResponse } from '../models';
 
 /** Authentication Class with all methods to get/refresh token for connection to Api*/
 export class Authentication extends MainBuilder {
-    formatError = ApiResponse.formatError;
-    formatResponse = ApiResponse.formatResponse;
-
     /**
      * GET TOKEN | /login
+     * @param {string} userName - The name of the user.
+     * @param {string} password - The user's password.
+     * @param {string} accountId - The name of the accountId.
      * @returns {Promise.<IApiResponse>} Object containing access token and
      * 'refresh token' to get a new token after expiration
      */
-    getToken = (): Promise<IApiResponse> => {
+    login = (
+        userName: string,
+        password: string,
+        accountId: string,
+    ): Promise<IApiResponse> => {
         const userData = {
             grant_type: 'password',
-            username: this.identity.userName,
-            password: this.identity.password,
-            client_id: this.identity.accountId,
+            username: userName,
+            password: password,
+            client_id: accountId,
         };
         return axios
-            .post(`${this.mode}/login`, userData)
+            .post(`${this.host}/login`, userData)
             .then(res => {
-                this.config.token = res.data.access_token;
-                this.config.refreshToken = res.data.refresh_token;
-                return this.formatResponse(true, res.data, res.status);
+                this.identity.accountId = accountId;
+                this.tokens.token = res.data.access_token;
+                this.tokens.refreshToken = res.data.refresh_token;
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
             })
-            .catch(this.formatError);
+            .catch(this.ApiResponse.formatError);
     };
 
     /**
      * REFRESH TOKEN | /login
+     * @param {string} accountId - The name of the accountId.
      * @returns {Promise.<IApiResponse>} Object with a renewed access token and
      * a renewed 'refresh token' to get another new token after expiration
      */
-    refreshToken = (): Promise<IApiResponse> => {
+    refreshToken = (accountId:string): Promise<IApiResponse> => {
         const userData = {
             grant_type: 'refresh_token',
-            refresh_token: this.config.refreshToken,
-            client_id: this.identity.accountId,
+            refresh_token: this.tokens.refreshToken,
+            client_id: accountId,
         };
         return axios
-            .post(`${this.mode}/login`, userData)
+            .post(`${this.host}/login`, userData)
             .then(res => {
-                this.config.token = res.data.access_token;
-                this.config.refreshToken = res.data.refresh_token;
-                return this.formatResponse(true, res.data, res.status);
+                this.tokens.token = res.data.access_token;
+                this.tokens.refreshToken = res.data.refresh_token;
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
             })
-            .catch(this.formatError);
+            .catch(this.ApiResponse.formatError);
     };
 }

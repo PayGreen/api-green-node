@@ -1,5 +1,5 @@
-import { IConfig, IIdentity } from './interfaces';
-import { Mode } from './enums/Mode'
+import { ITokens, IIdentity } from './interfaces';
+import { ApiResponse } from './models';
 
 /** Main Builder with config constructor */
 export class MainBuilder {
@@ -10,20 +10,27 @@ export class MainBuilder {
     public identity: IIdentity;
 
     /**
-     * * Create the configuration.
-     * @param {object} config - configuration inherited from SDK class to authorize access to API and build url:
+     * * Create the configurationtokens.
+     * @param {object} tokens - tokens inherited from SDK class to authorize access to API and build url:
      */
-    public config: IConfig;
+    public tokens: ITokens;
 
     /**
      * * Mode of production.
-     * @param {Mode} Mode - enum of the different production modes
+     * @param {string} host - host of Api inherited from SDK class based on production mode
      */
-    public mode: Mode;
+    public host: string;
 
-    constructor(config: IConfig, identity: IIdentity, mode?:Mode) {
-        this.config = config;
+    /**
+     * * Class ApiResponse.
+     * @type {ApiResponse}
+     */
+    public ApiResponse: any = ApiResponse;
+
+    constructor(tokens: ITokens, identity: IIdentity, host: string) {
+        this.tokens = tokens;
         this.identity = identity;
-        this.mode = mode || Mode.PROD;
+        this.host = host;
+        this.ApiResponse;
     }
 }

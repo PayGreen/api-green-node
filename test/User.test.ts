@@ -4,23 +4,12 @@ import { User } from '../src/models';
 import { ApiResponse } from '../src/models/ApiResponse';
 import { Mode } from '../src/enums/Mode';
 
-if (
-    process.env.SDK_ACCOUNTID &&
-    process.env.SDK_USERNAME &&
-    process.env.SDK_PASSWORD
-) {
-    const sdk = new Sdk(
-        process.env.SDK_ACCOUNTID,
-        process.env.SDK_USERNAME,
-        process.env.SDK_PASSWORD,
-        Mode.DEV,
-    );
-
-    test('it gets a token access to request Api', () => {
-        return sdk.authentication.getToken().then((data: any) => {
-            expect(data.success).toBe(true);
-        });
-    });
+const config = {
+    token : process.env.SDK_TOKEN,
+    refreshToken : process.env.SDK_REFRESHTOKEN,
+    mode : Mode.DEV,
+}
+    const sdk = new Sdk(config)
 
     test('it gets the account based on account id', () => {
         return sdk.user.getAccount().then((data: any) => {
@@ -48,7 +37,8 @@ if (
     });
 
     test('it gets one user based on his username', () => {
-        return sdk.user.getOne('paygreen').then((data: any) => {
+        return sdk.user.getOne().then((data: any) => {
+            console.log('data', data)
             expect(data.dataInfo).toHaveProperty('username', 'paygreen');
         });
     });
@@ -108,4 +98,3 @@ if (
                 expect(data.status).toEqual(204);
         });
     });
-}
