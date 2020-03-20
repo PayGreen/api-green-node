@@ -25,9 +25,9 @@ export class Sdk {
      * @param {IConfig?} configObject -
      */
     constructor(configObject?: IConfig) {
-        if (configObject?.token) this._tokens.token = configObject.token;
+        if (configObject?.token) {this._tokens.token = configObject.token;}
         if (configObject?.refreshToken)
-            this._tokens.refreshToken = configObject.refreshToken;
+            {this._tokens.refreshToken = configObject.refreshToken;}
         if (configObject?.mode != null) {
             this._mode = configObject.mode;
             this._host = Host[Mode[configObject.mode]];

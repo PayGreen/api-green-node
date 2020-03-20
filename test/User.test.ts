@@ -38,7 +38,6 @@ const config = {
 
     test('it gets one user based on his username', () => {
         return sdk.user.getOne().then((data: any) => {
-            console.log('data', data)
             expect(data.dataInfo).toHaveProperty('username', 'paygreen');
         });
     });
