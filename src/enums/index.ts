@@ -1,4 +1,5 @@
 import { Host } from './Host';
 import { Mode } from './Mode';
+import { Country } from './Country';
 
-export { Host, Mode };
+export { Country, Host, Mode };
