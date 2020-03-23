@@ -7,4 +7,3 @@ import { Role } from './Role';
 import { User } from './User';
 
 export { Account, Bank, Country, Host, Mode, Role, User };
-
