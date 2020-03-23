@@ -1,4 +1,5 @@
 import { User } from './User';
 import { Authentication } from './Authentication';
+import { Iban } from './Iban';
 
-export { Authentication, User };
+export { Authentication, Iban, User };
