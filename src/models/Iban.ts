@@ -15,8 +15,11 @@ export class Iban {
     public country?: string | null;
 
     /**
-     * Create the newuser object.
-     * @param {any} data -
+     * Create the newIban object.
+     * @param {Bank} bankName - bank of the iban waiting for validation
+     * @param {string?} iban - number of the iban
+     * @param {string?} bic - bic of the iban
+     * @param {Country?} country - country of the iban - based on enum Country
      */
     constructor(
         bankName?: Bank | null,
@@ -24,10 +27,14 @@ export class Iban {
         bic?: string | null,
         country?: Country | null,
     ) {
-        bankName != null ? (this.bankName = Bank[bankName]) : (this.bankName = null);
+        bankName != null
+            ? (this.bankName = Bank[bankName])
+            : (this.bankName = null);
         this.iban = iban;
         this.bic = bic;
-        country != null ? (this.country = Country[country]) : (this.country = null);
+        country != null
+            ? (this.country = Country[country])
+            : (this.country = null);
     }
 
     /**
@@ -42,7 +49,7 @@ export class Iban {
             }
         }
         const ibanRegEx = /[a-zA-Z]{2}[0-9]{2}[a-zA-Z0-9]{4}[0-9]{7}([a-zA-Z0-9]?){0,16}/;
-        const bicRegEx = /[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}/
+        const bicRegEx = /[A-Z]{6,6}[A-Z2-9][A-NP-Z0-9]([A-Z0-9]{3,3}){0,1}/;
         if (!ibanRegEx.test(data.iban)) {
             throw 'Error in iban syntax, please verify your iban';
         } else if (!bicRegEx.test(data.bic)) {

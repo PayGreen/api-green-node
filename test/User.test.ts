@@ -68,7 +68,7 @@ test('it returns the created user', () => {
 test('it returns the updated user based on his username', () => {
     const userTest = new User(
         'coulon',
-        'new2matthieu',
+        'newmatthieu',
         'mattmatt',
         Role.ADMIN,
         randomUserName,
@@ -78,7 +78,7 @@ test('it returns the updated user based on his username', () => {
     );
     return sdk.user.update(userTest, randomUserName).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
-            expect(data.dataInfo).toHaveProperty('firstname', 'new2matthieu'),
+            expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
         expect(data.dataInfo).toHaveProperty('username', randomUserName);
         expect(data.dataInfo.password).toBeUndefined();
