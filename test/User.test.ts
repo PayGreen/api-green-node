@@ -42,13 +42,15 @@ test('it gets an error message because of wrong username', () => {
     });
 });
 
+const randomUserName = `mc${Math.floor(Math.random()*10000)}`
+
 test('it returns the created user', () => {
     const userTest = new User(
         'coulon',
         'matthieu',
         'mattmatt',
         Role.ADMIN,
-        'mc',
+        randomUserName,
         'mcpassword',
         'matt@example.com',
         Country.FR,
@@ -58,7 +60,7 @@ test('it returns the created user', () => {
             expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
             expect(data.dataInfo).toHaveProperty('publicname', 'mattmatt'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
-        expect(data.dataInfo).toHaveProperty('username', 'mc');
+        expect(data.dataInfo).toHaveProperty('username', randomUserName);
     });
 });
 
@@ -68,21 +70,21 @@ test('it returns the updated user based on his username', () => {
         'newmatthieu',
         'mattmatt',
         Role.ADMIN,
-        'mc',
+        randomUserName,
         'mcpassword',
         'matt@example.com',
         Country.FR,
     );
-    return sdk.user.update(userTest, 'mc').then((data: any) => {
+    return sdk.user.update(userTest, randomUserName).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
-        expect(data.dataInfo).toHaveProperty('username', 'mc');
+        expect(data.dataInfo).toHaveProperty('username', randomUserName);
     });
 });
 
 test('it returns 204 status when deleting user', () => {
-    return sdk.user.delete('user1').then((data: any) => {
+    return sdk.user.delete(randomUserName).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true),
             expect(data.status).toEqual(204);
     });
