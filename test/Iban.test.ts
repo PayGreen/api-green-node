@@ -49,7 +49,7 @@ test('it gets one iban of a user based on its ibanId', () => {
     });
 });
 
-//this test fails due to methods conflict into the Api, it will be resolved soon
+//this test will fail due to methods conflict into the Api, it will be resolved soon
 test('it sets one iban of a user as the default one', () => {
     const ibanTest = new IbanModel(
         Bank['La Banque Postale Particuliers'],
