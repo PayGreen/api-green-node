@@ -1,13 +1,13 @@
-import { Authentication, Iban, User } from './resources';
+import { Authentication, Iban, Transport, User } from './resources';
 import { IConfig, IIdentity, ITokens } from './interfaces';
 import { Host, Mode } from './enums';
 
 /** The Sdk Main Class to make APIGreen Calls. */
 export class Sdk {
-    public user: User;
     public authentication: Authentication;
     public iban: Iban;
-
+    public transport: Transport;
+    public user: User;
 
     private _identity: IIdentity = {
         accountId: '',
@@ -44,7 +44,7 @@ export class Sdk {
             this._host,
         );
         this.iban = new Iban(this._tokens, this._identity, this._host);
-
+        this.transport = new Transport(this._tokens, this._identity, this._host);
     }
 
     get accountId(): string | null {

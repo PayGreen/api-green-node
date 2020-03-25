@@ -1,4 +1,7 @@
 import { Sdk } from './Sdk';
-import { User } from './models';
+import { Account, Bank, Country, Host, Mode, Role, User } from './enums'
+import { Iban as IbanModel, IbanValidation as IbanValidationModel , User as UserModel } from './models';
 
-export { User, Sdk };
+export { Sdk };
+export { Account, Bank, Country, Host, Mode, Role, User };
+export { IbanModel, IbanValidationModel, UserModel };

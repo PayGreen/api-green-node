@@ -79,6 +79,5 @@
         "trailingComma": "all",
         "jsxBracketSameLine": false,
         "editor.formatOnSave": true
-      }
-
+    }
 }
