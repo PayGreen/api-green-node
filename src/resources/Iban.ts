@@ -5,13 +5,7 @@ import {
     Iban as IbanModel,
     IbanValidation as IbanValidationModel,
 } from '../models';
-
-import {
-    serialize,
-    deserialize,
-    Serializable,
-    JsonProperty,
-} from 'typescript-json-serializer';
+import { serialize } from 'typescript-json-serializer';
 
 /** Iban Class with all methods to request/modify Ibans infos */
 export class Iban extends MainBuilder {

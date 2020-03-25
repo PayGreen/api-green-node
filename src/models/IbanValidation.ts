@@ -12,7 +12,7 @@ export class IbanValidation {
     public validatedAt: number;
 
     /**
-     * Create the newuser object.
+     * Create the Iban Validation object.
      * @param {Bank} bankName - name of the bank of the iban waiting for validation
      */
     constructor(bankName: Bank) {
