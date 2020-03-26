@@ -19,6 +19,7 @@ test('it gets the account based on account id', () => {
                 'client_id',
                 process.env.SDK_ACCOUNTID,
             );
+        expect(data.dataInfo.client_secret).toBeUndefined();
     });
 });
 
@@ -29,7 +30,7 @@ test('it gets all users of one account id', () => {
 });
 
 test('it gets one user based on his username', () => {
-    return sdk.user.getOne().then((data: any) => {
+    return sdk.user.getOne('paygreen').then((data: any) => {
         expect(data.dataInfo).toHaveProperty('username', 'paygreen');
     });
 });
@@ -42,7 +43,7 @@ test('it gets an error message because of wrong username', () => {
     });
 });
 
-const randomUserName = `mc${Math.floor(Math.random()*10000)}`
+const randomUserName = `mc${Math.floor(Math.random() * 10000)}`;
 
 test('it returns the created user', () => {
     const userTest = new User(
@@ -80,6 +81,7 @@ test('it returns the updated user based on his username', () => {
             expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
         expect(data.dataInfo).toHaveProperty('username', randomUserName);
+        expect(data.dataInfo.password).toBeUndefined();
     });
 });
 
