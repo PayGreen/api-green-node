@@ -3,9 +3,8 @@ import { ApiResponse } from '../src/models/ApiResponse';
 import { Mode } from '../src/enums';
 import { Sdk } from '../src';
 
-const sdk = new Sdk();
-
 test('it gets a token access to request Api', () => {
+    const sdk = new Sdk();
     if (
         process.env.SDK_ACCOUNTID &&
         process.env.SDK_USERNAME &&
@@ -30,23 +29,64 @@ const config = {
     mode: Mode.DEV,
 };
 
-const sdk2 = new Sdk(config);
-
-test('it gets a refreshed token access to request Api each time the refreshtoken() method is used', () => {
+test('it gets a refreshed token access to request Api each time the refreshtoken() method is used and if token/refresh token are valid', () => {
     if (process.env.SDK_ACCOUNTID) {
-        return sdk2.authentication
+        const sdk = new Sdk(config);
+        return sdk.authentication
             .refreshToken(process.env.SDK_ACCOUNTID)
             .then((data: any) => {
-                expect(data.success).toBe(true);
-                expect(data.dataInfo.access_token).toBeDefined;
-            });
-    }
-    if (process.env.SDK_ACCOUNTID) {
-        return sdk2.authentication
-            .refreshToken(process.env.SDK_ACCOUNTID)
-            .then((data: any) => {
-                expect(data.success).toBe(true);
-                expect(data.dataInfo.access_token).toBeDefined;
+                if (data.success === true) {
+                    expect(data.success).toBe(true);
+                    expect(data.dataInfo.access_token).toBeDefined;
+                    if (process.env.SDK_ACCOUNTID) {
+                        return sdk.authentication
+                            .refreshToken(process.env.SDK_ACCOUNTID)
+                            .then((data: any) => {
+                                expect(data.success).toBe(true);
+                                expect(data.dataInfo.access_token).toBeDefined;
+                            });
+                    }
+                } else {
+                    if (
+                        process.env.SDK_ACCOUNTID &&
+                        process.env.SDK_USERNAME &&
+                        process.env.SDK_PASSWORD
+                    ) {
+                        return sdk.authentication
+                            .login(
+                                process.env.SDK_USERNAME,
+                                process.env.SDK_PASSWORD,
+                                process.env.SDK_ACCOUNTID,
+                            )
+                            .then(() => {
+                                if (process.env.SDK_ACCOUNTID) {
+                                    return sdk.authentication
+                                        .refreshToken(process.env.SDK_ACCOUNTID)
+                                        .then((data: any) => {
+                                            expect(data.success).toBe(true);
+                                            expect(data.dataInfo.access_token)
+                                                .toBeDefined;
+                                            if (process.env.SDK_ACCOUNTID) {
+                                                return sdk.authentication
+                                                    .refreshToken(
+                                                        process.env
+                                                            .SDK_ACCOUNTID,
+                                                    )
+                                                    .then((data: any) => {
+                                                        expect(
+                                                            data.success,
+                                                        ).toBe(true);
+                                                        expect(
+                                                            data.dataInfo
+                                                                .access_token,
+                                                        ).toBeDefined;
+                                                    });
+                                            }
+                                        });
+                                }
+                            });
+                    }
+                }
             });
     }
 });
@@ -57,9 +97,8 @@ const wrongConfig = {
     mode: Mode.DEV,
 };
 
-const sdk3 = new Sdk(wrongConfig);
-
 test('it gets an error when trying to refresh with a wrong token', () => {
+    const sdk3 = new Sdk(wrongConfig);
     if (process.env.SDK_ACCOUNTID) {
         return sdk3.authentication
             .refreshToken(process.env.SDK_ACCOUNTID)

@@ -2,7 +2,7 @@ require('dotenv').config('/.env');
 import { Sdk } from '../src';
 import { User } from '../src/models';
 import { ApiResponse } from '../src/models/ApiResponse';
-import { Mode } from '../src/enums/Mode';
+import { Country, Mode, Role } from '../src/enums';
 
 const config = {
     token: process.env.SDK_TOKEN,
@@ -42,23 +42,25 @@ test('it gets an error message because of wrong username', () => {
     });
 });
 
+const randomUserName = `mc${Math.floor(Math.random()*10000)}`
+
 test('it returns the created user', () => {
     const userTest = new User(
         'coulon',
         'matthieu',
         'mattmatt',
-        'ADMIN',
-        'mc',
+        Role.ADMIN,
+        randomUserName,
         'mcpassword',
         'matt@example.com',
-        'fr',
+        Country.FR,
     );
     return sdk.user.create(userTest).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
             expect(data.dataInfo).toHaveProperty('publicname', 'mattmatt'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
-        expect(data.dataInfo).toHaveProperty('username', 'mc');
+        expect(data.dataInfo).toHaveProperty('username', randomUserName);
     });
 });
 
@@ -67,22 +69,22 @@ test('it returns the updated user based on his username', () => {
         'coulon',
         'newmatthieu',
         'mattmatt',
-        'ADMIN',
-        'mc',
+        Role.ADMIN,
+        randomUserName,
         'mcpassword',
         'matt@example.com',
-        'fr',
+        Country.FR,
     );
-    return sdk.user.update(userTest, 'mc').then((data: any) => {
+    return sdk.user.update(userTest, randomUserName).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
-        expect(data.dataInfo).toHaveProperty('username', 'mc');
+        expect(data.dataInfo).toHaveProperty('username', randomUserName);
     });
 });
 
 test('it returns 204 status when deleting user', () => {
-    return sdk.user.delete('user1').then((data: any) => {
+    return sdk.user.delete(randomUserName).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true),
             expect(data.status).toEqual(204);
     });
