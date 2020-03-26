@@ -3,12 +3,8 @@ import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import { User as UserModel } from '../models';
 import { Account as AccountEnum, User as UserEnum } from '../enums';
-
 import {
     serialize,
-    deserialize,
-    Serializable,
-    JsonProperty,
 } from 'typescript-json-serializer';
 
 /** User Class with all methods to request/modify users infos */

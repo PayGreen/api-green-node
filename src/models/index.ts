@@ -1,4 +1,6 @@
 import { User } from './User';
 import { ApiResponse } from './ApiResponse';
+import { Iban } from './Iban';
+import { IbanValidation } from './IbanValidation';
 
-export { ApiResponse, User };
+export { ApiResponse, Iban, IbanValidation, User };
