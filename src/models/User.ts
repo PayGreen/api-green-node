@@ -76,8 +76,7 @@ export class User {
         const emailRegEx = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
         if (!emailRegEx.test(data.contact.email)) {
             throw 'Error in email syntax, please verify your email';
-        } else
-            return {
+        } return {
                 lastname: data.lastname,
                 firstname: data.firstname,
                 publicname: data.publicname,

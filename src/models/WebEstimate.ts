@@ -1,5 +1,5 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
-import { IWebNavigation } from '../interfaces';
+// import { IWebNavigation } from '../interfaces';
 import { EstimateType } from '../enums';
 
 /** WebEstimate Model Class with methods to manage web estimate data */
@@ -9,8 +9,10 @@ class WebNavigation {
     @JsonProperty('userAgent')
     public userAgent?: string | null;
     @JsonProperty('device')
+    /** device will be automatically filled by Api based on the User Agent provided*/
     public device?: string | null;
     @JsonProperty('browser')
+    /** @description browser will be automatically filled by Api based on the User Agent provided*/
     public browser?: string | null;
     @JsonProperty('countImages')
     public countImages?: number | null;
@@ -78,25 +80,15 @@ export class WebEstimate {
     /**
      * VERIFY WEB NAVIGATION OBJECT |
      * @param {any} data - Object with all web navigation informations
-     * @returns {IUser} - New object with all web navigation informations with final structure/names for API compatibility
+     * @returns {any} - New object with all web navigation informations with final structure/names for API compatibility
      */
-    verify = (data: any): IWebNavigation => {
+    verify = (data: any): any => {
         for (const property in data) {
             if (data[property] == null && data[property] !== this.webNavigation.externalId ) {
                 throw `Error ${property} is null`;
             }
         } return {
-            type: data.type,
-            fingerprint: data.fingerprint,
-            webNavigation: {
-                userAgent:data.webNavigation.userAgent,
-                device:"",
-                browser:"",
-                countImages:data.webNavigation.countImages,
-                countPages:data.webNavigation.countPages,
-                time:data.webNavigation.time,
-                externalId:data.webNavigation.time,
-                },
+            data
             };
     };
 }

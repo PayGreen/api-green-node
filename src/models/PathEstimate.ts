@@ -52,15 +52,14 @@ export class PathEstimate {
         flatpath.map((data, i) => {
             if (Object.keys(data).toString() === 'transport') {
                 const transportName = Object.values(data)[0];
-                transports.push({ uuidTransport: transportName }),
-                    flatpath.splice(i, 1);
+                transports.push({ uuidTransport: transportName })
             }
         });
         return transports;
     };
 
     /**
-     * FORMAT ADRESSES |
+     * FORMAT ADRESSES | 
      * @param {any} data - Object with all transports & adresses informations
      * @returns {Array<object>} New array of objects with adresses with final structure/names for API compatibility
      */
@@ -128,7 +127,6 @@ export class PathEstimate {
             if (data[property] == null) {
                 throw `Error ${property} is null`;
             }
-        }
-        return data;
+        } return data;
     };
 }
