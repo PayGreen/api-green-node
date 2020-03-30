@@ -9,7 +9,7 @@ export class Carbon extends MainBuilder {
     /**
      * ADD WEB ESTIMATE | /tree/ccarbon
      *  @param {WebEstimate} newEstimate - object containing all datas about the ongoing web carbon offsetting estimate
-     *  @returns {Promise.<IApiResponse>} Get object with new carbon cost estimated.
+     *  @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
     addWebEstimate = (newEstimate: WebEstimate): Promise<IApiResponse> => {
         const serializedEstimate = serialize(newEstimate);
@@ -32,7 +32,7 @@ export class Carbon extends MainBuilder {
     /**
      * ADD PATH ESTIMATE | /tree/ccarbon
      *  @param {PathEstimate} newEstimate - object containing all datas about the ongoing path carbon offsetting estimate
-     *  @returns {Promise.<IApiResponse>} Get object with new carbon cost estimated.
+     *  @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
     addPathEstimate = (newEstimate: PathEstimate): Promise<IApiResponse> => {
         const serializedEstimate = serialize(newEstimate);
@@ -55,7 +55,7 @@ export class Carbon extends MainBuilder {
     /**
      * GET ESTIMATE | /tree/ccarbon/{fingerprint}
      *  @param {string} fingerPrint - an unique name to identify each carbon offsetting estimate
-     *  @returns {Promise.<IApiResponse>} Get information about the ongoing carbon offsetting estimate
+     *  @returns {Promise.<IApiResponse>} - get information about the ongoing carbon offsetting estimate
      */
     getEstimate = (fingerPrint: string): Promise<IApiResponse> => {
         return axios
@@ -77,7 +77,7 @@ export class Carbon extends MainBuilder {
     /**
      * COMPLETE ESTIMATE | /tree/ccarbon/{fingerprint}
      *  @param {string} fingerPrint - an unique name to identify each carbon offsetting estimate
-     *  @returns {Promise.<IApiResponse>} Get response with status 204 if success.
+     *  @returns {Promise.<IApiResponse>} - get response with status 204 if success, the carbon estimate is validated.
      */
     completeEstimate = (fingerPrint: string): Promise<IApiResponse> => {
         return axios
@@ -103,7 +103,8 @@ export class Carbon extends MainBuilder {
     /**
      * DELETE ESTIMATE | /tree/ccarbon/{fingerprint}
      *  @param {string} fingerPrint - an unique name to identify each carbon offsetting estimate
-     *  @returns {Promise.<IApiResponse>} Get response with status 204 if success.
+     *  @returns {Promise.<IApiResponse>} - get response with status 204 if success, only ongoing estimate
+     *  can be deleted.
      */
     deleteEstimate = (fingerPrint: string): Promise<IApiResponse> => {
         return axios

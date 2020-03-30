@@ -78,7 +78,7 @@ export class WebEstimate {
     /**
      * VERIFY WEB NAVIGATION OBJECT |
      * @param {any} data - Object with all web navigation informations
-     * @returns {IUser} New object with all web navigation informations with final structure/names for API compatibility
+     * @returns {IUser} - New object with all web navigation informations with final structure/names for API compatibility
      */
     verify = (data: any): IWebNavigation => {
         for (const property in data) {

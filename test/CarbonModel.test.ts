@@ -34,6 +34,7 @@ test('Add complete web estimation of a carbon estimate with Model', () => {
 
 test('Add complete path estimation of a carbon estimate with Model', () => {
     const path = new PathEstimate();
+
     const path1 = path.createPath(
         'Rue Capitaine Cocart',
         '91120',
@@ -57,7 +58,9 @@ test('Add complete path estimation of a carbon estimate with Model', () => {
         'France',
         Transport['TER France - Diesel'],
     );
+
     const pathTest = new PathEstimate('NewFingerPrint', 20, 1, [path1, path2]);
+
     expect(pathTest).toMatchObject({
         type: 'path',
         fingerprint: 'NewFingerPrint',

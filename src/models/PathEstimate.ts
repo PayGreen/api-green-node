@@ -117,4 +117,18 @@ export class PathEstimate {
             { transport: transport },
         ];
     };
+
+    /**
+     * VERIFY WEB NAVIGATION OBJECT |
+     * @param {any} data - Object with all path navigation informations
+     * @returns {any} - New object with all path navigation informations with final structure/names for API compatibility
+     */
+    verify = (data: any): any => {
+        for (const property in data) {
+            if (data[property] == null) {
+                throw `Error ${property} is null`;
+            }
+        }
+        return data;
+    };
 }
