@@ -16,7 +16,7 @@ export class Iban {
 
     /**
      * Create the newIban object.
-     * @param {Bank} bankName - bank of the iban waiting for validation
+     * @param {Bank?} bankName - bank of the iban waiting for validation
      * @param {string?} iban - number of the iban
      * @param {string?} bic - bic of the iban
      * @param {Country?} country - country of the iban - based on enum Country
