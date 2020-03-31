@@ -3,9 +3,11 @@ import { IApiResponse } from '../interfaces';
 /** Api Response Model Class with all methods to format/select api responses */
 export class ApiResponse {
     /**
-     *  GLOBAL RESPONSE FORMATMETHOD |
-     *  @param {boolean} boolean - for success or fail of the request
+     *  GLOBAL RESPONSE FORMAT METHOD |
+     *  @description - normalize all Api Responses for better readibility
+     *  @param {boolean} success - for success or fail of the request
      *  @param {any} data - response of the answer from Api
+     *  @param {number} status - http response status number
      *  @returns {IApiResponse} - global object with complete response formatted
      */
     static formatResponse = (
@@ -27,6 +29,7 @@ export class ApiResponse {
 
     /**
      * ERROR RESPONSE MODEL |
+     *  @description - format specific error response from Api
      *  @param {any} error- error received from Api
      *  @returns {IApiResponse} - global object with complete response formatted
      */
@@ -43,7 +46,8 @@ export class ApiResponse {
     };
 
     /**
-     * IS SUCCESSFUL | verify if http response format = 2xx
+     * IS SUCCESSFUL
+     *  @description - verify if http response format = 2xx
      *  @param {any} data - response formatted from Api
      *  @returns {boolean}
      */
@@ -56,7 +60,8 @@ export class ApiResponse {
     };
 
     /**
-     * IS INVALID | verify if http response format = 4xx
+     * IS INVALID
+     *  @description verify if http response format = 4xx
      *  @param {any} data - response formatted from Api
      *  @returns {boolean}
      */
@@ -69,7 +74,8 @@ export class ApiResponse {
     };
 
     /**
-     * CAUSED AN ERROR | verify if http response format = 5xx
+     * CAUSED AN ERROR
+     *  @description - verify if http response format = 5xx
      *  @param {any} data - response formatted from Api
      *  @returns {boolean}
      */
@@ -101,6 +107,7 @@ export class ApiResponse {
 
     /**
      * FILTER API RESPONSE |
+     *  @description - hide confidential/useless data in Api response
      *  @param {any} enumKeys - enum with list of informations we want to return from Api response
      *  @param {any} response - object containing the Api response
      *  @returns {any} the new object filtered

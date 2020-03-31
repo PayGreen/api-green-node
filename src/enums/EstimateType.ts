@@ -1,4 +1,4 @@
 export enum EstimateType{
-    'web',
-    'path',
+    'WEB'= 'web',
+    'PATH'= 'path',
 }

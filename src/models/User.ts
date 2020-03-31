@@ -2,8 +2,10 @@ import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { IUser } from '../interfaces';
 import { Country, Role } from '../enums';
 
-/** User Model Class with methods to manage users data */
-
+/** Contact Class
+ * @property {string?} email - email address of the user
+ * @property {string?} country - country of the user
+ */
 @Serializable()
 class Contact {
     @JsonProperty('email')
@@ -17,6 +19,15 @@ class Contact {
     }
 }
 
+/** User Model Class with methods to manage users data
+ * @property {string?} lastname - email address of the user
+ * @property {string?} firstname - country of the user
+ * @property {string?} publicname - public name of the user
+ * @property {string?} role - role of the user
+ * @property {string?} password - password of the user
+ * @property {string?} username - unique identifier for the user
+ * @property {Contact} contact - contact class
+ */
 @Serializable()
 export class User {
     @JsonProperty('lastname')
@@ -36,10 +47,17 @@ export class User {
 
     /**
      * Create the newuser object.
-     * @param {any} data -
+     * @param {string?} lastname - email address of the user
+     * @param {string?} firstname - country of the user
+     * @param {string?} publicname - public name of the user
+     * @param {string?} role - role of the user
+     * @param {string?} password - password of the user
+     * @param {string?} username - unique identifier for the user
+     * @param {string?} email - email address of the user
+     * @param {string?} country - country of the user
      */
     constructor(
-        lastName?: string | null,
+        lastname?: string | null,
         firstname?: string | null,
         publicname?: string | null,
         role?: Role | null,
@@ -48,7 +66,7 @@ export class User {
         email?: string | null,
         country?: Country | null,
     ) {
-        this.lastname = lastName;
+        this.lastname = lastname;
         this.firstname = firstname;
         this.publicname = publicname;
         if (role != null) {
@@ -76,17 +94,6 @@ export class User {
         const emailRegEx = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
         if (!emailRegEx.test(data.contact.email)) {
             throw 'Error in email syntax, please verify your email';
-        } return {
-                lastname: data.lastname,
-                firstname: data.firstname,
-                publicname: data.publicname,
-                role: data.role,
-                username: data.username,
-                password: data.password,
-                contact: {
-                    email: data.contact.email,
-                    country: data.contact.country,
-                },
-            };
+        } return data;
     };
 }

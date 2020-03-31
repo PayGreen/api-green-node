@@ -1,19 +1,23 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
-// import { IWebNavigation } from '../interfaces';
 import { EstimateType } from '../enums';
 
-/** WebEstimate Model Class with methods to manage web estimate data */
-
+/** WebNavigation Model Class to create Web Data
+ * @property {string?} userAgent - user agent headers
+ * @property {string} device - device will be automatically filled by Api based on the User Agent provided
+ * @property {string} userAgent - browser will be automatically filled by Api based on the User Agent provided
+ * @property {number?} countImages - number of images requested during the navigation
+ * @property {number?} countPages - number of pages requested during the navigation
+ * @property {number?} time - time spent during the navigation (in seconds)
+ * @property {string?} externalId - user ExternalId you may use to identify him in your system
+ */
 @Serializable()
 class WebNavigation {
     @JsonProperty('userAgent')
     public userAgent?: string | null;
     @JsonProperty('device')
-    /** device will be automatically filled by Api based on the User Agent provided*/
-    public device?: string | null;
+    public device?: string;
     @JsonProperty('browser')
-    /** @description browser will be automatically filled by Api based on the User Agent provided*/
-    public browser?: string | null;
+    public browser?: string;
     @JsonProperty('countImages')
     public countImages?: number | null;
     @JsonProperty('countPages')
@@ -40,10 +44,15 @@ class WebNavigation {
     }
 }
 
+/** WebEstimate Model Class to create Data to add to a Carbon Web Estimate
+ * @property {EstimateType} type - type of Estimate based on enum
+ * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
+ * @property {WebNavigation} webNavigation - object built with WebNavigation class containing web data
+ */
 @Serializable()
 export class WebEstimate {
     @JsonProperty('type')
-    public type : string | null;
+    public type: EstimateType;
     @JsonProperty('fingerprint')
     public fingerprint?: string | null;
     @JsonProperty('webNavigation')
@@ -66,7 +75,7 @@ export class WebEstimate {
         time?: number | null,
         externalId?: string | null
     ) {
-        this.type = EstimateType[0];
+        this.type = EstimateType.WEB;
         this.fingerprint = fingerprint;
         this.webNavigation = new WebNavigation(
             userAgent,

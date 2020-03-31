@@ -1,124 +1,78 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { EstimateType } from '../enums';
+import { Path, Address } from '../models';
 
+/** PathEstimate Model Class to create data to add to a Carbon Path Estimate
+ * @alias PathEstimate
+ * @property {EstimateType} type - type of Estimate based on enum
+ * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
+ * @property {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
+ * @property {number?} countPackages - number of packages transported
+ * @property {Array<Address>?} addresses - an array containing all adresses 
+ * @property {Array<object>?} transports - an array containing all transports
+ */
 @Serializable()
 export class PathEstimate {
     @JsonProperty('type')
-    public type: string | null;
+    public type: EstimateType;
     @JsonProperty('fingerprint')
     public fingerprint?: string | null;
     @JsonProperty('weightPackages')
     public weightPackages?: number | null;
     @JsonProperty('countPackages')
     public countPackages?: number | null;
+    @JsonProperty('addresses')
+    public addresses?: Array<Address>;
     @JsonProperty('transports')
     public transports?: Array<object>;
-    @JsonProperty('addresses')
-    public addresses?: Array<object>;
 
     /**
      * Create the path navigation estimate object.
      * @param {string?} fingerprint - unique string to identify a Carbon offsetting estimate file
      * @param {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
      * @param {number?} countPackages - number of packages transported
-     * @param {Array<object>} path - an array containing all adresses and transports
+     * @param {Array<object>} path - an array containing all adresses and transports combined
      */
     constructor(
         fingerprint?: string | null,
         weightPackages?: number | null,
         countPackages?: number | null,
-        path?: Array<object>,
+        path?: Array<Path>,
     ) {
-        this.type = EstimateType[1];
+        this.type = EstimateType.PATH;
         this.fingerprint = fingerprint;
         this.weightPackages = weightPackages;
         this.countPackages = countPackages;
         if (path) {
-            this.addresses = this.formatAdresses(path);
-        }
-        if (path) {
-            this.transports = this.formatTransports(path);
+            this.addresses = this.formatPath(path).addresses;
+            this.transports = this.formatPath(path).transports;
         }
     }
 
     /**
-     * FORMAT TRANSPORTS |
-     * @param {any} data - Object with all transports & adresses informations
-     * @returns {Array<object>} New array of objects with transports with final structure/names for API compatibility
+     * FORMAT PATH | 
+     * @description - remove intermediary duplicated adresses and format data for API compatibility
+     * @param {Array<Path>} paths - array of objects built with Path Model with transports & adresses combined
+     * @returns {Object} new object with 2 separated arrays for addresses & transports with final structure/names 
      */
-    formatTransports = (path: any): Array<object> => {
-        let transports: object[] = [];
-        let flatpath = path.flat();
-        flatpath.map((data, i) => {
-            if (Object.keys(data).toString() === 'transport') {
-                const transportName = Object.values(data)[0];
-                transports.push({ uuidTransport: transportName })
+    formatPath = (paths: Array<Path>): { addresses: Address[]; transports: Object[]; }=> {
+        const addresses : Array<Address> = [];
+        const transports : Array<Object> = [];
+        paths.forEach((path, index) => {
+            if (addresses.length === 0) {
+                addresses.push(path.addressDeparture);
             }
+            else if (path.addressDeparture !== addresses[addresses.length - 1]) {
+                throw `Error one of the departure address is incorrect.`;
+            }
+            addresses.push(path.addressArrival);
+            transports.push({ uuidTransport: path.transport });
         });
-        return transports;
-    };
+        return { addresses, transports };
+        }
 
     /**
-     * FORMAT ADRESSES | 
-     * @param {any} data - Object with all transports & adresses informations
-     * @returns {Array<object>} New array of objects with adresses with final structure/names for API compatibility
-     */
-    formatAdresses = (path: any): any => {
-        let adresses = path.flat();
-        adresses.map((data, i) => {
-            if (Object.keys(data).toString() === 'transport') {
-                adresses.splice(i, 1);
-            }
-            if (i % 2 === 0 && i > 0) {
-                adresses.splice(i, 1);
-            }
-        });
-        return adresses;
-    };
-
-    /**
-     * CREATE PATH |
-     * @param {string} address1 - address of departure
-     * @param {string} zipCode1 - zipCode of departure
-     * @param {string} city1 - city of departure
-     * @param {string} country1 - country of departure
-     * @param {string} address2 - address of arrival
-     * @param {string} zipCode2 - zipCode of arrival
-     * @param {string} city2 - city of arrival
-     * @param {string} country2 - country of arrival
-     * @param {string} transport - name of the transport used between the addresses
-     * @returns {Array<object>} New array of objects with adresses with final structure/names for API compatibility
-     */
-    createPath = (
-        address1: string,
-        zipCode1: string,
-        city1: string,
-        country1: string,
-        address2: string,
-        zipCode2: string,
-        city2: string,
-        country2: string,
-        transport,
-    ): any => {
-        return [
-            {
-                address: address1,
-                zipCode: zipCode1,
-                city: city1,
-                country: country1,
-            },
-            {
-                address: address2,
-                zipCode: zipCode2,
-                city: city2,
-                country: country2,
-            },
-            { transport: transport },
-        ];
-    };
-
-    /**
-     * VERIFY WEB NAVIGATION OBJECT |
+     * VERIFY PATH NAVIGATION OBJECT |
      * @param {any} data - Object with all path navigation informations
      * @returns {any} - New object with all path navigation informations with final structure/names for API compatibility
      */

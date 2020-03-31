@@ -1,6 +1,13 @@
 require('dotenv').config('/.env');
 import { Sdk } from '../src';
-import { ApiResponse, PathEstimate, WebEstimate } from '../src/models';
+import {
+    Address,
+    Coordinate,
+    ApiResponse,
+    Path,
+    PathEstimate,
+    WebEstimate,
+} from '../src/models';
 import { Mode, Transport } from '../src/enums';
 
 const config = {
@@ -29,39 +36,80 @@ test('it adds a web estimate', () => {
 test('it gets an estimate based on fingerPrint', () => {
     return sdk.carbon.getEstimate(randomFingerPrint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.dataInfo).toHaveProperty('fingerprint',randomFingerPrint);
+        expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerPrint);
     });
 });
 
 const randomFingerPrint2 = `fingerprint${Math.floor(Math.random() * 10000)}`;
 
 test('it adds a path estimate', () => {
-    const path = new PathEstimate();
-    const path1 = path.createPath(
-        'Rue Capitaine Cocart',
+    const address1 = new Address(
+        '22 rue Capitaine Cocart',
         '91120',
         'Palaiseau',
         'France',
-        '72 rue de la République',
-        '76140',
-        'Le Petit Quevilly',
-        'France',
-        Transport["Plane < 5000km"],
     );
-    const path2 = path.createPath(
+    const address2 = new Address(
         '72 rue de la République',
         '76140',
         'Le Petit Quevilly',
         'France',
-        'Rue Capitaine Cocart',
-        '91120',
-        'Lille',
+    );
+    const address3 = new Address(
+        '24 rue du Faubourg',
+        '75003',
+        'Paris',
         'France',
+    );
+    const path1 = new Path(address1, address2, Transport.Bus);
+    const path2 = new Path(
+        address2,
+        address3,
         Transport['TER France - Diesel'],
     );
-    const newPathEstimate = new PathEstimate(randomFingerPrint2, 20, 1, [path1, path2]);
+    const newPathEstimate = new PathEstimate(randomFingerPrint2, 20, 1, [
+        path1,
+        path2,
+    ]);
+
     return sdk.carbon.addPathEstimate(newPathEstimate).then((data: any) => {
-        console.log('data', data)
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.status).toEqual(201);
+    });
+});
+
+test('it adds a mixed path estimate', () => {
+    const address1 = new Coordinate(
+        'New-York',
+        'Etats-Unis',
+        '40.725863',
+        '-74.039987',
+    );
+    const address2 = new Coordinate(
+        'Roissy-en-France',
+        'France',
+        '49.009901',
+        '2.542471',
+    );
+    const address3 = new Address(
+        '72 rue de la République',
+        '76140',
+        'Le Petit Quevilly',
+        'France',
+    );
+    const path1 = new Path(address1, address2, Transport['Plane < 10000km']);
+    const path2 = new Path(
+        address2,
+        address3,
+        Transport['TER France - Diesel'],
+    );
+
+    const newPathEstimate = new PathEstimate(randomFingerPrint2, 20, 1, [
+        path1,
+        path2,
+    ]);
+
+    return sdk.carbon.addPathEstimate(newPathEstimate).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(201);
     });
@@ -76,7 +124,7 @@ test('it completes an estimate based on fingerPrint', () => {
 
 test('it deletes an estimate based on fingerPrint if it is not completed', () => {
     return sdk.carbon.deleteEstimate(randomFingerPrint).then((data: any) => {
-        expect(ApiResponse.isSuccessful(data)).toBe(true)
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(204);
     });
 });
