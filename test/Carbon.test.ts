@@ -46,7 +46,7 @@ test('it adds a path estimate', () => {
         '76140',
         'Le Petit Quevilly',
         'France',
-        Transport.Bus,
+        Transport["Plane < 5000km"],
     );
     const path2 = path.createPath(
         '72 rue de la République',
@@ -61,6 +61,7 @@ test('it adds a path estimate', () => {
     );
     const newPathEstimate = new PathEstimate(randomFingerPrint2, 20, 1, [path1, path2]);
     return sdk.carbon.addPathEstimate(newPathEstimate).then((data: any) => {
+        console.log('data', data)
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(201);
     });
