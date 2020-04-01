@@ -2,7 +2,8 @@ import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { IIban } from '../interfaces';
 import { Bank, Country } from '../enums';
 
-/** Iban Model Class with methods to create and manage iban data
+/**
+ * Iban Model Class with methods to create and manage iban data
  * @property {string?} bankName - bank of the iban
  * @property {string?} iban - number of the iban
  * @property {string?} bic - bic of the iban

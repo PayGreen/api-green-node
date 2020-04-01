@@ -1,7 +1,8 @@
 import { Address } from './Address';
 import { Transport } from '../enums';
 
-/** Path Model to generate a complete path object necessary to create Carbon PathEstimate
+/**
+ * Path Model to generate a complete path object necessary to create Carbon PathEstimate
  * @see PathEstimate
  * @alias Path
  * @property {Address} addressDeparture - address object generated with Address Model
@@ -13,7 +14,8 @@ export class Path {
     public addressArrival: Address;
     public transport: Transport;
 
-    /** Build a complete path object
+    /**
+     * Build a complete path object
      * @param {Address} addressDeparture - address object generated with Address Model
      * @param {Address} addressArrival - address object generated with Address Model
      * @param {Transport} transport - transport vehicle chosen from enum

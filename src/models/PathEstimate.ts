@@ -2,13 +2,14 @@ import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { EstimateType } from '../enums';
 import { Path, Address } from '../models';
 
-/** PathEstimate Model Class to create data to add to a Carbon Path Estimate
+/**
+ * PathEstimate Model Class to create data to add to a Carbon Path Estimate
  * @alias PathEstimate
  * @property {EstimateType} type - type of Estimate based on enum
  * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
  * @property {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
  * @property {number?} countPackages - number of packages transported
- * @property {Array<Address>?} addresses - an array containing all adresses 
+ * @property {Array<Address>?} addresses - an array containing all adresses
  * @property {Array<object>?} transports - an array containing all transports
  */
 @Serializable()
@@ -44,32 +45,38 @@ export class PathEstimate {
         this.weightPackages = weightPackages;
         this.countPackages = countPackages;
         if (path) {
-            this.addresses = this.formatPath(path).addresses;
-            this.transports = this.formatPath(path).transports;
+            const { addresses, transports } = this.formatPath(path);
+            this.addresses = addresses;
+            this.transports = transports;
         }
     }
 
     /**
-     * FORMAT PATH | 
+     * FORMAT PATH |
      * @description - remove intermediary duplicated adresses and format data for API compatibility
      * @param {Array<Path>} paths - array of objects built with Path Model with transports & adresses combined
-     * @returns {Object} new object with 2 separated arrays for addresses & transports with final structure/names 
+     * @returns {Object} - new object with 2 separated arrays for addresses & transports with final structure/names
+     * @throws {InvalidArgumentException} - if number of addresses > 2, will throw an error if the address of
+     * departure following the address of arrival is not the same
      */
-    formatPath = (paths: Array<Path>): { addresses: Address[]; transports: Object[]; }=> {
-        const addresses : Array<Address> = [];
-        const transports : Array<Object> = [];
+    formatPath = (
+        paths: Array<Path>,
+    ): { addresses: Address[]; transports: Object[] } => {
+        const addresses: Array<Address> = [];
+        const transports: Array<Object> = [];
         paths.forEach((path, index) => {
             if (addresses.length === 0) {
                 addresses.push(path.addressDeparture);
-            }
-            else if (path.addressDeparture !== addresses[addresses.length - 1]) {
-                throw `Error one of the departure address is incorrect.`;
+            } else if (
+                path.addressDeparture !== addresses[addresses.length - 1]
+            ) {
+                throw `Error one of the address is incorrect.`;
             }
             addresses.push(path.addressArrival);
             transports.push({ uuidTransport: path.transport });
         });
         return { addresses, transports };
-        }
+    };
 
     /**
      * VERIFY PATH NAVIGATION OBJECT |
@@ -81,6 +88,7 @@ export class PathEstimate {
             if (data[property] == null) {
                 throw `Error ${property} is null`;
             }
-        } return data;
+        }
+        return data;
     };
 }

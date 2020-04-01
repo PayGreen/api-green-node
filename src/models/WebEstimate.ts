@@ -1,7 +1,8 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { EstimateType } from '../enums';
 
-/** WebNavigation Model Class to create Web Data
+/**
+ * WebNavigation Model Class to create Web Data
  * @property {string?} userAgent - user agent headers
  * @property {string} device - device will be automatically filled by Api based on the User Agent provided
  * @property {string} userAgent - browser will be automatically filled by Api based on the User Agent provided
@@ -32,19 +33,20 @@ class WebNavigation {
         countImages?: number | null,
         countPages?: number | null,
         time?: number | null,
-        externalId?: string | null
-        ) {
+        externalId?: string | null,
+    ) {
         this.userAgent = userAgent;
-        this.device = "";
-        this.browser = "";
+        this.device = '';
+        this.browser = '';
         this.countImages = countImages;
         this.countPages = countPages;
         this.time = time;
-        externalId ? this.externalId = externalId : this.externalId = null;
+        this.externalId = externalId || null;
     }
 }
 
-/** WebEstimate Model Class to create Data to add to a Carbon Web Estimate
+/**
+ * WebEstimate Model Class to create Data to add to a Carbon Web Estimate
  * @property {EstimateType} type - type of Estimate based on enum
  * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
  * @property {WebNavigation} webNavigation - object built with WebNavigation class containing web data
@@ -73,7 +75,7 @@ export class WebEstimate {
         countImages?: number | null,
         countPages?: number | null,
         time?: number | null,
-        externalId?: string | null
+        externalId?: string | null,
     ) {
         this.type = EstimateType.WEB;
         this.fingerprint = fingerprint;
@@ -82,8 +84,8 @@ export class WebEstimate {
             countImages,
             countPages,
             time,
-            externalId
-        )
+            externalId,
+        );
     }
 
     /**
@@ -93,11 +95,13 @@ export class WebEstimate {
      */
     verify = (data: any): any => {
         for (const property in data) {
-            if (data[property] == null && data[property] !== this.webNavigation.externalId ) {
+            if (
+                data[property] == null &&
+                data[property] !== this.webNavigation.externalId
+            ) {
                 throw `Error ${property} is null`;
             }
-        } return {
-            data
-            };
+        }
+        return data;
     };
 }

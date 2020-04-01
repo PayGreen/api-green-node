@@ -2,7 +2,8 @@ import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { IUser } from '../interfaces';
 import { Country, Role } from '../enums';
 
-/** Contact Class
+/**
+ * Contact Class
  * @property {string?} email - email address of the user
  * @property {string?} country - country of the user
  */
@@ -19,7 +20,8 @@ class Contact {
     }
 }
 
-/** User Model Class with methods to manage users data
+/**
+ * User Model Class with methods to manage users data
  * @property {string?} lastname - email address of the user
  * @property {string?} firstname - country of the user
  * @property {string?} publicname - public name of the user
