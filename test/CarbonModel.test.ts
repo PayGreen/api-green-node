@@ -5,13 +5,17 @@ import {
     Coordinate,
     Path,
     PathEstimate,
+    Tools,
     WebEstimate,
 } from '../src/models';
 
+const tools = new Tools();
+const randomFingerprint = tools.randomFingerprint();
+
 test('it adds a fingerprint of a web estimation with Model', () => {
     const webEstimationTest = new WebEstimate();
-    webEstimationTest.fingerprint = 'NewFingerPrint';
-    expect(webEstimationTest.fingerprint).toEqual('NewFingerPrint');
+    webEstimationTest.fingerprint = randomFingerprint;
+    expect(webEstimationTest.fingerprint).toEqual(randomFingerprint);
 });
 
 test('it creates a web estimation of a carbon estimate with Model', () => {
