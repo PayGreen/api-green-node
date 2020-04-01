@@ -19,10 +19,10 @@ export class Coordinate {
 
     /**
      * Build the address object (for plane and boat) to define a point of departure or arrival
-     * @property {string} city - city name
-     * @property {string} country - country (must be written out in full)
-     * @property {string} latitude
-     * @property {string} longitude
+     * @param {string} city - city name
+     * @param {string} country - country (must be written out in full)
+     * @param {string} latitude
+     * @param {string} longitude
      */
     constructor(
         city: string,

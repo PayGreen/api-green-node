@@ -14,9 +14,9 @@ export class Path {
     public transport: Transport;
 
     /** Build a complete path object
-     * @property {Address} addressDeparture - address object generated with Address Model
-     * @property {Address} addressArrival - address object generated with Address Model
-     * @property {Transport} transport - transport vehicle chosen from enum
+     * @param {Address} addressDeparture - address object generated with Address Model
+     * @param {Address} addressArrival - address object generated with Address Model
+     * @param {Transport} transport - transport vehicle chosen from enum
      */
     constructor(
         addressDeparture: Address,
