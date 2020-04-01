@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
-import { PathEstimate, WebEstimate } from '../models';
 
-/** Carbon Class with all methods to request/modify carbon estimates infos */
+/** Carbon Statistics Class with all methods to request carbon statistics infos */
 export class CarbonStatistics extends MainBuilder {
 
     /**
      * GET | /tree/ccarbon-statistics
-     *  @returns {Promise.<IApiResponse>} - get information about the ongoing carbon offsetting estimate
+     * @returns {Promise.<IApiResponse>} - default mode : get automatically datas from last month until today
      */
     get = (): Promise<IApiResponse> => {
         return axios
@@ -28,10 +27,11 @@ export class CarbonStatistics extends MainBuilder {
     };
 
     /**
-     * GET A DAY | /tree/ccarbon-statistics?date=
-     *  @returns {Promise.<IApiResponse>} - get information about the ongoing carbon offsetting estimate
+     * GET A DATE | /tree/ccarbon-statistics?date=
+     * @param {string} date - accepted formats are YYYY-MM-DD(show a day), YYYY-MM(show a month), YYYY(show a year)
+     * @returns {Promise.<IApiResponse>} - get datas on a specific date
      */
-    getADay = (date:any): Promise<IApiResponse> => {
+    getADate = (date:string): Promise<IApiResponse> => {
         return axios
             .get(`${this.host}/tree/ccarbon-statistics?date=${date}`, {
                 headers: {
@@ -50,7 +50,9 @@ export class CarbonStatistics extends MainBuilder {
 
     /**
      * GET A PERIOD | /tree/ccarbon-statistics
-     *  @returns {Promise.<IApiResponse>} - get information about the ongoing carbon offsetting estimate
+     * @param {string} start - accepted format YYYY-MM-DD
+     * @param {string?} end - optional, if no date specified current day will be used, accepted format YYYY-MM-DD
+     * @returns {Promise.<IApiResponse>} - get datas on a specific period
      */
     getAPeriod = (start:string, end?:string): Promise<IApiResponse> => {
         const today = new Date().toISOString().substring(0,10)
