@@ -1,4 +1,4 @@
-import { Authentication, Iban, Transport, User } from './resources';
+import { Authentication, Carbon, Iban, Transport, User } from './resources';
 import { IConfig, IIdentity, ITokens } from './interfaces';
 import { Host, Mode } from './enums';
 
@@ -8,6 +8,7 @@ export class Sdk {
     public iban: Iban;
     public transport: Transport;
     public user: User;
+    public carbon: Carbon;
 
     private _identity: IIdentity = {
         accountId: '',
@@ -27,9 +28,12 @@ export class Sdk {
      * @param {IConfig?} configObject -
      */
     constructor(configObject?: IConfig) {
-        if (configObject?.token) {this._tokens.token = configObject.token;}
-        if (configObject?.refreshToken)
-            {this._tokens.refreshToken = configObject.refreshToken;}
+        if (configObject?.token) {
+            this._tokens.token = configObject.token;
+        }
+        if (configObject?.refreshToken) {
+            this._tokens.refreshToken = configObject.refreshToken;
+        }
         if (configObject?.mode != null) {
             this._mode = configObject.mode;
             this._host = Host[Mode[configObject.mode]];
@@ -45,6 +49,7 @@ export class Sdk {
         );
         this.iban = new Iban(this._tokens, this._identity, this._host);
         this.transport = new Transport(this._tokens, this._identity, this._host);
+        this.carbon = new Carbon(this._tokens, this._identity, this._host);
     }
 
     get accountId(): string | null {

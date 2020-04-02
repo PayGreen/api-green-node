@@ -1,7 +1,12 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { Bank } from '../enums';
 
-/** Iban Validation Model Class to generate iban validation */
+/**
+ * Iban Validation Model Class to generate iban validation
+ * @property {string} bankName - bank of the iban waiting for validation
+ * @property {string} status - pre-filled with 'VALID' value
+ * @property {number} validatedAt - timestamp for validation time
+ */
 @Serializable()
 export class IbanValidation {
     @JsonProperty('bankName')
