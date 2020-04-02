@@ -9,13 +9,21 @@ import {
 
 /** User Class with all methods to request/modify users infos */
 export class User extends MainBuilder {
+
+    static url: string = '/account/me'
+    static url2: string = '/account/me/user'
+    buildUrl = (isDefaultActive, url, idValue?) => {
+        const id = idValue ? idValue : 'me';
+        return isDefaultActive? this.host + url + '/' + id : this.host + url
+    }
+
     /**
      * GET ACCOUNT | /account/{accountId}
      * @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
     getAccount = (): Promise<IApiResponse> => {
         return axios
-            .get(`${this.host}/account/me`, {
+            .get(this.buildUrl(false, User.url), {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
@@ -40,7 +48,7 @@ export class User extends MainBuilder {
      */
     getAll = (): Promise<IApiResponse> => {
         return axios
-            .get(`${this.host}/account/me/user`, {
+            .get(this.buildUrl(false, User.url2), {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
@@ -62,9 +70,8 @@ export class User extends MainBuilder {
      *  @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
     getOne = (userNameValue?: string): Promise<IApiResponse> => {
-        const userName = userNameValue ? userNameValue : 'me';
         return axios
-            .get(`${this.host}/account/me/user/${userName}`, {
+            .get(this.buildUrl(true, User.url2, userNameValue), {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
@@ -87,7 +94,7 @@ export class User extends MainBuilder {
     create = (newUser: UserModel): Promise<IApiResponse> => {
         const serializedUser = serialize(newUser);
         return axios
-            .post(`${this.host}/account/me/user`, serializedUser, {
+            .post(this.buildUrl(false, User.url2), serializedUser, {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
@@ -114,10 +121,9 @@ export class User extends MainBuilder {
         userNameValue?: string,
     ): Promise<IApiResponse> => {
         const serializedUpdatedUser = serialize(UpdatedUser);
-        const userName = userNameValue ? userNameValue : 'me';
         return axios
             .put(
-                `${this.host}/account/me/user/${userName}`,
+                this.buildUrl(true, User.url2, userNameValue),
                 serializedUpdatedUser,
                 {
                     headers: {
@@ -144,9 +150,9 @@ export class User extends MainBuilder {
      *  @param {string} UserNameValue - Admin Only - to delete one user from the company account
      *  @returns {Promise.<IApiResponse>} Get response with status 204 if success.
      */
-    delete = (UserNameValue: string): Promise<IApiResponse> => {
+    delete = (userNameValue: string): Promise<IApiResponse> => {
         return axios
-            .delete(`${this.host}/account/me/user/${UserNameValue}`, {
+            .delete(this.buildUrl(true, User.url2, userNameValue), {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },

@@ -6,6 +6,13 @@ import { serialize } from 'typescript-json-serializer';
 
 /** Carbon Class with all methods to request/modify carbon estimates infos */
 export class Carbon extends MainBuilder {
+
+    static url: string = '/tree/ccarbon'
+    buildUrl = (isDefaultActive, url, idValue?) => {
+        const id = idValue ? idValue : 'me';
+        return isDefaultActive? this.host + url + '/' + id : this.host + url
+    }
+
     /**
      * ADD WEB ESTIMATE | /tree/ccarbon
      *  @param {WebEstimate} newEstimate - object containing all datas about the ongoing web carbon offsetting estimate
@@ -14,7 +21,7 @@ export class Carbon extends MainBuilder {
     addWebEstimate = (newEstimate: WebEstimate): Promise<IApiResponse> => {
         const serializedEstimate = serialize(newEstimate);
         return axios
-            .post(`${this.host}/tree/ccarbon`, serializedEstimate, {
+            .post(this.buildUrl(false, Carbon.url), serializedEstimate, {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
@@ -37,7 +44,7 @@ export class Carbon extends MainBuilder {
     addPathEstimate = (newEstimate: PathEstimate): Promise<IApiResponse> => {
         const serializedEstimate = serialize(newEstimate);
         return axios
-            .post(`${this.host}/tree/ccarbon`, serializedEstimate, {
+            .post(this.buildUrl(false, Carbon.url), serializedEstimate, {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
@@ -59,7 +66,7 @@ export class Carbon extends MainBuilder {
      */
     getEstimate = (fingerPrint: string): Promise<IApiResponse> => {
         return axios
-            .get(`${this.host}/tree/ccarbon/${fingerPrint}`, {
+            .get(this.buildUrl(true, Carbon.url, fingerPrint), {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
@@ -82,7 +89,7 @@ export class Carbon extends MainBuilder {
     completeEstimate = (fingerPrint: string): Promise<IApiResponse> => {
         return axios
             .patch(
-                `${this.host}/tree/ccarbon/${fingerPrint}`,
+                this.buildUrl(true, Carbon.url, fingerPrint),
                 {},
                 {
                     headers: {
@@ -108,7 +115,7 @@ export class Carbon extends MainBuilder {
      */
     deleteEstimate = (fingerPrint: string): Promise<IApiResponse> => {
         return axios
-            .delete(`${this.host}/tree/ccarbon/${fingerPrint}`, {
+            .delete(this.buildUrl(true, Carbon.url, fingerPrint), {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },

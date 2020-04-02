@@ -5,13 +5,24 @@ import { MainBuilder } from '../MainBuilder';
 /** Carbon Statistics Class with all methods to request carbon statistics infos */
 export class CarbonStatistics extends MainBuilder {
 
+    static url: string = '/tree/ccarbon-statistics'
+    static url2: string = '/tree/ccarbon-statistics?date='
+    static url3: string = '/tree/ccarbon-statistics?start='
+    buildUrl = (isDefaultActive, url, idValue?, id2Value?) => {
+        const today = new Date().toISOString().substring(0,10)
+        const id2 = id2Value ? id2Value : today;
+        if (idValue) {
+        return isDefaultActive? this.host + url + '/' + idValue : this.host + url}
+        else return this.host + url
+    }
+
     /**
      * GET | /tree/ccarbon-statistics
      * @returns {Promise.<IApiResponse>} - default mode : get automatically datas from last month until today
      */
     get = (): Promise<IApiResponse> => {
         return axios
-            .get(`${this.host}/tree/ccarbon-statistics`, {
+            .get(this.buildUrl(false, CarbonStatistics.url), {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
@@ -33,7 +44,7 @@ export class CarbonStatistics extends MainBuilder {
      */
     getADate = (date:string): Promise<IApiResponse> => {
         return axios
-            .get(`${this.host}/tree/ccarbon-statistics?date=${date}`, {
+            .get(this.buildUrl(true, CarbonStatistics.url2, date), {
                 headers: {
                     Authorization: `Bearer ${this.tokens.token}`,
                 },
