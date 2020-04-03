@@ -3,31 +3,24 @@ import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import { User as UserModel } from '../models';
 import { Account as AccountEnum, User as UserEnum } from '../enums';
-import {
-    serialize,
-} from 'typescript-json-serializer';
+import { serialize } from 'typescript-json-serializer';
 
-/** User Class with all methods to request/modify users infos */
+/**
+ * User Class with all methods to request/modify users infos
+ * @property {string} urlAccount -  url to build Api requests for account info in this class
+ * @property {string} urlUser -  url to build Api requests for user info in this class
+ */
 export class User extends MainBuilder {
-
-    static url: string = '/account/me'
-    static url2: string = '/account/me/user'
-    buildUrl = (isDefaultActive, url, idValue?) => {
-        const id = idValue ? idValue : 'me';
-        return isDefaultActive? this.host + url + '/' + id : this.host + url
-    }
+    static urlAccount: string = '/account/me';
+    static urlUser: string = '/account/me/user';
 
     /**
      * GET ACCOUNT | /account/{accountId}
      * @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
     getAccount = (): Promise<IApiResponse> => {
-        return axios
-            .get(this.buildUrl(false, User.url), {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
-                },
-            })
+        return this.axiosRequest
+            .get(this.buildUrl(false, User.urlAccount))
             .then(res => {
                 const filteredData = this.ApiResponse.filterResponse(
                     AccountEnum,
@@ -47,12 +40,8 @@ export class User extends MainBuilder {
      * @returns {Promise.<IApiResponse>} Get a list of users based on accountId
      */
     getAll = (): Promise<IApiResponse> => {
-        return axios
-            .get(this.buildUrl(false, User.url2), {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
-                },
-            })
+        return this.axiosRequest
+            .get(this.buildUrl(false, User.urlUser))
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -70,12 +59,8 @@ export class User extends MainBuilder {
      *  @returns {Promise.<IApiResponse>} Get information of the account based on accountId
      */
     getOne = (userNameValue?: string): Promise<IApiResponse> => {
-        return axios
-            .get(this.buildUrl(true, User.url2, userNameValue), {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
-                },
-            })
+        return this.axiosRequest
+            .get(this.buildUrl(true, User.urlUser, userNameValue))
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -93,12 +78,8 @@ export class User extends MainBuilder {
      */
     create = (newUser: UserModel): Promise<IApiResponse> => {
         const serializedUser = serialize(newUser);
-        return axios
-            .post(this.buildUrl(false, User.url2), serializedUser, {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
-                },
-            })
+        return this.axiosRequest
+            .post(this.buildUrl(false, User.urlUser), serializedUser)
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -121,15 +102,10 @@ export class User extends MainBuilder {
         userNameValue?: string,
     ): Promise<IApiResponse> => {
         const serializedUpdatedUser = serialize(UpdatedUser);
-        return axios
+        return this.axiosRequest
             .put(
-                this.buildUrl(true, User.url2, userNameValue),
+                this.buildUrl(true, User.urlUser, userNameValue),
                 serializedUpdatedUser,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.tokens.token}`,
-                    },
-                },
             )
             .then(res => {
                 const filteredData = this.ApiResponse.filterResponse(
@@ -151,12 +127,8 @@ export class User extends MainBuilder {
      *  @returns {Promise.<IApiResponse>} Get response with status 204 if success.
      */
     delete = (userNameValue: string): Promise<IApiResponse> => {
-        return axios
-            .delete(this.buildUrl(true, User.url2, userNameValue), {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
-                },
-            })
+        return this.axiosRequest
+            .delete(this.buildUrl(true, User.urlUser, userNameValue))
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,

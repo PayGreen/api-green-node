@@ -2,8 +2,13 @@ import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 
-/** Authentication Class with all methods to get/refresh token for connection to Api*/
+/**
+ * Authentication Class with all methods to get/refresh token for connection to Api
+ * @property {string} url - main url to build Api requests for this class
+ */
 export class Authentication extends MainBuilder {
+    static url: string = '/login';
+
     /**
      * GET TOKEN | /login
      * @param {string} userName - The name of the user.
@@ -23,8 +28,8 @@ export class Authentication extends MainBuilder {
             password: password,
             client_id: accountId,
         };
-        return axios
-            .post(`${this.host}/login`, userData)
+        return this.axiosRequest
+            .post(this.buildUrl(false, Authentication.url), userData)
             .then(res => {
                 this.identity.accountId = accountId;
                 this.tokens.token = res.data.access_token;
@@ -44,14 +49,14 @@ export class Authentication extends MainBuilder {
      * @returns {Promise.<IApiResponse>} Object with a renewed access token and
      * a renewed 'refresh token' to get another new token after expiration
      */
-    refreshToken = (accountId:string): Promise<IApiResponse> => {
+    refreshToken = (accountId: string): Promise<IApiResponse> => {
         const userData = {
             grant_type: 'refresh_token',
             refresh_token: this.tokens.refreshToken,
             client_id: accountId,
         };
         return axios
-            .post(`${this.host}/login`, userData)
+            .post(this.buildUrl(false, Authentication.url), userData)
             .then(res => {
                 this.tokens.token = res.data.access_token;
                 this.tokens.refreshToken = res.data.refresh_token;
