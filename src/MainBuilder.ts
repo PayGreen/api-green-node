@@ -70,14 +70,16 @@ export class MainBuilder {
     /**
      * BUILD URL FOR STATISTICS ROUTE |
      * @param {string} url - basic url value for each route
-     * @param {Record<string,string>} paramObject - string to define query parameters of the url
+     * @param {Array<string>} params - array of data to define query parameters of the url
      * @returns {string} - new built complete url
      */
-    buildUrlStat = (
-        url: string,
-        paramObject?: Record<string, string>,
-    ): string => {
-        const search = new URLSearchParams(paramObject).toString();
-        return search ? this.host + url + '?' + search : this.host + url;
+    buildUrlStat = (url: string, ...params: string[]): string => {
+        const obj = {};
+        const paramArray = params;
+        for (let i = 0; i < paramArray.length - 1; i = i + 2) {
+            obj[paramArray[i]] = paramArray[i + 1];
+        }
+        const search = new URLSearchParams(obj).toString();
+        return this.host + url + '?' + search;
     };
 }

@@ -7,7 +7,6 @@ import { MainBuilder } from '../MainBuilder';
  * @property {string} url - main url to build Api requests for this class
  */
 export class CarbonStatistics extends MainBuilder {
-    
     static url: string = '/tree/ccarbon-statistics';
 
     /**
@@ -33,9 +32,8 @@ export class CarbonStatistics extends MainBuilder {
      * @returns {Promise.<IApiResponse>} - get datas on a specific date
      */
     getADate = (dateValue: string): Promise<IApiResponse> => {
-        const objectData = {date:dateValue}
         return this.axiosRequest
-            .get(this.buildUrlStat(CarbonStatistics.url, objectData))
+            .get(this.buildUrlStat(CarbonStatistics.url, 'date', dateValue))
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -52,16 +50,22 @@ export class CarbonStatistics extends MainBuilder {
      * @param {string?} end - optional, if no date specified current day will be used, accepted format YYYY-MM-DD
      * @returns {Promise.<IApiResponse>} - get datas on a specific period
      */
-    getAPeriod = (startValue: string, endValue?: string): Promise<IApiResponse> => {
-        const today = new Date().toISOString().substring(0,10)
+    getAPeriod = (
+        startValue: string,
+        endValue?: string,
+    ): Promise<IApiResponse> => {
+        const today = new Date().toISOString().substring(0, 10);
         const endDate = endValue ? endValue : today;
-        const objectData = {start:startValue, end:endDate}
-
         return this.axiosRequest
             .get(
                 this.buildUrlStat(
-                    CarbonStatistics.url,objectData
-                ))
+                    CarbonStatistics.url,
+                    'start',
+                    startValue,
+                    'end',
+                    endDate,
+                ),
+            )
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
