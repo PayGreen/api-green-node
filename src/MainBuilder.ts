@@ -4,8 +4,8 @@ import axios from 'axios';
 
 /**
  * Main Builder with config constructor
- * @property {object} identity - identity inherited from SDK class to authorize access to API and build url
- * @property {object} tokens - tokens inherited from SDK class
+ * @property {ITokens} identity - identity inherited from SDK class to authorize access to API and build url
+ * @property {IIdentity} tokens - tokens inherited from SDK class
  * @property {string} host - host of Api inherited from SDK class based on mode of production
  * @property {any} ApiResponse - class to normalize all Api Responses for better readibility
  * @property {object} axiosConfig - all parameters for axios instance
