@@ -7,5 +7,6 @@ import { PathEstimate } from './PathEstimate';
 import { Address } from './Address';
 import { Coordinate } from './Coordinate';
 import { Path } from './Path';
+import { Tools } from './Tools';
 
-export { Address, ApiResponse, Coordinate, Iban, IbanValidation, Path, PathEstimate, User, WebEstimate};
+export { Address, ApiResponse, Coordinate, Iban, IbanValidation, Path, PathEstimate, Tools, User, WebEstimate};

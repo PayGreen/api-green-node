@@ -6,6 +6,7 @@ import {
     ApiResponse,
     Path,
     PathEstimate,
+    Tools,
     WebEstimate,
 } from '../src/models';
 import { Mode, Transport } from '../src/enums';
@@ -16,12 +17,12 @@ const config = {
     mode: Mode.DEV,
 };
 const sdk = new Sdk(config);
-
-const randomFingerPrint = `fingerprint${Math.floor(Math.random() * 10000)}`;
+const tools = new Tools();
+const randomFingerprint = tools.randomFingerprint();
 
 test('it adds a web estimate', () => {
     const newWebEstimate = new WebEstimate(
-        randomFingerPrint,
+        randomFingerprint,
         'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
         140,
         6,
@@ -33,14 +34,18 @@ test('it adds a web estimate', () => {
     });
 });
 
-test('it gets an estimate based on fingerPrint', () => {
-    return sdk.carbon.getEstimate(randomFingerPrint).then((data: any) => {
+test('it gets an estimate based on fingerPrint and convert estimated price in euros cents to euros', () => {
+    return sdk.carbon.getEstimate(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerPrint);
+        expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerprint);
+        const PriceInEuros = tools.eurosCentstoEuros(
+            data.dataInfo.estimatedPrice,
+        );
+        expect(PriceInEuros).toEqual(data.dataInfo.estimatedPrice / 100);
     });
 });
 
-const randomFingerPrint2 = `fingerprint${Math.floor(Math.random() * 10000)}`;
+const randomFingerprint2 = tools.randomFingerprint();
 
 test('it adds a path estimate', () => {
     const address1 = new Address(
@@ -67,7 +72,7 @@ test('it adds a path estimate', () => {
         address3,
         Transport['TER France - Diesel'],
     );
-    const newPathEstimate = new PathEstimate(randomFingerPrint2, 20, 1, [
+    const newPathEstimate = new PathEstimate(randomFingerprint2, 20, 1, [
         path1,
         path2,
     ]);
@@ -104,7 +109,7 @@ test('it adds a mixed path estimate', () => {
         Transport['TER France - Diesel'],
     );
 
-    const newPathEstimate = new PathEstimate(randomFingerPrint2, 20, 1, [
+    const newPathEstimate = new PathEstimate(randomFingerprint2, 20, 1, [
         path1,
         path2,
     ]);
@@ -116,14 +121,14 @@ test('it adds a mixed path estimate', () => {
 });
 
 test('it completes an estimate based on fingerPrint', () => {
-    return sdk.carbon.completeEstimate(randomFingerPrint2).then((data: any) => {
+    return sdk.carbon.completeEstimate(randomFingerprint2).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(200);
     });
 });
 
 test('it deletes an estimate based on fingerPrint if it is not completed', () => {
-    return sdk.carbon.deleteEstimate(randomFingerPrint).then((data: any) => {
+    return sdk.carbon.deleteEstimate(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(204);
     });
