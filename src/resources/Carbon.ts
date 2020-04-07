@@ -9,7 +9,7 @@ import { serialize } from 'typescript-json-serializer';
  * @property {string} url - main url to build Api requests for this class
  */
 export class Carbon extends MainBuilder {
-    static url: string = '/tree/ccarbon';
+    static url = '/tree/ccarbon';
 
     /**
      * ADD WEB ESTIMATE | /tree/ccarbon

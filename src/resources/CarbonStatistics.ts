@@ -15,7 +15,7 @@ export class CarbonStatistics extends MainBuilder {
      */
     get = (): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(this.buildUrlStat(CarbonStatistics.url))
+            .get(CarbonStatistics.url)
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -33,7 +33,11 @@ export class CarbonStatistics extends MainBuilder {
      */
     getADate = (dateValue: string): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(this.buildUrlStat(CarbonStatistics.url, 'date', dateValue))
+            .get(CarbonStatistics.url, {
+                params: {
+                    date: dateValue,
+                },
+            })
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -57,15 +61,12 @@ export class CarbonStatistics extends MainBuilder {
         const today = new Date().toISOString().substring(0, 10);
         const endDate = endValue ? endValue : today;
         return this.axiosRequest
-            .get(
-                this.buildUrlStat(
-                    CarbonStatistics.url,
-                    'start',
-                    startValue,
-                    'end',
-                    endDate,
-                ),
-            )
+            .get(CarbonStatistics.url, {
+                params: {
+                    start: startValue,
+                    end: endDate,
+                },
+            })
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,

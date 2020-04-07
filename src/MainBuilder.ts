@@ -41,45 +41,13 @@ export class MainBuilder {
 
     /**
      * BUILD URL FOR MAIN API ROUTES |
-     * @param {boolean} isDefaultActive - to choose to use or not, an identifier with default value to build url
+     * @param {boolean} useId - to choose to use or not, an identifier with default value to build url
      * @param {string} url - basic url value for each route
      * @param {string} idValue - optional - identifier to specify url
      * @returns {string} - new built complete url
      */
-    buildUrl = (
-        isDefaultActive: boolean,
-        url: string,
-        idValue?: string,
-    ): string => {
+    buildUrl = (useId: boolean, url: string, idValue?: string): string => {
         const id = idValue ? idValue : 'me';
-        return isDefaultActive ? url + '/' + id : url;
-    };
-
-    /**
-     * BUILD URL FOR IBAN ROUTE |
-     * @param {string} url - basic url value for each route
-     * @param {string} url2 - url extension specific for iban route
-     * @param {string} idValue - optional - identifier to specify url
-     * @returns {string} - new built complete url
-     */
-    buildUrlIban = (url: string, url2: string, idValue?: string): string => {
-        const id = idValue ? idValue : 'me';
-        return this.host + url + id + url2;
-    };
-
-    /**
-     * BUILD URL FOR STATISTICS ROUTE |
-     * @param {string} url - basic url value for each route
-     * @param {Array<string>} params - array of data to define query parameters of the url
-     * @returns {string} - new built complete url
-     */
-    buildUrlStat = (url: string, ...params: string[]): string => {
-        const obj = {};
-        const paramArray = params;
-        for (let i = 0; i < paramArray.length - 1; i = i + 2) {
-            obj[paramArray[i]] = paramArray[i + 1];
-        }
-        const search = new URLSearchParams(obj).toString();
-        return this.host + url + '?' + search;
+        return useId ? url + '/' + id : url;
     };
 }

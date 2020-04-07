@@ -10,10 +10,24 @@ import { serialize } from 'typescript-json-serializer';
 /**
  * Iban Class with all methods to request/modify Ibans infos
  * @property {string} url - main url to build Api requests for this class
+ * @property {string} urlExtension - url Extension to build Iban Individual Request
  */
 export class Iban extends MainBuilder {
-    static url: string = '/account/me/user/';
-    static url2: string = '/rib';
+    static url: string = '/account/me/user';
+    static urlExtension: string = '/rib';
+
+    /**
+     * BUILD IBAN URL |
+     * @description - add automatically a specific extension for Iban Url Requests & option IbanId
+     * @param {string} builtUrl - Url built automatically with method this.buildUrl()
+     * @param {number?} IbanId - Optional, unique number to identify the Iban
+     * @returns {Promise.<IApiResponse>} Get information of the iban based on accountId
+     */
+    buildIbanUrl = (builtUrl: string, IbanId?: number) => {
+        return IbanId
+            ? builtUrl + Iban.urlExtension + '/' + IbanId
+            : builtUrl + Iban.urlExtension;
+    };
 
     /**
      * GET ALL | /account/me/user/{username}/rib
@@ -23,11 +37,14 @@ export class Iban extends MainBuilder {
      */
     getAll = (userNameValue?: string): Promise<IApiResponse> => {
         return axios
-            .get(this.buildUrlIban(Iban.url, Iban.url2, userNameValue), {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
+            .get(
+                this.buildIbanUrl(this.buildUrl(true, Iban.url, userNameValue)),
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.tokens.token}`,
+                    },
                 },
-            })
+            )
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -52,7 +69,7 @@ export class Iban extends MainBuilder {
         const serializedIban = serialize(newIban);
         return axios
             .post(
-                this.buildUrlIban(Iban.url, Iban.url2, userNameValue),
+                this.buildIbanUrl(this.buildUrl(true, Iban.url, userNameValue)),
                 serializedIban,
                 {
                     headers: {
@@ -83,11 +100,10 @@ export class Iban extends MainBuilder {
     ): Promise<IApiResponse> => {
         return axios
             .get(
-                `${this.buildUrlIban(
-                    Iban.url,
-                    Iban.url2,
-                    userNameValue,
-                )}/${ibanId}`,
+                this.buildIbanUrl(
+                    this.buildUrl(true, Iban.url, userNameValue),
+                    ibanId,
+                ),
                 {
                     headers: {
                         Authorization: `Bearer ${this.tokens.token}`,
@@ -117,11 +133,10 @@ export class Iban extends MainBuilder {
     ): Promise<IApiResponse> => {
         return axios
             .patch(
-                `${this.buildUrlIban(
-                    Iban.url,
-                    Iban.url2,
-                    userNameValue,
-                )}/${ibanId}`,
+                this.buildIbanUrl(
+                    this.buildUrl(true, Iban.url, userNameValue),
+                    ibanId,
+                ),
                 {
                     headers: {
                         Authorization: `Bearer ${this.tokens.token}`,
@@ -150,11 +165,10 @@ export class Iban extends MainBuilder {
     ): Promise<IApiResponse> => {
         return axios
             .delete(
-                `${this.buildUrlIban(
-                    Iban.url,
-                    Iban.url2,
-                    userNameValue,
-                )}/${ibanId}`,
+                this.buildIbanUrl(
+                    this.buildUrl(true, Iban.url, userNameValue),
+                    ibanId,
+                ),
                 {
                     headers: {
                         Authorization: `Bearer ${this.tokens.token}`,
@@ -186,11 +200,10 @@ export class Iban extends MainBuilder {
         const serializedValidatedIban = serialize(ValidatedIban);
         return axios
             .put(
-                `${this.buildUrlIban(
-                    Iban.url,
-                    Iban.url2,
-                    userNameValue,
-                )}/${ibanId}`,
+                this.buildIbanUrl(
+                    this.buildUrl(true, Iban.url, userNameValue),
+                    ibanId,
+                ),
                 serializedValidatedIban,
                 {
                     headers: {
