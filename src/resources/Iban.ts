@@ -7,8 +7,28 @@ import {
 } from '../models';
 import { serialize } from 'typescript-json-serializer';
 
-/** Iban Class with all methods to request/modify Ibans infos */
+/**
+ * Iban Class with all methods to request/modify Ibans infos
+ * @property {string} url - main url to build Api requests for this class
+ * @property {string} urlExtension - url Extension to build Iban Individual Request
+ */
 export class Iban extends MainBuilder {
+    static url: string = '/account/me/user';
+    static urlExtension: string = '/rib';
+
+    /**
+     * BUILD IBAN URL |
+     * @description - add automatically a specific extension for Iban Url Requests & option IbanId
+     * @param {string} builtUrl - Url built automatically with method this.buildUrl()
+     * @param {number?} IbanId - Optional, unique number to identify the Iban
+     * @returns {Promise.<IApiResponse>} Get information of the iban based on accountId
+     */
+    buildIbanUrl = (builtUrl: string, IbanId?: number) => {
+        return IbanId
+            ? builtUrl + Iban.urlExtension + '/' + IbanId
+            : builtUrl + Iban.urlExtension;
+    };
+
     /**
      * GET ALL | /account/me/user/{username}/rib
      * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
@@ -16,13 +36,15 @@ export class Iban extends MainBuilder {
      * @returns {Promise.<IApiResponse>} Get information of the iban based on accountId
      */
     getAll = (userNameValue?: string): Promise<IApiResponse> => {
-        const userName = userNameValue ? userNameValue : 'me';
         return axios
-            .get(`${this.host}/account/me/user/${userName}/rib`, {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
+            .get(
+                this.buildIbanUrl(this.buildUrl(true, Iban.url, userNameValue)),
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.tokens.token}`,
+                    },
                 },
-            })
+            )
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -45,10 +67,9 @@ export class Iban extends MainBuilder {
         userNameValue?: string,
     ): Promise<IApiResponse> => {
         const serializedIban = serialize(newIban);
-        const userName = userNameValue ? userNameValue : 'me';
         return axios
             .post(
-                `${this.host}/account/me/user/${userName}/rib`,
+                this.buildIbanUrl(this.buildUrl(true, Iban.url, userNameValue)),
                 serializedIban,
                 {
                     headers: {
@@ -77,13 +98,18 @@ export class Iban extends MainBuilder {
         ibanId: number,
         userNameValue?: string,
     ): Promise<IApiResponse> => {
-        const userName = userNameValue ? userNameValue : 'me';
         return axios
-            .get(`${this.host}/account/me/user/${userName}/rib/${ibanId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
+            .get(
+                this.buildIbanUrl(
+                    this.buildUrl(true, Iban.url, userNameValue),
+                    ibanId,
+                ),
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.tokens.token}`,
+                    },
                 },
-            })
+            )
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -105,13 +131,18 @@ export class Iban extends MainBuilder {
         ibanId: number,
         userNameValue?: string,
     ): Promise<IApiResponse> => {
-        const userName = userNameValue ? userNameValue : 'me';
         return axios
-            .patch(`${this.host}/account/me/user/${userName}/rib/${ibanId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
+            .patch(
+                this.buildIbanUrl(
+                    this.buildUrl(true, Iban.url, userNameValue),
+                    ibanId,
+                ),
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.tokens.token}`,
+                    },
                 },
-            })
+            )
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -132,13 +163,18 @@ export class Iban extends MainBuilder {
         ibanId: number,
         userNameValue?: string,
     ): Promise<IApiResponse> => {
-        const userName = userNameValue ? userNameValue : 'me';
         return axios
-            .delete(`${this.host}/account/me/user/${userName}/rib/${ibanId}`, {
-                headers: {
-                    Authorization: `Bearer ${this.tokens.token}`,
+            .delete(
+                this.buildIbanUrl(
+                    this.buildUrl(true, Iban.url, userNameValue),
+                    ibanId,
+                ),
+                {
+                    headers: {
+                        Authorization: `Bearer ${this.tokens.token}`,
+                    },
                 },
-            })
+            )
             .then(res => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -162,10 +198,12 @@ export class Iban extends MainBuilder {
         userNameValue?: string,
     ): Promise<IApiResponse> => {
         const serializedValidatedIban = serialize(ValidatedIban);
-        const userName = userNameValue ? userNameValue : 'me';
         return axios
             .put(
-                `${this.host}/account/me/user/${userName}/rib/${ibanId}`,
+                this.buildIbanUrl(
+                    this.buildUrl(true, Iban.url, userNameValue),
+                    ibanId,
+                ),
                 serializedValidatedIban,
                 {
                     headers: {
