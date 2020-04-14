@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import {
@@ -36,16 +35,11 @@ export class Iban extends MainBuilder {
      * @returns {Promise.<IApiResponse>} Get information of the iban based on accountId
      */
     getAll = (userNameValue?: string): Promise<IApiResponse> => {
-        return axios
+        return this.axiosRequest
             .get(
                 this.buildIbanUrl(this.buildUrl(true, Iban.url, userNameValue)),
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.tokens.token}`,
-                    },
-                },
             )
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,
@@ -59,7 +53,7 @@ export class Iban extends MainBuilder {
      * CREATE ONE | /account/me/user/{username}/rib
      * @param {IbanModel} newIban - object containing all new iban information, both Admin and User can create Iban
      * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
-     * can use a specific UserNameValue to get the ibans of a different user of the company account
+     * can use a specific UserNameValue to create ibans of a different user of the company account
      * @returns {Promise.<IApiResponse>} Get object with new iban created.
      */
     create = (
@@ -67,17 +61,12 @@ export class Iban extends MainBuilder {
         userNameValue?: string,
     ): Promise<IApiResponse> => {
         const serializedIban = serialize(newIban);
-        return axios
+        return this.axiosRequest
             .post(
                 this.buildIbanUrl(this.buildUrl(true, Iban.url, userNameValue)),
                 serializedIban,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.tokens.token}`,
-                    },
-                },
             )
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,
@@ -98,19 +87,14 @@ export class Iban extends MainBuilder {
         ibanId: number,
         userNameValue?: string,
     ): Promise<IApiResponse> => {
-        return axios
+        return this.axiosRequest
             .get(
                 this.buildIbanUrl(
                     this.buildUrl(true, Iban.url, userNameValue),
                     ibanId,
                 ),
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.tokens.token}`,
-                    },
-                },
             )
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,
@@ -131,19 +115,14 @@ export class Iban extends MainBuilder {
         ibanId: number,
         userNameValue?: string,
     ): Promise<IApiResponse> => {
-        return axios
+        return this.axiosRequest
             .patch(
                 this.buildIbanUrl(
                     this.buildUrl(true, Iban.url, userNameValue),
                     ibanId,
                 ),
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.tokens.token}`,
-                    },
-                },
             )
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,
@@ -163,19 +142,14 @@ export class Iban extends MainBuilder {
         ibanId: number,
         userNameValue?: string,
     ): Promise<IApiResponse> => {
-        return axios
+        return this.axiosRequest
             .delete(
                 this.buildIbanUrl(
                     this.buildUrl(true, Iban.url, userNameValue),
                     ibanId,
                 ),
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.tokens.token}`,
-                    },
-                },
             )
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     'user deleted successfully',
@@ -198,20 +172,15 @@ export class Iban extends MainBuilder {
         userNameValue?: string,
     ): Promise<IApiResponse> => {
         const serializedValidatedIban = serialize(ValidatedIban);
-        return axios
+        return this.axiosRequest
             .put(
                 this.buildIbanUrl(
                     this.buildUrl(true, Iban.url, userNameValue),
                     ibanId,
                 ),
                 serializedValidatedIban,
-                {
-                    headers: {
-                        Authorization: `Bearer ${this.tokens.token}`,
-                    },
-                },
             )
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,

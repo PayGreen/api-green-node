@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import { PathEstimate, WebEstimate } from '../models';
@@ -13,7 +12,7 @@ export class Carbon extends MainBuilder {
 
     /**
      * ADD WEB ESTIMATE | /tree/ccarbon
-     * @param {WebEstimate} newEstimate - object containing all datas about the ongoing web carbon offsetting estimate
+     * @param {WebEstimate} newEstimate - object containing all datas about the ongoing web carbon offsetting estimate - Only admin can add web estimate
      * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
     addWebEstimate = (newEstimate: WebEstimate): Promise<IApiResponse> => {
@@ -32,7 +31,7 @@ export class Carbon extends MainBuilder {
 
     /**
      * ADD PATH ESTIMATE | /tree/ccarbon
-     * @param {PathEstimate} newEstimate - object containing all datas about the ongoing path carbon offsetting estimate
+     * @param {PathEstimate} newEstimate - object containing all datas about the ongoing path carbon offsetting estimate - Only admin can add path estimate
      * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
     addPathEstimate = (newEstimate: PathEstimate): Promise<IApiResponse> => {

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 
@@ -55,7 +54,7 @@ export class Authentication extends MainBuilder {
             refresh_token: this.tokens.refreshToken,
             client_id: accountId,
         };
-        return axios
+        return this.axiosRequest
             .post(this.buildUrl(false, Authentication.url), userData)
             .then(res => {
                 this.tokens.token = res.data.access_token;
