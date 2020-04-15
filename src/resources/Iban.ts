@@ -1,4 +1,4 @@
-import { IApiResponse } from '../interfaces';
+import { IApiResponse, IApiResponseList } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import {
     Iban as IbanModel,
@@ -20,7 +20,7 @@ export class Iban extends MainBuilder {
      * @description - add automatically a specific extension for Iban Url Requests & option IbanId
      * @param {string} builtUrl - Url built automatically with method this.buildUrl()
      * @param {number?} IbanId - Optional, unique number to identify the Iban
-     * @returns {Promise.<IApiResponse>} Get information of the iban based on accountId
+     * @returns {Promise.<IApiResponse>} - new final url for iban.
      */
     buildIbanUrl = (builtUrl: string, IbanId?: number) => {
         return IbanId
@@ -32,9 +32,9 @@ export class Iban extends MainBuilder {
      * GET ALL | /account/me/user/{username}/rib
      * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
      * can use a specific UserNameValue to get all ibans of a different user of the company account
-     * @returns {Promise.<IApiResponse>} Get information of the iban based on accountId
+     * @returns {Promise.<IApiResponseList>} Get list of ibans
      */
-    getAll = (userNameValue?: string): Promise<IApiResponse> => {
+    getAll = (userNameValue?: string): Promise<IApiResponseList> => {
         return this.axiosRequest
             .get(
                 this.buildIbanUrl(this.buildUrl(true, Iban.url, userNameValue)),

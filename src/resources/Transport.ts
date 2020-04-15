@@ -1,4 +1,4 @@
-import { IApiResponse } from '../interfaces';
+import { IApiResponseList } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 
 /**
@@ -10,12 +10,12 @@ export class Transport extends MainBuilder {
 
     /**
      * GET ALL | /tree/ccarbon-transport
-     * @returns {Promise.<IApiResponse>} Get a list of the different transports available inside the Api
+     * @returns {Promise.<IApiResponseList>} Get a list of the different transports available inside the Api
      */
-    getAll = (): Promise<IApiResponse> => {
+    getAll = (): Promise<IApiResponseList> => {
         return this.axiosRequest
             .get(this.buildUrl(false, Transport.url))
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,

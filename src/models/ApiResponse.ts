@@ -1,4 +1,5 @@
-import { IApiResponse } from '../interfaces';
+import { IApiResponse, IApiResponseList } from '../interfaces';
+import { Identifier } from '../enums/Identifier';
 
 /** Api Response Model Class with all methods to format/select api responses */
 export class ApiResponse {
@@ -52,11 +53,7 @@ export class ApiResponse {
      *  @returns {boolean}
      */
     static isSuccessful = (data: any): boolean => {
-        return (
-            ApiResponse.getStatus(data)
-                .toString()
-                .charAt(0) === '2'
-        );
+        return ApiResponse.getStatus(data).toString().charAt(0) === '2';
     };
 
     /**
@@ -66,11 +63,7 @@ export class ApiResponse {
      *  @returns {boolean}
      */
     static isInvalid = (data: any): boolean => {
-        return (
-            ApiResponse.getStatus(data)
-                .toString()
-                .charAt(0) === '4'
-        );
+        return ApiResponse.getStatus(data).toString().charAt(0) === '4';
     };
 
     /**
@@ -80,11 +73,7 @@ export class ApiResponse {
      *  @returns {boolean}
      */
     static causedAnError = (data: any): boolean => {
-        return (
-            ApiResponse.getStatus(data)
-                .toString()
-                .charAt(0) === '5'
-        );
+        return ApiResponse.getStatus(data).toString().charAt(0) === '5';
     };
 
     /**
@@ -121,5 +110,44 @@ export class ApiResponse {
             }
         }
         return newResponse;
+    };
+
+    /**
+     * GET ID IN RESPONSE |
+     *  @description - to access quickly to the identifier of the data received
+     *  @param {IApiResponse} data - response from API
+     *  @returns {object} - object with the identifier name and its corresponding value
+     */
+    static getId = (data: IApiResponse): object => {
+        let idKeys = Object.values(Identifier).toString();
+        const idItem = {};
+        for (let key in data.dataInfo) {
+            if (idKeys.includes(key)) {
+                idItem[key] = data.dataInfo[key];
+            }
+        }
+        return idItem;
+    };
+
+    /**
+     * GET ID LIST IN RESPONSE |
+     *  @description - to access quickly to the list of identifiers of the data received
+     *  @param {IApiResponseList} data - response from API
+     *  @returns {object[]} - an array of objects with each identifier name and its value
+     */
+    static getIdList = (data: IApiResponseList): object[] => {
+        let idKeys = Object.keys(Identifier);
+        const idArray: object[] = [];
+        for (let key in data.dataInfo._embedded) {
+            if (idKeys.includes(key)) {
+                const newIdObject = {};
+                const keyName = Identifier[key];
+                data.dataInfo._embedded[key].map((value) => {
+                    newIdObject[keyName] = value[keyName];
+                    idArray.push(newIdObject);
+                });
+            }
+        }
+        return idArray;
     };
 }

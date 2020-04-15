@@ -1,4 +1,4 @@
-import { IApiResponse } from '../interfaces';
+import { IApiResponse, IApiResponseList } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import { User as UserModel } from '../models';
 import { Account as AccountEnum, User as UserEnum } from '../enums';
@@ -20,7 +20,7 @@ export class User extends MainBuilder {
     getAccount = (): Promise<IApiResponse> => {
         return this.axiosRequest
             .get(this.buildUrl(false, User.urlAccount))
-            .then(res => {
+            .then((res) => {
                 const filteredData = this.ApiResponse.filterResponse(
                     AccountEnum,
                     res.data,
@@ -36,12 +36,12 @@ export class User extends MainBuilder {
 
     /**
      * GET ALL | /account/{accountId}/user
-     * @returns {Promise.<IApiResponse>} - Get a list of users based on accountId, only Admin can see other users
+     * @returns {Promise.<IApiResponseList>} - Get a list of users based on accountId, only Admin can see other users
      */
-    getAll = (): Promise<IApiResponse> => {
+    getAll = (): Promise<IApiResponseList> => {
         return this.axiosRequest
             .get(this.buildUrl(false, User.urlUser))
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,
@@ -60,7 +60,7 @@ export class User extends MainBuilder {
     getOne = (userNameValue?: string): Promise<IApiResponse> => {
         return this.axiosRequest
             .get(this.buildUrl(true, User.urlUser, userNameValue))
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,
@@ -79,7 +79,7 @@ export class User extends MainBuilder {
         const serializedUser = serialize(newUser);
         return this.axiosRequest
             .post(this.buildUrl(false, User.urlUser), serializedUser)
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     res.data,
@@ -106,7 +106,7 @@ export class User extends MainBuilder {
                 this.buildUrl(true, User.urlUser, userNameValue),
                 serializedUpdatedUser,
             )
-            .then(res => {
+            .then((res) => {
                 const filteredData = this.ApiResponse.filterResponse(
                     UserEnum,
                     res.data,
@@ -128,7 +128,7 @@ export class User extends MainBuilder {
     delete = (userNameValue: string): Promise<IApiResponse> => {
         return this.axiosRequest
             .delete(this.buildUrl(true, User.urlUser, userNameValue))
-            .then(res => {
+            .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
                     'user deleted successfully',

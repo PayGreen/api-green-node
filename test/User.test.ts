@@ -20,18 +20,27 @@ test('it gets the account based on account id', () => {
                 process.env.SDK_ACCOUNTID,
             );
         expect(data.dataInfo.client_secret).toBeUndefined();
+        expect(ApiResponse.getId(data)).toHaveProperty(
+            'client_id',
+            process.env.SDK_ACCOUNTID,
+        );
     });
 });
 
-test('it gets all users of one account id', () => {
+test('it gets all users of one account id and then gets all ids directly', () => {
     return sdk.user.getAll().then((data: any) => {
         expect(data).toBeDefined();
+        for (let key in ApiResponse.getIdList(data)) {
+            expect(ApiResponse.getIdList(data)[key]).toHaveProperty('username');
+        }
     });
 });
 
-test('it gets one user based on his username', () => {
+test('it gets one user based on his username and then gets his id directly', () => {
     return sdk.user.getOne('paygreen').then((data: any) => {
-        expect(data.dataInfo).toHaveProperty('username', 'paygreen');
+        expect(data.dataInfo).toHaveProperty('firstname');
+        expect(data.dataInfo).toHaveProperty('lastname');
+        expect(ApiResponse.getId(data)).toHaveProperty('username', 'paygreen');
     });
 });
 
@@ -61,7 +70,10 @@ test('it returns the created user', () => {
             expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
             expect(data.dataInfo).toHaveProperty('publicname', 'mattmatt'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
-        expect(data.dataInfo).toHaveProperty('username', randomUserName);
+        expect(ApiResponse.getId(data)).toHaveProperty(
+            'username',
+            randomUserName,
+        );
     });
 });
 
@@ -80,8 +92,11 @@ test('it returns the updated user based on his username', () => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
-        expect(data.dataInfo).toHaveProperty('username', randomUserName);
         expect(data.dataInfo.password).toBeUndefined();
+        expect(ApiResponse.getId(data)).toHaveProperty(
+            'username',
+            randomUserName,
+        );
     });
 });
 

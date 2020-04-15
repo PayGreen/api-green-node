@@ -45,6 +45,16 @@ test('it gets an estimate based on fingerPrint and convert estimated price in eu
     });
 });
 
+test("it gets an estimate based on fingerPrint and gets its id 'fingerPrint' directly", () => {
+    return sdk.carbon.getEstimate(randomFingerprint).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(ApiResponse.getId(data)).toHaveProperty(
+            'fingerprint',
+            randomFingerprint,
+        );
+    });
+});
+
 const randomFingerprint2 = tools.randomFingerprint();
 
 test('it adds a path estimate', () => {
