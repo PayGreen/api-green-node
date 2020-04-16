@@ -1,4 +1,5 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
+import { MinLength, IsInt, IsEmpty, ValidateNested } from 'class-validator';
 import { EstimateType } from '../enums';
 
 /**
@@ -14,16 +15,22 @@ import { EstimateType } from '../enums';
 @Serializable()
 class WebNavigation {
     @JsonProperty('userAgent')
+    @MinLength(1)
     public userAgent?: string | null;
     @JsonProperty('device')
+    @IsEmpty()
     public device?: string;
     @JsonProperty('browser')
+    @IsEmpty()
     public browser?: string;
     @JsonProperty('countImages')
+    @IsInt()
     public countImages?: number | null;
     @JsonProperty('countPages')
+    @IsInt()
     public countPages?: number | null;
     @JsonProperty('time')
+    @IsInt()
     public time?: number | null;
     @JsonProperty('externalId')
     public externalId?: string | null;
@@ -54,10 +61,13 @@ class WebNavigation {
 @Serializable()
 export class WebEstimate {
     @JsonProperty('type')
+    @MinLength(1)
     public type: EstimateType;
     @JsonProperty('fingerprint')
+    @MinLength(1)
     public fingerprint?: string | null;
     @JsonProperty('webNavigation')
+    @ValidateNested()
     public webNavigation: WebNavigation;
 
     /**
@@ -87,21 +97,4 @@ export class WebEstimate {
             externalId,
         );
     }
-
-    /**
-     * VERIFY WEB NAVIGATION OBJECT |
-     * @param {any} data - Object with all web navigation informations
-     * @returns {any} - New object with all web navigation informations with final structure/names for API compatibility
-     */
-    verify = (data: any): any => {
-        for (const property in data) {
-            if (
-                data[property] == null &&
-                data[property] !== this.webNavigation.externalId
-            ) {
-                throw `Error ${property} is null`;
-            }
-        }
-        return data;
-    };
 }

@@ -1,3 +1,7 @@
+import {
+    MinLength, IsEmpty, IsLatitude, IsLongitude
+} from 'class-validator';
+
 /**
  * Coordinate Model Class to generate a complete address object to define a point of departure or arrival for Path model.
  * Must be used for a path made by plane or boat.
@@ -10,11 +14,17 @@
  * @property {string} longitude
  */
 export class Coordinate {
+    @IsEmpty()
     public address: string;
+    @IsEmpty()
     public zipCode: string;
+    @MinLength(1)
     public city: string;
+    @MinLength(1)
     public country: string;
+    @IsLatitude()
     public latitude: string;
+    @IsLongitude()
     public longitude: string;
 
     /**

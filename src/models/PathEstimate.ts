@@ -1,4 +1,10 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
+import {
+    MinLength,
+    IsInt,
+    ArrayMinSize,
+    ValidateNested
+} from 'class-validator';
 import { EstimateType } from '../enums';
 import { Path, Address } from '../models';
 
@@ -15,16 +21,23 @@ import { Path, Address } from '../models';
 @Serializable()
 export class PathEstimate {
     @JsonProperty('type')
+    @MinLength(1)
     public type: EstimateType;
     @JsonProperty('fingerprint')
+    @MinLength(1)
     public fingerprint?: string | null;
     @JsonProperty('weightPackages')
+    @IsInt()
     public weightPackages?: number | null;
     @JsonProperty('countPackages')
+    @IsInt()
     public countPackages?: number | null;
     @JsonProperty('addresses')
+    @ArrayMinSize(2)
+    @ValidateNested()
     public addresses?: Array<Address>;
     @JsonProperty('transports')
+    @ArrayMinSize(1)
     public transports?: Array<object>;
 
     /**
@@ -76,19 +89,5 @@ export class PathEstimate {
             transports.push({ uuidTransport: path.transport });
         });
         return { addresses, transports };
-    };
-
-    /**
-     * VERIFY PATH NAVIGATION OBJECT |
-     * @param {any} data - Object with all path navigation informations
-     * @returns {any} - New object with all path navigation informations with final structure/names for API compatibility
-     */
-    verify = (data: any): any => {
-        for (const property in data) {
-            if (data[property] == null) {
-                throw `Error ${property} is null`;
-            }
-        }
-        return data;
     };
 }

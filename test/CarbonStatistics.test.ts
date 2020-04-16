@@ -9,7 +9,6 @@ const config = {
     mode: Mode.DEV,
 };
 const sdk = new Sdk(config);
-const tools = new Tools();
 
 test('it gets carbon statistics without any parameter', () => {
     return sdk.carbonStatistics.get().then((data: any) => {
@@ -21,7 +20,7 @@ test('it gets carbon statistics based on a specific date and convert estimated p
     return sdk.carbonStatistics.getADate('2020-03-30').then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo.period.start).toContain('2020-03-30');
-        const PriceInEuros = tools.eurosCentstoEuros(
+        const PriceInEuros = Tools.eurosCentstoEuros(
             data.dataInfo.estimatedPrice,
         );
         expect(PriceInEuros).toEqual(data.dataInfo.estimatedPrice / 100);
@@ -34,7 +33,7 @@ test('it gets carbon statistics based on a specific period and convert estimated
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo.period.start).toContain('2020-03-29');
         expect(data.dataInfo.period.end).toContain(today);
-        const Co2InKilos = tools.tonsCo2ToKilosCo2(
+        const Co2InKilos = Tools.tonsCo2ToKilosCo2(
             data.dataInfo.estimatedCarbon,
         );
         expect(Co2InKilos).toEqual(data.dataInfo.estimatedCarbon * 1000);
