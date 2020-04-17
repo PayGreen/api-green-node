@@ -144,7 +144,7 @@ export class ApiResponse {
                 const keyName = Identifier[key];
                 data.dataInfo._embedded[key].map((value) => {
                     newIdObject[keyName] = value[keyName];
-                    idArray.push(newIdObject);
+                    idArray.push({...newIdObject});
                 });
             }
         }
