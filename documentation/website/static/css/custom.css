@@ -1,0 +1,97 @@
+/**
+ * Copyright (c) 2017-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/* your custom css */
+
+@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+}
+
+@media only screen and (min-width: 1024px) {
+    .homeContainer .homeWrapper .projectLogo {
+        position: static;
+        /* margin: 0 auto; */
+    }
+    .fixedHeaderContainer {
+        padding : 1em 0;
+    }
+    
+}
+
+@media only screen and (max-width: 1023px) {
+}
+
+@media only screen and (min-width: 1400px) {
+}
+
+@media only screen and (min-width: 1500px) {
+}
+
+body {
+    color : rgb(67, 67, 67);
+    font-family: $myFont;
+}
+
+h1 {
+    font-weight: 700;
+}
+
+.projectTitle {
+    font-weight: 700;
+}
+
+.fixedHeaderContainer header .headerTitleWithLogo {
+    letter-spacing: 0.03em;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.pluginWrapper {
+    margin: 0 0.4em;
+    font-weight: 700;
+}
+
+.homeContainer {
+    position:relative;
+    min-height: 550px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.test {
+    background-color: #D5F3E5;
+}
+
+.test2 {
+    display: flex;
+}
+
+ #try {
+     background-color: white;
+ }
+
+.homeSplashFade .wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+}
+
+.gridBlockVertical {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    margin: 3em auto;
+}
+
+.mainContainer {
+   padding-top:0;
+}

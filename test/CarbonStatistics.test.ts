@@ -30,7 +30,7 @@ test('it gets carbon statistics based on a specific date and convert estimated p
 test('it gets carbon statistics based on a specific period and convert estimated CO2eq in tons to kilograms', () => {
     const today = new Date().toISOString().substring(0, 10);
     return sdk.carbonStatistics.getAPeriod('2020-03-29').then((data: any) => {
-        expect(ApiResponse.isSuccessful(data)).toBe(true);
+         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo.period.start).toContain('2020-03-29');
         expect(data.dataInfo.period.end).toContain(today);
         const Co2InKilos = Tools.tonsCo2ToKilosCo2(

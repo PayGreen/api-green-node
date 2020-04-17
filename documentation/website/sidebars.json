@@ -1,0 +1,13 @@
+{
+  "docs": {
+    "Getting Started": ["doc1"]
+  },
+  "docs-other": {
+    "First Api Requests": ["doc2", "doc3"],
+    "Setup Complete User Profile": ["doc4", "doc5", "doc5B", "doc6", "doc6B"],
+    "Transports" : ["doc10"],
+    "Carbon Estimate": ["doc7", "doc7B"],
+    "Carbon Statistics": ["doc8"],
+    "Tools": ["doc9"]
+  }
+}

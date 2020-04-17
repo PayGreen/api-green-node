@@ -29,6 +29,7 @@ test('it gets the account based on account id', () => {
 
 test('it gets all users of one account id and then gets all ids directly', () => {
     return sdk.user.getAll().then((data: any) => {
+        console.log(ApiResponse.getIdList(data))
         expect(data).toBeDefined();
         for (let key in ApiResponse.getIdList(data)) {
             expect(ApiResponse.getIdList(data)[key]).toHaveProperty('username');
