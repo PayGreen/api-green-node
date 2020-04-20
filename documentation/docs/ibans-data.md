@@ -1,5 +1,5 @@
 ---
-id: doc6B
+id: ibans-data
 title: Ibans - Create Data
 ---
 
@@ -22,7 +22,6 @@ Here you will find all informations to create a New Iban Object with our Iban Mo
     bic: string,
     country: enum,
 }
-
 ```
 
 ## Add one information at a time :
@@ -32,7 +31,6 @@ import { Iban } from 'api-green-node';
 
 const newIban = new Iban();
     newIban.iban = 'FR7640618802980004033009519';
-
 ```
 ## Or all at once  :
 
@@ -45,6 +43,31 @@ const newIban = new Iban(
     'BNPAFRPP039',
     Country.FR,
 );
+```
+
+## Build Validation Iban Object  :
+> For 'Paygreen' users only :
+
+You can use our Iban Validation Model Class when you want to [validate an Iban](ibans-api-requests#ibanvalidate), it generates an object with the status at 'VALID' and the timestamp of validation automatically.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| bankName | <code>enum</code> | bank of the iban |
+| status | <code>string</code> | prefilled at value 'VALID' |
+| validatedAt | <code>date</code> | created automatically |
 
 ```
-### We have built special method to verify the data before sending it to API. [Try it here](doc9#verify)
+import { IbanValidation } from 'api-green-node';
+
+const newIbanValidated = new IbanValidation(Bank.LCL);
+```
+the final object will look like : 
+```
+{
+    bankName: 'LCL',
+    status: 'VALID',
+    validatedAt: '1587138210',
+}
+```
+
+### We have built special method to verify the data before sending it to API. [Try it here](tools#verify)

@@ -27,15 +27,15 @@ test('it gets carbon statistics based on a specific date and convert estimated p
     });
 });
 
-test('it gets carbon statistics based on a specific period and convert estimated CO2eq in kilograms to tons', () => {
+test('it gets carbon statistics based on a specific period and convert estimated CO2eq in tons to kilograms', () => {
     const today = new Date().toISOString().substring(0, 10);
     return sdk.carbonStatistics.getAPeriod('2020-03-29').then((data: any) => {
          expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo.period.start).toContain('2020-03-29');
         expect(data.dataInfo.period.end).toContain(today);
-        const Co2InTons = Tools.kilosCo2ToTonsCo2(
-            data.dataInfo.estimatedCarbon,
+        const Co2InKilos = Tools.tonsCo2ToKilosCo2(
+            data.dataInfo.estimatedCarbon
         );
-        expect(Co2InTons).toEqual(data.dataInfo.estimatedCarbon / 1000);
+        expect(Co2InKilos).toEqual(data.dataInfo.estimatedCarbon * 1000);
     });
 });

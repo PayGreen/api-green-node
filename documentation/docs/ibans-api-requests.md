@@ -1,5 +1,5 @@
 ---
-id: doc6
+id: ibans-api-requests
 title: Ibans - API Requests
 ---
 
@@ -19,19 +19,18 @@ title: Ibans - API Requests
         .getAll(userNameValue?)
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
 - API Response
 The _embedded object inside API response contains an array of all ibans associated to the username.
 ```
 {
     success: true,
-        dataInfo: {
-          _links: { self: [Object] },
-          _embedded: { rib: [Array] },
-          total_items: 22
-        },
+    dataInfo: {
+        _links: { self: [Object] },
+        _embedded: { rib: [Array] },
+        total_items: 22
+    },
     status: 200
 }   
 ```
@@ -39,8 +38,9 @@ The _embedded object inside API response contains an array of all ibans associat
 
 | Param | Type | Description |
 | --- | --- | --- |
-| newIban | <code>IbanModel</code> | object containing all new iban information, both Admin and User can create Iban |
-| userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to create ibans of a different user of the company account |
+| newIban | <code>IbanModel</code> | object containing all new iban information, only Admin can create Iban |
+| userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity |
+- To create a new iban object, we highly recommend you to use our Iban Model Class to ensure full compatibility with the API. [Try it here](ibans-data.md)
 - Get object with new iban created.  
 
 ```
@@ -48,15 +48,14 @@ The _embedded object inside API response contains an array of all ibans associat
         .create(newIban, userNameValue?)
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
 - API Response
 ```
 {
     success: true,
     dataInfo: {
-        idRib: '587',
+        idRib: '17',
         model: 'ApiUser',
         idModel: '12',
         status: 'VALID',
@@ -77,7 +76,7 @@ The _embedded object inside API response contains an array of all ibans associat
 | Param | Type | Description |
 | --- | --- | --- |
 | ibanId | <code>number</code> | unique number to identify the iban |
-| userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue 
+| userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to get an iban of another user |
 - Get information about a specific iban  
 
 ```
@@ -85,11 +84,10 @@ The _embedded object inside API response contains an array of all ibans associat
         .getOne(ibanId, userNameValue?)
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
 - API Response
-The _embedded object inside API response contains an array of all users associated to your account.
+The object inside API response contains all informations about the iban requested.
 ```
 {
     success: true,
@@ -110,21 +108,20 @@ The _embedded object inside API response contains an array of all users associat
     status: 200
 }   
 ```
-## iban.setOneAsDefault()
+## iban.setAsDefault()
 
 | Param | Type | Description |
 | --- | --- | --- |
 | ibanId | <code>number</code> | unique number to identify the iban |
-| userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to get an iban of a different user of the company account |
+| userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can change default iban |
 - Set one iban as default one. 
 
 ```
     return sdk.iban
-        .setOneAsDefault(ibanId, userNameValue?)
+        .setAsDefault(ibanId, userNameValue?)
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
 - API Response
 The object contains the boolean 'isDefault' set to '1';
@@ -151,13 +148,14 @@ The object contains the boolean 'isDefault' set to '1';
 ```
 
 ## iban.validate()
-(reserved to 'Paygreen' account users)
+>(reserved to 'Paygreen' account users)
 
 | Param | Type | Description |
 | --- | --- | --- |
 | ibanId | <code>number</code> | unique number to identify the iban |
 | ValidatedIban | <code>IbanValidationModel</code> | Object containing all new iban information |
 | userNameValue | <code>string</code> | UserName of the owner of the iban |
+- To create a new ValidatedIban object, we highly recommend you to use our Iban Model Class to ensure full compatibility with the API. [Try it here](ibans-data.md)
 -  Get object with iban validated. 
 
 ```
@@ -165,11 +163,10 @@ The object contains the boolean 'isDefault' set to '1';
         .validate(ibanId, ValidatedIban, userNameValue)
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
 - API Response
-The _embedded object inside API response contains an array of all users associated to your account.
+The object inside API response contains iban object with 'status':'VALID' and date of validation.
 ```
 {
     success: true,
@@ -195,7 +192,7 @@ The _embedded object inside API response contains an array of all users associat
 | Param | Type | Description |
 | --- | --- | --- |
 | ibanId | <code>number</code> | unique number to identify the iban |
-| UserNameValue | <code>string</code> | Admin Only - to delete one iban of a different user from the company account |
+| UserNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can delete iban |
 - Get response with status 204 if iban is deleted successfully.
 - The Default IBAN can't be deleted. Instead, you have to:
     - create another IBAN
@@ -207,8 +204,7 @@ The _embedded object inside API response contains an array of all users associat
         .delete(ibanId, userNameValue?)
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
 - API Response
 

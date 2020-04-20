@@ -1,19 +1,18 @@
 ---
-id: doc8
+id: carbon-statistics-api-requests
 title: Carbon Statistics - Api Requests
 ---
 
 If you have created and completed carbon offsetting estimates, you can now get statistics and see all your carbon offsetting credit purchases, filtered in many ways.
 
 ## carbonStatistics.get()
-- default mode : get automatically datas from last month until today
+- default mode : get automatically data from last month until today
 ```
     return sdk.carbonStatistics
         .get()
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
 ## carbonStatistics.getADate()
 - get datas on a specific date
@@ -27,10 +26,8 @@ If you have created and completed carbon offsetting estimates, you can now get s
         .getADate(date)
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
-
 ## carbonStatistics.getAPeriod()
 - get datas on a specific period
 
@@ -41,15 +38,13 @@ If you have created and completed carbon offsetting estimates, you can now get s
 
 ```
     return sdk.carbonStatistics
-        .getAPeriod(start, end)
+        .getAPeriod(start, end?)
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
-
 ## API Response
-The object inside response contains the number of carbon estimates, the total Carbon in kilograms, the total of purchases in euros cents and the period requested.
+The object inside response contains the count of carbon estimates, the total carbon in kilograms, the total of purchases in euros cents and the period requested.
 ```
 {
     success: true,
@@ -64,4 +59,4 @@ The object inside response contains the number of carbon estimates, the total Ca
     status: 201
 }   
 ```
-We have created special tools to handle/convert data inside the response, like Carbon or Price. You can find them [here.](doc9.md) 
+We have created special tools to handle/convert data inside the response, like Carbon or Price. You can find them [here.](tools.md) 

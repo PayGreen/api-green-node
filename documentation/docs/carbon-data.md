@@ -1,10 +1,10 @@
 ---
-id: doc7B
+id: carbon-data
 title: Create Paths & Web Estimates
 ---
 
 Here you will find all informations to create a New Path Estimate and New Web Estimate Objects with our Model classes.
-- Each estimate is identified by its unique `fingerprint`. To be sure to have an unique fingerPrint, please check our [special method here.](doc9#randomfingerprint) 
+- Each estimate is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check our [special method here.](tools#randomfingerprint) 
 - You can make a carbon offsetting estimate in multiple calls, mix transports, add a web estimate on top of it, as long as you use the SAME fingerprint.
 - After its creation, the estimate is considered as ongoing, and you can either:
     - add data to the estimate (as many calls as you need)
@@ -18,7 +18,7 @@ Here you will find all informations to create a New Path Estimate and New Web Es
 
 | Name | Type | Description |
 | --- | --- | --- |
-| type | <code>enum</code> | type of Estimate based on enum |
+| type | <code>enum</code> | type of Estimate based on enum - prefilled with 'web' value|
 | fingerprint | <code>string</code> | unique string to identify a Carbon offsetting estimate data |
 | userAgent | <code>string</code> | user agent headers |
 | device | <code>string</code> | device will be automatically filled by Api based on the User Agent provided |
@@ -50,16 +50,17 @@ when you use the WebEstimate Model Class, type is prefilled with 'web' value.
 import { Tools, WebEstimate } from 'api-green-node';
 
 const randomFingerprint = Tools.randomFingerprint();
-const webEstimationTest = new WebEstimate();
-    webEstimationTest.fingerprint = randomFingerprint;
+
+const newWebData = new WebEstimate();
+newWebData.fingerprint = randomFingerprint;
 ```
 ## Or all at once  :
-
+adding fingerprint + userAgent + number of Pages + number of Images + Time
 ```
 import { WebEstimate } from 'api-green-node';
 
-const webTest = new WebEstimate(
-    'NewFingerPrint',
+const newWebData = new WebEstimate(
+    randomFingerprint,
     'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
     140,
     6,
@@ -90,8 +91,8 @@ const webTest = new WebEstimate(
 | zipCode | <code>string</code> | this field must be sent to Api with default value. |
 | city | <code>string</code> | city name |
 | country | <code>string</code> | country (must be written out in full) |
-| latitude | <code>string</code> |  |
-| longitude | <code>string</code> |  |
+| latitude | <code>string</code> | valid latitude coordinate |
+| longitude | <code>string</code> | valid longitude coordinate |
 
 ```
 import { Coordinate, Address } from 'api-green-node';
@@ -119,8 +120,8 @@ const address3 = new Address(
 ## Model Path
 | Name | Type | Description |
 | --- | --- | --- |
-| addressDeparture | <code>Address</code> | address object generated with Address Model |
-| addressArrival | <code>Address</code> | address object generated with Address Model |
+| addressDeparture | <code>Address/Coordinate</code> | address object generated with Address or Coordinate Models |
+| addressArrival | <code>Address/Coordinate</code> | address object generated with Address or Coordinate Models |
 | transport | <code>enum</code> | transport vehicle chosen from enum |
 
 ``` 
@@ -143,7 +144,6 @@ const path2 = new Path(address2, address3, Transport['TER France - Diesel'],
 | transports | <code>Array.&lt;object&gt;</code> | an array containing all transports |
 
 when you use the PathEstimate Model Class, type is prefilled with 'path' value.
-
 
 ```
 import { PathEstimate } from 'api-green-node';
@@ -196,4 +196,4 @@ what our final object will look like :
 }
 ```
 
-### We have built special method to verify the data before sending it to API. [Try it here](doc9#verify)
+### We have built special method to verify the data before sending it to API. [Try it here](tools#verify)

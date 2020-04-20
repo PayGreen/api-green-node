@@ -1,5 +1,5 @@
 ---
-id: doc5B
+id: users-data
 title: Users - Create Data
 ---
 
@@ -11,8 +11,8 @@ Here you will find all informations to create a New User Object with our User Mo
 ## Object expected by API Green : 
 | Name | Type | Description |
 | --- | --- | --- |
-| lastname | <code>string</code> | email address of the user |
-| firstname | <code>string</code> | country of the user |
+| lastname | <code>string</code> | lastname of the user |
+| firstname | <code>string</code> | firstname of the user |
 | publicname | <code>string</code> | public name of the user |
 | role | <code>enum</code> | role of the user |
 | password | <code>string</code> | password of the user |
@@ -48,18 +48,18 @@ const newUser = new User();
 ## Or all at once  :
 
 ```
-import { User, Mode, Role } from 'api-green-node';
+import { User, Country, Role } from 'api-green-node';
 
 const newUser = new User(
         'Dupont',
         'Jean',
         'JD',
         Role.ADMIN,
-        JD22,
+        'JD22',
         'password',
         'jd@example.com',
         Country.FR,
     );
 
 ```
-### We have built special method to verify the data before sending it to API. [Try it here](doc9#verify)
+## We have built special method to verify the data before sending it to API. [Try it here](tools#verify)

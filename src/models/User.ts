@@ -29,8 +29,8 @@ class Contact {
 
 /**
  * User Model Class with methods to manage users data
- * @property {string?} lastname - email address of the user
- * @property {string?} firstname - country of the user
+ * @property {string?} lastname - lastname of the user
+ * @property {string?} firstname - firstname of the user
  * @property {string?} publicname - public name of the user
  * @property {string?} role - role of the user
  * @property {string?} password - password of the user

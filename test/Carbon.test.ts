@@ -18,7 +18,6 @@ const config = {
 };
 const sdk = new Sdk(config);
 const randomFingerprint = Tools.randomFingerprint();
-console.log(randomFingerprint)
 
 test('it adds a web estimate', () => {
     const newWebEstimate = new WebEstimate(

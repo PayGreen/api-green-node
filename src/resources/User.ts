@@ -55,7 +55,7 @@ export class User extends MainBuilder {
      * GET ONE | /account/{accountId}/user/{userName}
      *  @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
      * can use a specific UserNameValue to format a different user of the company account
-     *  @returns {Promise.<IApiResponse>} Get information of the account based on accountId
+     *  @returns {Promise.<IApiResponse>} Get information of the user based on username and accountId
      */
     getOne = (userNameValue?: string): Promise<IApiResponse> => {
         return this.axiosRequest

@@ -1,11 +1,29 @@
 import { Sdk } from './Sdk';
-import { Account, Bank, Country, Host, Mode, Role, User } from './enums';
+import { Bank, Country, Host, Mode, Role, Transport } from './enums';
 import {
-    Iban as IbanModel,
-    IbanValidation as IbanValidationModel,
-    User as UserModel,
+    Address,
+    ApiResponse,
+    Coordinate,
+    Iban,
+    IbanValidation,
+    Path,
+    PathEstimate,
+    Tools,
+    User,
+    WebEstimate,
 } from './models';
 
 export { Sdk };
-export { Account, Bank, Country, Host, Mode, Role, User };
-export { IbanModel, IbanValidationModel, UserModel };
+export { Bank, Country, Host, Mode, Role, Transport };
+export {
+    Address,
+    ApiResponse,
+    Coordinate,
+    Iban,
+    IbanValidation,
+    Path,
+    PathEstimate,
+    Tools,
+    User,
+    WebEstimate,
+};

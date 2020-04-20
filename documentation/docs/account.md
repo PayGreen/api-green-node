@@ -1,5 +1,5 @@
 ---
-id: doc4
+id: account
 title: Account - Api Request
 ---
 
@@ -13,8 +13,7 @@ An Account is the base of your identity in our API. This is like a namespace for
         .getAccount()
         .then((res) => {
             console.log(res)
-        }})
-    };
+        });
 ```
 - Api Response
 ```

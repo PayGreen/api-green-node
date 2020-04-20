@@ -46,7 +46,6 @@ test('it gets one user based on his username and then gets his id directly', () 
 
 test('it gets an error message because of wrong username', () => {
     return sdk.user.getOne('paygreendfd').then((data: any) => {
-        console.log (data)
         expect(ApiResponse.isInvalid(data)).toBe(true),
             expect(ApiResponse.getErrorMessage(data)).toBe('Entity not found.');
         expect(ApiResponse.getStatus(data)).toEqual(404);

@@ -17,7 +17,6 @@ test('it gets a token access to request Api', () => {
                 process.env.SDK_ACCOUNTID,
             )
             .then((data: any) => {
-                console.log(data)
                 expect(data.success).toBe(true);
                 expect(data.dataInfo.access_token).toBeDefined;
                 expect(data.dataInfo.refresh_token).toBeDefined;

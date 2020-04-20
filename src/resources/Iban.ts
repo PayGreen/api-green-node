@@ -51,9 +51,8 @@ export class Iban extends MainBuilder {
 
     /**
      * CREATE ONE | /account/me/user/{username}/rib
-     * @param {IbanModel} newIban - object containing all new iban information, both Admin and User can create Iban
-     * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
-     * can use a specific UserNameValue to create ibans of a different user of the company account
+     * @param {IbanModel} newIban - object containing all new iban information, only Admin can create Iban
+     * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity
      * @returns {Promise.<IApiResponse>} Get object with new iban created.
      */
     create = (
@@ -107,8 +106,7 @@ export class Iban extends MainBuilder {
     /**
      * SET ONE | /account/me/user/{username}/rib/{iban_id}
      * @param {number} ibanId - unique number to identify the iban
-     * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
-     * can use a specific UserNameValue to get an iban of a different user of the company account
+     * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin can change default iban.
      * @returns {Promise.<IApiResponse>} - Set one iban as default one.
      */
     setAsDefault = (
@@ -135,7 +133,7 @@ export class Iban extends MainBuilder {
     /**
      * DELETE ONE | /account/me/user/{username}/rib/{iban_id}
      * @param {number} ibanId - unique number to identify the iban
-     * @param {string} UserNameValue - Admin Only - to delete one iban of a different user from the company account
+     * @param {string} UserNameValue - Admin Only - to delete one iban of a user from the company account
      * @returns {Promise.<IApiResponse>} Get response with status 204 if success.
      */
     delete = (

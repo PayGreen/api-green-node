@@ -1,5 +1,5 @@
 ---
-id: doc9
+id: tools
 title: Helpful methods for handling API Requests & Responses
 ---
 
@@ -9,7 +9,7 @@ We have created a bunch of methods to help you optimizing the data created to be
 
 ## randomFingerPrint()
 
--   Easily create a unique fingerprint to identify path and web carbon estimates, when you want to add some [Carbon Offsetting Estimates.](doc7B.md) Using this method guarantees you the uniqueness of the fingerprint.
+-   Easily create a unique fingerprint to identify path and web carbon estimates, when you want to add some [Carbon Offsetting Estimates.](carbon-data.md) Using this method guarantees you the uniqueness of the fingerprint.
 
 ```
     import { Tools } from 'api-green-node';
@@ -26,9 +26,11 @@ We have created a bunch of methods to help you optimizing the data created to be
 
 -   Easily verify the data built with model classes (`User`,`Iban`, `WebEstimate`, `PathEstimate`) before sending it to API. This method verifies if there is no field left empty when all of them are required and check specific value validity like email for `User` or iban reference and bic reference for `Iban` or even latitude and longitude for `PathEstimate`.
 
-``` import { Tools } from 'api-green-node';
+```
+    import { Tools } from 'api-green-node';
 
-    return Tools.verify(data).then((res) => {
+    return Tools.verify(data)
+        .then((res) => {
         console.log(res)
     });
 ```
@@ -36,7 +38,7 @@ We have created a bunch of methods to help you optimizing the data created to be
 -   If all values are ok, you will received a simple string :
 
 ```
-'validation succeed'
+    'validation succeed'
 ```
 
 -   In case of error, the method will return an array containing the name of the field concerned and the error detailed. Here, we have built a new user but left the field 'username' empty.
@@ -52,21 +54,21 @@ We have created a bunch of methods to help you optimizing the data created to be
         username: '',
         password: 'dj4',
         contact: Contact { email: 'dj4@example.com', country: 'FR' }
-        }
+    }
 
     return Tools.verify(User).then((res) => {
         console.log(res)
     });
 
     res = [
-      ValidationError {
-        value: '',
-        property: 'username',
-        children: [],
-        constraints: {
-          minLength: 'username must be longer than or equal to 1 characters'
+        ValidationError {
+            value: '',
+            property: 'username',
+            children: [],
+            constraints: {
+            minLength: 'username must be longer than or equal to 1 characters'
+            }
         }
-      }
     ]
 
 ```
@@ -198,40 +200,36 @@ Some API responses can be huge or complex with specific errors, for more efficie
 
 # Conversions :
 
-## kilosCo2ToTonsCo2()
+## tonsCo2ToKilosCo2()
 
--   estimated carbon received from API is in kilogram. With this method you can convert directly into tons when you get a [Carbon Estimate](doc7B.md) or a [Carbon Statistic.](doc8.md)
-    | Param | Type | Description |
-    | --- | --- | --- |
-    | value | <code>number</code> | quantity of Co2eq (in kilograms) to be converted |
-    Here `value`is the value contained inside the global Api Response. If you need more detail about API responses structure, you can find it [here](doc3#api-responses-schema)
+-   estimated carbon received from API is in Tons of CO²eq. With this method you can convert directly into kilograms when you get a [Carbon Estimate](carbon-api-requests.md) or a [Carbon Statistic.](carbon-statistics-api-requests.md)
+
+| Param | Type                | Description                                 |
+| ----- | ------------------- | ------------------------------------------- |
+| value | <code>number</code> | quantity of Co2eq (in tons) to be converted |
 
 ```
     import { Tools } from 'api-green-node';
 
-    const Co2InTons = Tools.kilosCo2ToTonsCo2(
-            value
-        );
+    const TonsInCo2 = Tools.tonsCo2ToKilosCo2(value);
 ```
 
-## tonsCo2ToKilosCo2()
+## kilosCo2ToTonsCo2()
 
 -   you can reconvert to kilograms if needed.
     | Param | Type | Description |
     | --- | --- | --- |
-    | value | <code>number</code> | quantity of Co2eq (in tons) to be converted |
+    | value | <code>number</code> | quantity of Co2eq (in kilograms) to be converted |
 
 ```
     import { Tools } from 'api-green-node';
 
-    const TonsInCo2 = Tools.tonsCo2ToKilosCo2(
-            value
-        );
+    const Co2InTons = Tools.kilosCo2ToTonsCo2(value);
 ```
 
 ## eurosCentstoEuros()
 
--   estimated price received from API is in euro cents. With this method you can convert directly into euros when you get a [Carbon Estimate](doc7B.md) or a [Carbon Statistic.](doc8.md)
+-   estimated price received from API is in euro cents. With this method you can convert directly into euros when you get a [Carbon Estimate](carbon-api-requests.md) or a [Carbon Statistic.](carbon-statistics-api-requests.md)
     | Param | Type | Description |
     | --- | --- | --- |
     | value | <code>number</code> | price (in euros cents) to be converted |
@@ -239,9 +237,7 @@ Some API responses can be huge or complex with specific errors, for more efficie
 ```
     import { Tools } from 'api-green-node';
 
-    const PriceInEuros = Tools.eurosCentstoEuros(
-            value
-        );
+    const PriceInEuros = Tools.eurosCentstoEuros(value);
 ```
 
 ## eurosToEurosCents()
@@ -251,10 +247,8 @@ Some API responses can be huge or complex with specific errors, for more efficie
     | --- | --- | --- |
     | value | <code>number</code> | price (in euros) to be converted |
 
-``` 
+```
     import { Tools } from 'api-green-node';
 
-    const PriceInEuroCents = Tools.eurosToEurosCents(
-            value
-        );
+    const PriceInEuroCents = Tools.eurosToEurosCents(value);
 ```
