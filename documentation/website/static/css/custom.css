@@ -7,7 +7,31 @@
 
 /* your custom css */
 
-@media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
+@media only screen and (min-device-width: 360px) and (max-width: 736px) {
+
+    .homeContainer {  
+        height: 450px;
+    }
+    .homeContainer .homeWrapper .projectLogo {
+        position: static;
+        /* margin: 0 auto; */
+    }
+
+    .blockContent h2 {
+        margin: 0.5em 0 0 0;
+    }
+    .blockContent h2 div span p{
+        margin-bottom: 0.5em;
+    }
+    .blockElement {
+        margin:3em 0;
+    }
+}
+
+@media only screen and (min-width: 737px) {
+    .homeContainer {  
+        min-height: 550px;
+    }
 }
 
 @media only screen and (min-width: 1024px) {
@@ -18,16 +42,32 @@
     .fixedHeaderContainer {
         padding : 1em 0;
     }
-    
+}
+.imageAlignTop .blockImage {
+    margin-bottom:0;
 }
 
-@media only screen and (max-width: 1023px) {
+.homeContainer {
+    position:relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
-@media only screen and (min-width: 1400px) {
+.featuresBlock{
+    background-color: #D5F3E5;
 }
 
-@media only screen and (min-width: 1500px) {
+#try {
+    background-color: white;
+}
+
+.homeSplashFade .wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
 }
 
 body {
@@ -54,44 +94,6 @@ h1 {
     font-weight: 700;
 }
 
-.homeContainer {
-    position:relative;
-    min-height: 550px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-
-.test {
-    background-color: #D5F3E5;
-}
-
-.test2 {
-    display: flex;
-}
-
- #try {
-     background-color: white;
- }
-
-.homeSplashFade .wrapper {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: center;
-}
-
-.gridBlockVertical {
-    display: flex;
-    flex-direction: column;
-}
-
-.container {
-    margin: 3em auto;
-}
-
-.mainContainer {
-   padding-top:0;
+.mainContainer a {
+    font-weight: 700;
 }

@@ -1,6 +1,6 @@
 ---
 id: doc8
-title: Get Carbon Statistics
+title: Carbon Statistics - Api Requests
 ---
 
 If you have created and completed carbon offsetting estimates, you can now get statistics and see all your carbon offsetting credit purchases, filtered in many ways.
@@ -48,7 +48,7 @@ If you have created and completed carbon offsetting estimates, you can now get s
     };
 ```
 
-## Api Response
+## API Response
 The object inside response contains the number of carbon estimates, the total Carbon in kilograms, the total of purchases in euros cents and the period requested.
 ```
 {

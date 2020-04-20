@@ -29,7 +29,6 @@ test('it gets the account based on account id', () => {
 
 test('it gets all users of one account id and then gets all ids directly', () => {
     return sdk.user.getAll().then((data: any) => {
-        console.log(ApiResponse.getIdList(data))
         expect(data).toBeDefined();
         for (let key in ApiResponse.getIdList(data)) {
             expect(ApiResponse.getIdList(data)[key]).toHaveProperty('username');
@@ -47,6 +46,7 @@ test('it gets one user based on his username and then gets his id directly', () 
 
 test('it gets an error message because of wrong username', () => {
     return sdk.user.getOne('paygreendfd').then((data: any) => {
+        console.log (data)
         expect(ApiResponse.isInvalid(data)).toBe(true),
             expect(ApiResponse.getErrorMessage(data)).toBe('Entity not found.');
         expect(ApiResponse.getStatus(data)).toEqual(404);

@@ -69,7 +69,7 @@ export class Carbon extends MainBuilder {
     /**
      * COMPLETE ESTIMATE | /tree/ccarbon/{fingerprint}
      * @param {string} fingerPrint - an unique name to identify each carbon offsetting estimate
-     * @returns {Promise.<IApiResponse>} - get response with status 204 if success, the carbon estimate is validated.
+     * @returns {Promise.<IApiResponse>} - get response with status 200 if success, the carbon estimate is validated.
      */
     completeEstimate = (fingerPrint: string): Promise<IApiResponse> => {
         return this.axiosRequest

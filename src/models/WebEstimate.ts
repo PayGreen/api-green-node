@@ -6,11 +6,11 @@ import { EstimateType } from '../enums';
  * WebNavigation Model Class to create Web Data
  * @property {string?} userAgent - user agent headers
  * @property {string} device - device will be automatically filled by Api based on the User Agent provided
- * @property {string} userAgent - browser will be automatically filled by Api based on the User Agent provided
+ * @property {string} browser - browser will be automatically filled by Api based on the User Agent provided
  * @property {number?} countImages - number of images requested during the navigation
  * @property {number?} countPages - number of pages requested during the navigation
  * @property {number?} time - time spent during the navigation (in seconds)
- * @property {string?} externalId - user ExternalId you may use to identify him in your system
+ * @property {string?} externalId - optional - user ExternalId you may use to identify him in your system
  */
 @Serializable()
 class WebNavigation {

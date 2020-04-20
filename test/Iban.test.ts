@@ -89,7 +89,7 @@ test('it returns the validated iban based on its ibanId', () => {
     const newIban = new IbanValidationModel(Bank.LCL);
     return sdk.iban.create(ibanTest).then((data: any) => {
         const ibanId = data.dataInfo.idRib;
-        return sdk.iban.validate(newIban, ibanId).then((data: any) => {
+        return sdk.iban.validate(newIban, ibanId, 'paygreen' ).then((data: any) => {
             expect(data.dataInfo).toHaveProperty('bankName', 'LCL');
             expect(ApiResponse.getId(data)).toHaveProperty('idRib');
         });
@@ -105,7 +105,7 @@ test('it returns 204 status when deleting an iban', () => {
     );
     return sdk.iban.create(ibanTest).then((data: any) => {
         const ibanId = data.dataInfo.idRib;
-        sdk.iban.delete(ibanId).then((data: any) => {
+        return sdk.iban.delete(ibanId).then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true),
                 expect(data.status).toEqual(204);
         });

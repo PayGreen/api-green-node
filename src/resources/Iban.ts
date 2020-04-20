@@ -32,7 +32,7 @@ export class Iban extends MainBuilder {
      * GET ALL | /account/me/user/{username}/rib
      * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
      * can use a specific UserNameValue to get all ibans of a different user of the company account
-     * @returns {Promise.<IApiResponseList>} Get list of ibans
+     * @returns {Promise.<IApiResponseList>} Get a list of ibans based on accountId and username
      */
     getAll = (userNameValue?: string): Promise<IApiResponseList> => {
         return this.axiosRequest
@@ -81,7 +81,7 @@ export class Iban extends MainBuilder {
      * @param {number} ibanId - unique number to identify the iban
      * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
      * can use a specific UserNameValue to get an iban of a different user of the company account
-     * @returns {Promise.<IApiResponse>} Get information of a specific iban
+     * @returns {Promise.<IApiResponse>} Get information about a specific iban
      */
     getOne = (
         ibanId: number,
@@ -109,7 +109,7 @@ export class Iban extends MainBuilder {
      * @param {number} ibanId - unique number to identify the iban
      * @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
      * can use a specific UserNameValue to get an iban of a different user of the company account
-     * @returns {Promise.<IApiResponse>} Get information of a specific iban
+     * @returns {Promise.<IApiResponse>} - Set one iban as default one.
      */
     setAsDefault = (
         ibanId: number,
@@ -163,13 +163,13 @@ export class Iban extends MainBuilder {
      * VALIDATE (reserved to 'Paygreen' account users) | /account/me/user/{username}/rib/{iban_id}
      *  @param {number} ibanId - unique number to identify the iban
      *  @param {IbanValidationModel} ValidatedIban - Object containing all new iban information
-     *  @param {string?} userNameValue - Optional, by default UserName used will be the one from identity
-     *  @returns {Promise.<IApiResponse>} Get object with new data updated
+     *  @param {string} userNameValue - UserName of the owner of the iban
+     *  @returns {Promise.<IApiResponse>} Get object with iban validated
      */
     validate = (
         ValidatedIban: IbanValidationModel,
         ibanId: number,
-        userNameValue?: string,
+        userNameValue: string,
     ): Promise<IApiResponse> => {
         const serializedValidatedIban = serialize(ValidatedIban);
         return this.axiosRequest

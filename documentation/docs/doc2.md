@@ -3,9 +3,9 @@ id: doc2
 title: Import Sdk
 ---
 
-This short tutorial will set you up to start using Api Green SDK in a few minutes. If you want to learn more, proceed to Authentication and then to User Profile Setup part that will take you step by step through creating your full profile.
+This short tutorial will set you up to start using API Green SDK in a few minutes. If you want to learn more, proceed to Authentication and then to User Profile Setup part that will take you step by step through creating your full profile.
 
-## Reminder - Install via Npm
+## First - Install via Npm
 
 ```
 npm install api-green-node
@@ -28,4 +28,4 @@ const { Sdk } = require('api-green-node');
 ```
 const sdk = new Sdk();
 ```
-Here, you have your first instance of the Sdk. Now to access to Api Green, it needs to be configured with your account informations and/or tokens, if you already have them. It's time to [authenticate!](doc3.md)   
+Here, you have your first instance of the Sdk. Now to access to API Green, it needs to be configured with your account informations and/or tokens, if you already have them. It's time to [authenticate!](doc3.md)   

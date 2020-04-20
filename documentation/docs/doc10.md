@@ -6,7 +6,7 @@ title: Get Transports
 If you wish to estimate the carbon offsetting of a transport, we provide you with a detailed list of vehicles types (including the energy used for fuel) that are commonly used. This include trucks (arranged by maximum weight capacity), vans, motorcycle, cars, buses, trains, planes, ferry, and even a bike.
 
 ## transport.get()
-- Get a list of the different transports available inside the Api
+- Get a list of the different transports available inside the API
 ```
     return sdk.transport
         .get()
@@ -15,7 +15,7 @@ If you wish to estimate the carbon offsetting of a transport, we provide you wit
         }})
     };
 ```
-## Api Response
+## API Response
 The _embedded object inside API response contains an array of all transport modes availables.
 ```
 {
