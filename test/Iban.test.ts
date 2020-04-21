@@ -15,13 +15,16 @@ const config = {
 
 const sdk = new Sdk(config);
 
-test('it gets all ibans of the current user', () => {
+test('it gets all ibans of the current user and then gets all ids directly', () => {
     return sdk.iban.getAll().then((data: any) => {
         expect(data).toBeDefined();
+        for (let key in ApiResponse.getIdList(data)) {
+            expect(ApiResponse.getIdList(data)[key]).toHaveProperty('idRib');
+        }
     });
 });
 
-test('it returns the created iban for the current user', () => {
+test('it returns the created iban for the current user and then gets its id directly', () => {
     const ibanTest = new IbanModel(
         Bank['BNP Paribas Particuliers'],
         'FR7640618802980004033009519',
@@ -40,12 +43,15 @@ test('it returns the created iban for the current user', () => {
             expect(data.dataInfo).toHaveProperty('bic', 'BNPFRPPXXX');
         expect(data.dataInfo).toHaveProperty('country', 'FR');
         expect(data.dataInfo).toHaveProperty('status', 'VALID');
+        expect(ApiResponse.getId(data)).toHaveProperty('idRib');
     });
 });
 
 test('it gets one iban of a user based on its ibanId', () => {
     return sdk.iban.getOne(18).then((data: any) => {
-        expect(data.dataInfo).toHaveProperty('idRib', '18');
+        expect(data.dataInfo).toHaveProperty('bankName');
+        expect(data.dataInfo).toHaveProperty('bic');
+        expect(ApiResponse.getId(data)).toHaveProperty('idRib', '18');
     });
 });
 
@@ -77,6 +83,7 @@ test('it returns the validated iban based on its ibanId', () => {
         const ibanId = data.dataInfo.idRib;
         return sdk.iban.validate(newIban, ibanId).then((data: any) => {
             expect(data.dataInfo).toHaveProperty('bankName', 'LCL');
+            expect(ApiResponse.getId(data)).toHaveProperty('idRib');
         });
     });
 });
