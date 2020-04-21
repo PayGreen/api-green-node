@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 

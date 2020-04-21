@@ -28,8 +28,7 @@ const config = {
     refreshToken: process.env.SDK_REFRESHTOKEN,
     mode: Mode.DEV,
 };
-
-test('it gets a refreshed token access to request Api each time the refreshtoken() method is used and if token/refresh token are valid', () => {
+test('it gets a refreshed token each time the refreshtoken() method is used and if token/refresh token are valid, else it renews all tokens with login()', () => {
     if (process.env.SDK_ACCOUNTID) {
         const sdk = new Sdk(config);
         return sdk.authentication
@@ -47,6 +46,7 @@ test('it gets a refreshed token access to request Api each time the refreshtoken
                             });
                     }
                 } else {
+                    const sdk = new Sdk();
                     if (
                         process.env.SDK_ACCOUNTID &&
                         process.env.SDK_USERNAME &&

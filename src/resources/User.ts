@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import { User as UserModel } from '../models';
@@ -37,7 +36,7 @@ export class User extends MainBuilder {
 
     /**
      * GET ALL | /account/{accountId}/user
-     * @returns {Promise.<IApiResponse>} Get a list of users based on accountId
+     * @returns {Promise.<IApiResponse>} - Get a list of users based on accountId, only Admin can see other users
      */
     getAll = (): Promise<IApiResponse> => {
         return this.axiosRequest
