@@ -48,10 +48,18 @@ test('it returns the created iban for the current user and then gets its id dire
 });
 
 test('it gets one iban of a user based on its ibanId', () => {
-    return sdk.iban.getOne(18).then((data: any) => {
-        expect(data.dataInfo).toHaveProperty('bankName');
-        expect(data.dataInfo).toHaveProperty('bic');
-        expect(ApiResponse.getId(data)).toHaveProperty('idRib', '18');
+    const ibanTest2 = new IbanModel(
+        Bank["Banque Casino"],
+        'FR7640618802980004033009519',
+        'BNPFRPPXXX',
+        Country.FR,
+    );
+    return sdk.iban.create(ibanTest2).then((data: any) => {
+        const ibanId = data.dataInfo.idRib;
+        return sdk.iban.getOne(ibanId).then((data: any) => {
+            expect(ApiResponse.getId(data)).toHaveProperty('idRib', ibanId);
+            expect(data.dataInfo).toHaveProperty('bankName',"Banque Casino" );
+        });
     });
 });
 
