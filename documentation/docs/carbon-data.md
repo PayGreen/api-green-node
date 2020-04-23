@@ -161,6 +161,8 @@ what our final object will look like :
 {
     type: 'path',
     fingerprint: 'NewMixNYFrance',
+    weightPackages: 20,
+    countPackages: 1,
     addresses: [
         {
             address: '',

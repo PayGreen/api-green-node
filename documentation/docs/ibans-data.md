@@ -57,7 +57,7 @@ You can use our Iban Validation Model Class when you want to [validate an Iban](
 | validatedAt | <code>date</code> | created automatically |
 
 ```
-import { IbanValidation } from 'api-green-node';
+import { IbanValidation, Bank } from 'api-green-node';
 
 const newIbanValidated = new IbanValidation(Bank.LCL);
 ```

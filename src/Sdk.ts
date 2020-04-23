@@ -42,7 +42,14 @@ export class Sdk {
         if (configObject?.refreshToken) {
             this._tokens.refreshToken = configObject.refreshToken;
         }
-        if (configObject?.mode != null) {
+        if (
+            (configObject?.mode == Mode.DEV ||
+                configObject?.mode == Mode.PREPROD) &&
+            configObject?.host != null
+        ) {
+            this._host = configObject.host;
+            this._mode = configObject.mode;
+        } else if (configObject?.mode != null && configObject?.host == null) {
             this._mode = configObject.mode;
             this._host = Host[Mode[configObject.mode]];
         } else {
@@ -99,5 +106,13 @@ export class Sdk {
 
     set mode(mode: Mode) {
         this._mode = mode;
+    }
+
+    get host(): string {
+        return this._host;
+    }
+
+    set host(host: string) {
+        this._host = host;
     }
 }

@@ -7,7 +7,7 @@ If you have completed your profile you can now add and manage carbon offsetting 
 
 Carbon offsetting estimate and carbon credits purchase are the heart of our API.
 We have selected two kind of carbon offsetting estimations:
-- web browsing or navigation (dependent on time, device type, number of images loaded, number of pages visited, etc.)For web browsing, we have other elements that are taken into account which are reduced to electrical consumption.
+- web browsing or navigation (dependent on time, device type, number of images loaded, number of pages visited, etc.). For web browsing, we have other elements that are taken into account which are reduced to electrical consumption.
 - transport of persons or goods (dependent on weight, method of transport and the kind of energy used). With each transport type is associated an energy type and with each energy type is associated a carbon emission factor. 
 - so you can easily estimate the carbon cost for the web browsing made by a user to shop a product and the carbon cost for the transport of this product to be delivered to consumer.
 - The main results are the carbon equivalent estimate (estimatedCarbon expressed in Tons of CO²eq) and the price estimate (estimatedPrice expressed in euro cents (100 = 1€)) for offsetting your carbon equivalent. 
@@ -38,7 +38,7 @@ You can find details about how to build the object new WebEstimate [here.](carbo
 | Param | Type | Description |
 | --- | --- | --- |
 | newPathEstimate | <code>PathEstimate</code> | object containing all datas about the ongoing path carbon offsetting estimate - Only admin can add path estimate |
-You can find details about how to build the object newEstimate [here.](carbon-data#path-estimate-)
+You can find details about how to build the object newPathEstimate [here.](carbon-data#path-estimate-)
 - add object with new carbon cost estimated.
 ```
     return sdk.carbon
@@ -109,7 +109,7 @@ You can find details about how to build the object newEstimate [here.](carbon-da
 | Param | Type | Description |
 | --- | --- | --- |
 | fingerPrint | <code>string</code> | a unique name to identify each carbon offsetting estimate |
-- get response with status 204 if success, only ongoing estimate can be deleted.  
+- get response with status 204 if success, only ongoing estimate (before completion) can be deleted.  
 ```
     return sdk.carbon
         .deleteEstimate(fingerprint)
