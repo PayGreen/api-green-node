@@ -1,5 +1,10 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
-import { IUser } from '../interfaces';
+import {
+    IsEmail,
+    MinLength,
+    IsISO31661Alpha2,
+    ValidateNested,
+} from 'class-validator';
 import { Country, Role } from '../enums';
 
 /**
@@ -10,8 +15,10 @@ import { Country, Role } from '../enums';
 @Serializable()
 class Contact {
     @JsonProperty('email')
+    @IsEmail()
     public email?: string | null;
     @JsonProperty('country')
+    @IsISO31661Alpha2()
     public country?: string | null;
 
     constructor(email?: string | null, country?: string | null) {
@@ -33,18 +40,25 @@ class Contact {
 @Serializable()
 export class User {
     @JsonProperty('lastname')
+    @MinLength(1)
     public lastname?: string | null;
     @JsonProperty('firstname')
+    @MinLength(1)
     public firstname?: string | null;
     @JsonProperty('publicname')
+    @MinLength(1)
     public publicname?: string | null;
     @JsonProperty('role')
+    @MinLength(1)
     public role?: string | null;
     @JsonProperty('username')
+    @MinLength(1)
     public username?: string | null;
     @JsonProperty('password')
+    @MinLength(1)
     public password?: string | null;
     @JsonProperty('contact')
+    @ValidateNested()
     public contact: Contact;
 
     /**
@@ -81,21 +95,4 @@ export class User {
             this.contact.country = Country[country];
         }
     }
-
-    /**
-     * VERIFY USER |
-     * @param {any} data - Object with all user's informations
-     * @returns {IUser} New object with all user's informations with final structure/names for API compatibility
-     */
-    verify = (data: any): IUser => {
-        for (const property in data) {
-            if (data[property] == null) {
-                throw `Error ${property} is null`;
-            }
-        }
-        const emailRegEx = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
-        if (!emailRegEx.test(data.contact.email)) {
-            throw 'Error in email syntax, please verify your email';
-        } return data;
-    };
 }

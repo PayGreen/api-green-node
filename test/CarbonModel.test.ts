@@ -9,8 +9,7 @@ import {
     WebEstimate,
 } from '../src/models';
 
-const tools = new Tools();
-const randomFingerprint = tools.randomFingerprint();
+const randomFingerprint = Tools.randomFingerprint();
 
 test('it adds a fingerprint of a web estimation with Model', () => {
     const webEstimationTest = new WebEstimate();
@@ -39,6 +38,9 @@ test('it creates a web estimation of a carbon estimate with Model', () => {
             time: 180,
             externalId: null,
         },
+    });
+    return Tools.verify(webTest).then((data: any) => {
+        expect(data).toBe('validation succeed');
     });
 });
 
@@ -101,6 +103,44 @@ test('it creates a path simulation for carbon estimate with Address Model', () =
                 uuidTransport: 'ter-france-diesel',
             },
         ],
+    });
+    return Tools.verify(pathTest).then((data: any) => {
+        expect(data).toBe('validation succeed');
+    });
+});
+
+test('Verify method returns error with the name of the wrong property latitude', () => {
+    const address1 = new Coordinate(
+        'New-York',
+        'Etats-Unis',
+        'wrong latitude',
+        '-74.039987',
+    );
+    const address2 = new Coordinate(
+        'Roissy-en-France',
+        'France',
+        '49.009901',
+        '2.542471',
+    );
+    const address3 = new Address(
+        '72 rue de la République',
+        '76140',
+        'Le Petit Quevilly',
+        'France',
+    );
+    const path1 = new Path(address1, address2, Transport['Plane < 10000km']);
+    const path2 = new Path(
+        address2,
+        address3,
+        Transport['TER France - Diesel'],
+    );
+
+    const pathTest = new PathEstimate('NewMixNYFrance', 20, 1, [path1, path2]);
+    return Tools.verify(pathTest).then((data: any) => {
+        expect(data[0].children[0].children[0]).toHaveProperty(
+            'property',
+            'latitude',
+        );
     });
 });
 

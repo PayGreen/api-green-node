@@ -1,4 +1,5 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
+import { MinLength } from 'class-validator';
 import { Bank } from '../enums';
 
 /**
@@ -10,6 +11,7 @@ import { Bank } from '../enums';
 @Serializable()
 export class IbanValidation {
     @JsonProperty('bankName')
+    @MinLength(1)
     public bankName: string;
     @JsonProperty('status')
     public status: string;

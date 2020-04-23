@@ -1,3 +1,7 @@
+import {
+    MinLength,
+} from 'class-validator';
+
 /**
  * Address Model Class to generate a complete address object to define a point of departure or arrival for Path model
  * @see Path
@@ -7,9 +11,13 @@
  * @property {string} country - country (must be written out in full)
  */
 export class Address {
+    @MinLength(1)
     public address: string;
+    @MinLength(1)
     public zipCode: string;
+    @MinLength(1)
     public city: string;
+    @MinLength(1)
     public country: string;
 
     /**

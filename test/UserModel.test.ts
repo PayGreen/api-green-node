@@ -1,6 +1,7 @@
 require('dotenv').config('/.env');
 import { User } from '../src/models';
 import { Country, Role } from '../src/enums';
+import { Tools } from '../src/models';
 import { deserialize, serialize } from 'typescript-json-serializer';
 
 test('Add firstname of a user with User Model', () => {
@@ -62,9 +63,26 @@ test('deserialize received data to fit User Model', () => {
     });
 });
 
-test('Verify method throws error with wrong email syntax', () => {
+test('Verify method returns error with the name of the wrong property lastname', () => {
     const userTest = new User(
-        'bouffier2',
+        '',
+        'fanny2',
+        'fb2',
+        Role.ADMIN,
+        'fb2',
+        'fb2',
+        'fb2@example.com',
+        Country.FR,
+    );
+    return Tools.verify(userTest).then((data: any) => {
+        expect(data).toBeDefined();
+        expect(data[0].property).toContain('lastname');
+    });
+});
+
+test('Verify method returns error with the name of the wrong property email', () => {
+    const userTest = new User(
+        'bouffier',
         'fanny2',
         'fb2',
         Role.ADMIN,
@@ -73,7 +91,8 @@ test('Verify method throws error with wrong email syntax', () => {
         'fb2example.com',
         Country.FR,
     );
-    expect(() => {
-        userTest.verify(userTest);
-    }).toThrowError('Error in email syntax, please verify your email');
+    return Tools.verify(userTest).then((data: any) => {
+        expect(data).toBeDefined();
+        expect(data[0].children[0]).toHaveProperty('property', 'email');
+    });
 });

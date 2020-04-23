@@ -17,8 +17,7 @@ const config = {
     mode: Mode.DEV,
 };
 const sdk = new Sdk(config);
-const tools = new Tools();
-const randomFingerprint = tools.randomFingerprint();
+const randomFingerprint = Tools.randomFingerprint();
 
 test('it adds a web estimate', () => {
     const newWebEstimate = new WebEstimate(
@@ -38,7 +37,7 @@ test('it gets an estimate based on fingerPrint and convert estimated price in eu
     return sdk.carbon.getEstimate(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerprint);
-        const PriceInEuros = tools.eurosCentstoEuros(
+        const PriceInEuros = Tools.eurosCentstoEuros(
             data.dataInfo.estimatedPrice,
         );
         expect(PriceInEuros).toEqual(data.dataInfo.estimatedPrice / 100);
@@ -55,7 +54,7 @@ test("it gets an estimate based on fingerPrint and gets its id 'fingerPrint' dir
     });
 });
 
-const randomFingerprint2 = tools.randomFingerprint();
+const randomFingerprint2 = Tools.randomFingerprint();
 
 test('it adds a path estimate', () => {
     const address1 = new Address(
