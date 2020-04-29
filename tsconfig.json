@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "declarationDir": "lib",  
+    "module": "commonjs",                     
+    "declaration": true,                      
+    "outDir": "lib",                         
+    "composite": true,                    
+    "strict": true,                          
+    "noImplicitThis": false,                
+    "moduleResolution": "node",            
+    "allowSyntheticDefaultImports": true,     
+    "esModuleInterop": true,                  
+    "experimentalDecorators": true,        
+    "emitDecoratorMetadata": true,         
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,  
+  },
+  "include": [
+    "src/**/*", "test/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

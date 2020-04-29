@@ -1,0 +1,9 @@
+# Dependency directories
+node_modules/
+
+# directories
+lib/
+
+# files
+.env*
+.DS_Store
