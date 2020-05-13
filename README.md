@@ -2,8 +2,8 @@
 An ease-to-use Node Sdk for API Green. Carbon offsetting estimate and carbon credits purchase are the heart of our API.
 
 ## Documentation
-- Here are a few examples of API calls made with our Sdk. Please see the full documentation to get the best of [API-Green-Node](https://github.com/api-green-node).
-- For more information specifically about API Green, please visit http://172.40.1.1/documentation/green.
+- Here are a few examples of API calls made with our Sdk. Please see the full documentation to get the best of [API-Green-Node](https://github.com/PayGreen/api-green-node/doc).
+- For more information specifically about API Green, please visit https://solidaire.paygreen.fr/documentation/green.
 
 ## Features
 - Easy API Calls : simple methods that support all API Green endpoints.
@@ -14,7 +14,7 @@ An ease-to-use Node Sdk for API Green. Carbon offsetting estimate and carbon cre
 Install the package with:
 
 ```sh
-npm install api-green-node
+npm i api-green-node
 ```
 ## Quick Start
 
@@ -147,7 +147,7 @@ Please, remind, that the access level of your User Status (Administrator or User
         }};
 ```
 - create a new user:
- we highly recommend you to use our User Model Class to ensure full compatibility with the API. Please see [Documentation](https://github.com/api-green-node).
+ we highly recommend you to use our User Model Class to ensure full compatibility with the API. Please see [Documentation](https://github.com/PayGreen/api-green-node/doc).
 ```
     return sdk.user
         .create(newUser)
@@ -157,7 +157,7 @@ Please, remind, that the access level of your User Status (Administrator or User
 ```
 - create an IBAN associated to user : 
     - In order to purchase carbon offset, you need to register an IBAN. This IBAN will be used to make bank wire transfers. An IBAN is associated to the User that registers it.
-    - We highly recommend you to use our Iban Model Class to ensure full compatibility with the API. Please see [Documentation](https://github.com/api-green-node). (Username Optional, by default UserName used will be the one from identity, username is require if you want to create an IBAN for another user than yourself)
+    - We highly recommend you to use our Iban Model Class to ensure full compatibility with the API. Please see [Documentation](https://github.com/PayGreen/api-green-node/doc). (Username Optional, by default UserName used will be the one from identity, username is require if you want to create an IBAN for another user than yourself)
 
 ```
     return sdk.iban
@@ -176,7 +176,7 @@ Here we will show you how to create a web carbon estimate but in API Green there
 - estimated carbon is in tons CO2eq and estimated price amount in euros cents (100 = 1€).
 
 STEP 1: CREATE THE WEB ESTIMATE OFFSET
-- Each estimate is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check [Documentation](https://github.com/api-green-node).
+- Each estimate is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check [Documentation](https://github.com/PayGreen/api-green-node/doc).
 - You can make a carbon offsetting estimate in multiple calls, mix transports, add a web estimate on top of it, as long as you use the SAME fingerprint and if you haven't completed (= finalized) the carbon offset.
 
 ```

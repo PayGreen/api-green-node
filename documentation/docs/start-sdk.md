@@ -8,7 +8,7 @@ This short tutorial will set you up to start using API Green SDK in a few minute
 ## First - Install via Npm
 
 ```
-npm install api-green-node
+npm i api-green-node
 ```
 
 ## Import Sdk - ES6 module

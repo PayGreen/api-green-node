@@ -104,7 +104,7 @@ const siteConfig = {
         defaultLang: 'javascript',
     },
     
-  usePrism: ['js']
+  usePrism: ['js'],
 
   // For sites with a sizable amount of content, set collapsible to true.
   // Expand/collapse the links and subcategories under categories.
@@ -118,7 +118,7 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-  //   repoUrl: 'https://github.com/facebook/test-site',
+    repoUrl: 'https://github.com/PayGreen/api-green-node',
 };
 
 module.exports = siteConfig;

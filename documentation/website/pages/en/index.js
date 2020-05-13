@@ -112,7 +112,7 @@ class Index extends React.Component {
                         content:
                             'Our sdk is hosted on NPM, so you can simply use : \n' +
                             '```\n' +
-                            'npm install api-green-node\n' +
+                            'npm i api-green-node\n' +
                             '```\n',
                         title: 'Get Started',
                     },
@@ -125,7 +125,7 @@ class Index extends React.Component {
                 {[
                     {
                         content:
-                            "You can check our repository [`here`](github.com/api-green-node). Don't hesitate to contact tech@paygreen.fr (or create an [`Issue`](github.com/api-green-node/issues) on github) for any questions. </br>For more information about API Green, please visit http://172.40.1.1/documentation/green.",
+                            "You can check our repository [`here`](https://github.com/PayGreen/api-green-node). Don't hesitate to contact tech@paygreen.fr (or create an [`Issue`](https://github.com/PayGreen/api-green-node/issues) on github) for any questions. </br>For more information about API Green, please visit https://solidaire.paygreen.fr/documentation/green.",
                         title: 'Github Repository',
                     },
                 ]}
