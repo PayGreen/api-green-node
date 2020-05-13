@@ -40,7 +40,7 @@ const siteConfig = {
   headerLinks: [
     {page: '#try', label: 'Getting Started'},
     {doc: 'start-sdk', label: 'Docs'},
-    {page: 'github', label: 'Github'},
+    {href:'https://github.com/PayGreen/api-green-node', label: 'Github'},
     // {blog: true, label: 'Blog'},
   ],
 
