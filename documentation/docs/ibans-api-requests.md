@@ -109,6 +109,7 @@ The object inside API response contains all informations about the iban requeste
 }   
 ```
 ## iban.setAsDefault()
+>(this method is working in API Green version 1.7.1 and above)
 
 | Param | Type | Description |
 | --- | --- | --- |

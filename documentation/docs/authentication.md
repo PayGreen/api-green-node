@@ -4,7 +4,7 @@ title: Authentication
 ---
 
 Login with your ids/tokens is required to access to our API Green.
-Accounts are created by PayGreen only. To create an Account, please email us at tech@PayGreen.fr to obtain your ids. You will be provided with an account id, a username (unique id) and a password.
+Accounts are created by PayGreen only. To create an Account, please email us at tech@paygreen.fr to obtain your ids. You will be provided with an account id, a username (unique id) and a password.
 
 ## Login with Account Informations
 

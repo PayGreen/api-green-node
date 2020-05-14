@@ -29,7 +29,7 @@ const { Sdk } = require('api-green-node');
 ```
 ### Authentication
 Login with your ids/tokens is required to access to our API Green.
-Accounts are created by PayGreen only. To create an Account, please email us at tech@PayGreen.fr to obtain your ids. You will be provided with an account id, a username (unique id) and a password. 
+Accounts are created by PayGreen only. To create an Account, please email us at tech@paygreen.fr to obtain your ids. You will be provided with an account id, a username (unique id) and a password. 
 
 - Login with Account Informations
 The API Green uses an OAuth2 security scheme with a Token/Refresh Url. If you don't have any tokens yet, you need to make a first API Call using your username, password and account id. Use the `authentication.login()` method. If all informations provided are correct, the API response will contain an access token and a refresh token.
