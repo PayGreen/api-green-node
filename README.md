@@ -14,7 +14,7 @@ An ease-to-use Node Sdk for API Green. Carbon offsetting estimate and carbon cre
 Install the package with:
 
 ```sh
-npm i api-green-node
+npm i api-green-node --save
 ```
 ## Quick Start
 
