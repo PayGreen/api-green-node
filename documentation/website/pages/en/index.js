@@ -112,7 +112,7 @@ class Index extends React.Component {
                         content:
                             'Our sdk is hosted on NPM, so you can simply use : \n' +
                             '```\n' +
-                            'npm i api-green-node\n' +
+                            'npm i api-green-node --save\n' +
                             '```\n',
                         title: 'Get Started',
                     },
