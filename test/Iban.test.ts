@@ -59,7 +59,6 @@ test('it gets one iban of a user based on its ibanId', () => {
     });
 });
 
-//this test will fail due to methods conflict into the Api, it will be resolved soon
 test('it sets one iban of a user as the default one', () => {
     const ibanTest = new IbanModel(
         Bank['La Banque Postale Particuliers'],
@@ -94,7 +93,6 @@ test('it returns the validated iban based on its ibanId', () => {
         Country.FR,
     );
     const newIban = new IbanValidationModel(Bank.LCL);
-
     return sdk.user.create(userTest).then((data: any) => {
         return sdk.iban.create(ibanTest, randomUserName).then((data: any) => {
             const ibanId = data.dataInfo.idRib;

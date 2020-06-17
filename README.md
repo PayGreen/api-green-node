@@ -1,7 +1,7 @@
 # Api Green Node
 
-- An ease-to-use Node Sdk for API Green. Carbon offsetting estimate and carbon credits purchase are the heart of our API.
-- For contributors, please check technical specifications [here.](#For-contributors)
+-   An ease-to-use Node Sdk for API Green. Carbon offsetting estimate and carbon credits purchase are the heart of our API.
+-   For contributors, please check technical specifications [here.](#For-contributors)
 
 ## Documentation
 

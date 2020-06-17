@@ -126,14 +126,13 @@ test('it gets a refreshed token each time the refreshtoken() method is used and 
     }
 });
 
-const wrongConfig = {
-    token: 'wrong token',
-    refreshToken: 'wrong refresh token',
-    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
-    host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
-};
-
 test('it gets an error when trying to refresh with a wrong token', () => {
+    const wrongConfig = {
+        token: 'wrong token',
+        refreshToken: 'wrong refresh token',
+        mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
+        host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
+    };
     const sdk3 = new Sdk(wrongConfig);
     if (process.env.SDK_ACCOUNTID) {
         return sdk3.authentication
