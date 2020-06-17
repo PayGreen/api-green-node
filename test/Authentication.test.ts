@@ -5,9 +5,11 @@ import { Sdk } from '../src';
 
 test('it gets a token access to request Api with prefilled host inside Sdk based on DEV mode', () => {
     const config = {
-        mode: Mode.DEV,
+        mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
+        host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
     };
     const sdk = new Sdk(config);
+
     if (
         process.env.SDK_USERNAME &&
         process.env.SDK_PASSWORD &&
@@ -23,7 +25,9 @@ test('it gets a token access to request Api with prefilled host inside Sdk based
                 expect(data.success).toBe(true);
                 expect(data.dataInfo.access_token).toBeDefined;
                 expect(data.dataInfo.refresh_token).toBeDefined;
-                expect(sdk.host).toBe(Host[Mode[Mode.DEV]]);
+                process.env.SDK_HOST
+                    ? expect(sdk.host).toBe(process.env.SDK_HOST)
+                    : expect(sdk.host).toBe(Host[Mode[Mode.PROD]]);
             });
 });
 
@@ -55,8 +59,10 @@ test('it gets a refreshed token each time the refreshtoken() method is used and 
     const config = {
         token: process.env.SDK_TOKEN,
         refreshToken: process.env.SDK_REFRESHTOKEN,
-        mode: Mode.DEV,
+        mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
+        host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
     };
+
     if (process.env.SDK_ACCOUNTID) {
         const sdk = new Sdk(config);
         return sdk.authentication
@@ -74,7 +80,15 @@ test('it gets a refreshed token each time the refreshtoken() method is used and 
                             });
                     }
                 } else {
-                    const sdk = new Sdk();
+                    const config2 = {
+                        mode: process.env.SDK_MODE
+                            ? Mode[process.env.SDK_MODE]
+                            : null,
+                        host: process.env.SDK_HOST
+                            ? process.env.SDK_HOST
+                            : null,
+                    };
+                    const sdk = new Sdk(config2);
                     if (
                         process.env.SDK_ACCOUNTID &&
                         process.env.SDK_USERNAME &&
@@ -122,11 +136,13 @@ test('it gets a refreshed token each time the refreshtoken() method is used and 
 const wrongConfig = {
     token: 'wrong token',
     refreshToken: 'wrong refresh token',
-    mode: Mode.DEV,
+    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
+    host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
 };
 
 test('it gets an error when trying to refresh with a wrong token', () => {
     const sdk3 = new Sdk(wrongConfig);
+
     if (process.env.SDK_ACCOUNTID) {
         return sdk3.authentication
             .refreshToken(process.env.SDK_ACCOUNTID)

@@ -4,15 +4,16 @@ import {
     ApiResponse,
     Iban as IbanModel,
     IbanValidation as IbanValidationModel,
+    User,
 } from '../src/models';
-import { Bank, Country, Mode } from '../src/enums';
+import { Bank, Country, Mode, Role } from '../src/enums';
 
 const config = {
     token: process.env.SDK_TOKEN,
     refreshToken: process.env.SDK_REFRESHTOKEN,
-    mode: Mode.DEV,
+    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
+    host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
 };
-
 const sdk = new Sdk(config);
 
 test('it gets all ibans of the current user and then gets all ids directly', () => {
@@ -49,7 +50,7 @@ test('it returns the created iban for the current user and then gets its id dire
 
 test('it gets one iban of a user based on its ibanId', () => {
     const ibanTest2 = new IbanModel(
-        Bank["Banque Casino"],
+        Bank['Banque Casino'],
         'FR7640618802980004033009519',
         'BNPFRPPXXX',
         Country.FR,
@@ -57,8 +58,9 @@ test('it gets one iban of a user based on its ibanId', () => {
     return sdk.iban.create(ibanTest2).then((data: any) => {
         const ibanId = data.dataInfo.idRib;
         return sdk.iban.getOne(ibanId).then((data: any) => {
+            console.log ('iban data', data)
             expect(ApiResponse.getId(data)).toHaveProperty('idRib', ibanId);
-            expect(data.dataInfo).toHaveProperty('bankName',"Banque Casino" );
+            expect(data.dataInfo).toHaveProperty('bankName', 'Banque Casino');
         });
     });
 });
@@ -80,6 +82,17 @@ test('it sets one iban of a user as the default one', () => {
 });
 
 test('it returns the validated iban based on its ibanId', () => {
+    const randomUserName = `mc${Math.floor(Math.random() * 10000)}`;
+    const userTest = new User(
+        'coulon',
+        'newmatthieu',
+        'mattmatt',
+        Role.ADMIN,
+        randomUserName,
+        'mcpassword',
+        'matt@example.com',
+        Country.FR,
+    );
     const ibanTest = new IbanModel(
         Bank['La Banque Postale Particuliers'],
         'FR7640618802980004033009519',
@@ -87,11 +100,16 @@ test('it returns the validated iban based on its ibanId', () => {
         Country.FR,
     );
     const newIban = new IbanValidationModel(Bank.LCL);
-    return sdk.iban.create(ibanTest).then((data: any) => {
-        const ibanId = data.dataInfo.idRib;
-        return sdk.iban.validate(newIban, ibanId, 'paygreen' ).then((data: any) => {
-            expect(data.dataInfo).toHaveProperty('bankName', 'LCL');
-            expect(ApiResponse.getId(data)).toHaveProperty('idRib');
+
+    return sdk.user.create(userTest).then((data: any) => {
+        return sdk.iban.create(ibanTest, randomUserName).then((data: any) => {
+            const ibanId = data.dataInfo.idRib;
+            return sdk.iban
+                .validate(newIban, ibanId, randomUserName)
+                .then((data: any) => {
+                    expect(data.dataInfo).toHaveProperty('bankName', 'LCL');
+                    expect(ApiResponse.getId(data)).toHaveProperty('idRib');
+                });
         });
     });
 });
