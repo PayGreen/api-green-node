@@ -1,4 +1,5 @@
 require('dotenv').config('/.env');
+const { testConfig } = require('./config/testConfig');
 import { Sdk } from '../src';
 import {
     Address,
@@ -11,13 +12,7 @@ import {
 } from '../src/models';
 import { Mode, Transport } from '../src/enums';
 
-const config = {
-    token: process.env.SDK_TOKEN,
-    refreshToken: process.env.SDK_REFRESHTOKEN,
-    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
-    host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
-};
-const sdk = new Sdk(config);
+const sdk = new Sdk(testConfig);
 const randomFingerprint = Tools.randomFingerprint();
 
 test('it adds a web estimate', () => {

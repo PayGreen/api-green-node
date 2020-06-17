@@ -91,20 +91,19 @@ export class User extends MainBuilder {
 
     /**
      * UPDATE ONE | /account/{accountId}/user/{userName}
-     *  @param {UserModel} UpdatedUser - Object containing all new user information
+     *  @param {object} UpdatedUser - Object containing one or more updated fields for user
      *  @param {string?} userNameValue - Optional, by default UserName used will be the one from identity, only Admin
      * can use a specific UserNameValue to modify a different user of the company account
      *  @returns {Promise.<IApiResponse>} Get object with new data updated
      */
     update = (
-        UpdatedUser: UserModel,
+        UpdatedUser: object,
         userNameValue?: string,
     ): Promise<IApiResponse> => {
-        const serializedUpdatedUser = serialize(UpdatedUser);
         return this.axiosRequest
-            .put(
+            .patch(
                 this.buildUrl(true, User.urlUser, userNameValue),
-                serializedUpdatedUser,
+                UpdatedUser,
             )
             .then((res) => {
                 const filteredData = this.ApiResponse.filterResponse(

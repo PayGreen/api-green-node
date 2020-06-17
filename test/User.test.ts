@@ -1,16 +1,11 @@
 require('dotenv').config('/.env');
+const { testConfig } = require('./config/testConfig');
 import { Sdk } from '../src';
 import { User } from '../src/models';
 import { ApiResponse } from '../src/models/ApiResponse';
 import { Country, Mode, Role } from '../src/enums';
 
-const config = {
-    token: process.env.SDK_TOKEN,
-    refreshToken: process.env.SDK_REFRESHTOKEN,
-    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
-    host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
-};
-const sdk = new Sdk(config);
+const sdk = new Sdk(testConfig);
 
 test('it gets the account based on account id', () => {
     return sdk.user.getAccount().then((data: any) => {
@@ -58,6 +53,7 @@ test('it returns the created user', () => {
         'matt@example.com',
         Country.FR,
     );
+
     return sdk.user.create(userTest).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
@@ -71,25 +67,18 @@ test('it returns the created user', () => {
 });
 
 test('it returns the updated user based on his username', () => {
-    const userTest = new User(
-        'coulon',
-        'newmatthieu',
-        'mattmatt',
-        Role.ADMIN,
-        randomUserName,
-        'mcpassword',
-        'matt@example.com',
-        Country.FR,
-    );
+    const userTest = {
+        lastname: 'coulon2',
+        firstname: 'newmatthieu2',
+    };
+
     return sdk.user.update(userTest, randomUserName).then((data: any) => {
-        expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
-            expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu'),
-            expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
-        expect(data.dataInfo.password).toBeUndefined();
-        expect(ApiResponse.getId(data)).toHaveProperty(
-            'username',
-            randomUserName,
-        );
+        expect(data.dataInfo).toHaveProperty('lastname', 'coulon2'),
+            expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu2'),
+            expect(ApiResponse.getId(data)).toHaveProperty(
+                'username',
+                randomUserName,
+            );
     });
 });
 
@@ -133,7 +122,7 @@ test('it gets an error because of wrong token', () => {
         host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
     };
     const sdk2 = new Sdk(wrongConfig);
-    
+
     return sdk2.user.getAll().then((data: any) => {
         expect(ApiResponse.isInvalid(data)).toBe(true),
             expect(ApiResponse.getErrorMessage(data)).toBe('Unauthorized');

@@ -2,7 +2,7 @@ require('dotenv').config('/.env');
 import { Iban } from '../src/models';
 import { Bank, Country } from '../src/enums';
 import { Tools } from '../src/models';
-import { deserialize, serialize } from 'typescript-json-serializer';
+import { deserialize } from 'typescript-json-serializer';
 
 test('Add firstname of a user with User Model', () => {
     const ibanTest = new Iban();

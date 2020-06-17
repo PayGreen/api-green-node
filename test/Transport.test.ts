@@ -1,15 +1,10 @@
 require('dotenv').config('/.env');
+const { testConfig } = require('./config/testConfig');
 import { Sdk } from '../src';
 import { ApiResponse } from '../src/models/ApiResponse';
 import { Mode } from '../src/enums';
 
-const config = {
-    token: process.env.SDK_TOKEN,
-    refreshToken: process.env.SDK_REFRESHTOKEN,
-    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
-    host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
-};
-const sdk = new Sdk(config);
+const sdk = new Sdk(testConfig);
 
 test('it gets all transports available inside the Api', () => {
     return sdk.transport.getAll().then((data: any) => {

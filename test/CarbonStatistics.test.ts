@@ -1,15 +1,10 @@
 require('dotenv').config('/.env');
+const { testConfig } = require('./config/testConfig');
 import { Sdk } from '../src';
 import { Mode } from '../src/enums';
 import { ApiResponse, Tools } from '../src/models';
 
-const config = {
-    token: process.env.SDK_TOKEN,
-    refreshToken: process.env.SDK_REFRESHTOKEN,
-    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
-    host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
-};
-const sdk = new Sdk(config);
+const sdk = new Sdk(testConfig);
 
 test('it gets carbon statistics without any parameter', () => {
     return sdk.carbonStatistics.get().then((data: any) => {
@@ -31,11 +26,11 @@ test('it gets carbon statistics based on a specific date and convert estimated p
 test('it gets carbon statistics based on a specific period and convert estimated CO2eq in tons to kilograms', () => {
     const today = new Date().toISOString().substring(0, 10);
     return sdk.carbonStatistics.getAPeriod('2020-03-29').then((data: any) => {
-         expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo.period.start).toContain('2020-03-29');
         expect(data.dataInfo.period.end).toContain(today);
         const Co2InKilos = Tools.tonsCo2ToKilosCo2(
-            data.dataInfo.estimatedCarbon
+            data.dataInfo.estimatedCarbon,
         );
         expect(Co2InKilos).toEqual(data.dataInfo.estimatedCarbon * 1000);
     });

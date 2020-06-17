@@ -1,4 +1,5 @@
 require('dotenv').config('/.env');
+const { testConfig } = require('./config/testConfig');
 import { Sdk } from '../src';
 import {
     ApiResponse,
@@ -8,13 +9,7 @@ import {
 } from '../src/models';
 import { Bank, Country, Mode, Role } from '../src/enums';
 
-const config = {
-    token: process.env.SDK_TOKEN,
-    refreshToken: process.env.SDK_REFRESHTOKEN,
-    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
-    host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
-};
-const sdk = new Sdk(config);
+const sdk = new Sdk(testConfig);
 
 test('it gets all ibans of the current user and then gets all ids directly', () => {
     return sdk.iban.getAll().then((data: any) => {
@@ -58,7 +53,6 @@ test('it gets one iban of a user based on its ibanId', () => {
     return sdk.iban.create(ibanTest2).then((data: any) => {
         const ibanId = data.dataInfo.idRib;
         return sdk.iban.getOne(ibanId).then((data: any) => {
-            console.log ('iban data', data)
             expect(ApiResponse.getId(data)).toHaveProperty('idRib', ibanId);
             expect(data.dataInfo).toHaveProperty('bankName', 'Banque Casino');
         });
@@ -76,7 +70,7 @@ test('it sets one iban of a user as the default one', () => {
     return sdk.iban.create(ibanTest).then((data: any) => {
         const ibanId = data.dataInfo.idRib;
         return sdk.iban.setAsDefault(ibanId).then((data: any) => {
-            expect(data.dataInfo.isDefault).toBe('1');
+            expect(data.dataInfo.isDefault).toBe(1);
         });
     });
 });

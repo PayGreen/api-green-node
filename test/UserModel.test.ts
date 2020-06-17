@@ -2,7 +2,7 @@ require('dotenv').config('/.env');
 import { User } from '../src/models';
 import { Country, Role } from '../src/enums';
 import { Tools } from '../src/models';
-import { deserialize, serialize } from 'typescript-json-serializer';
+import { deserialize } from 'typescript-json-serializer';
 
 test('Add firstname of a user with User Model', () => {
     const userTest = new User();
