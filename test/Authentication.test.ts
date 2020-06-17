@@ -1,5 +1,5 @@
 require('dotenv').config('/.env');
-const { testConfig } = require('./config/testConfig');
+const { localConfig } = require('./config/localConfig');
 import { ApiResponse } from '../src/models/ApiResponse';
 import { Host, Mode } from '../src/enums';
 import { Sdk } from '../src';
@@ -10,7 +10,6 @@ test('it gets a token access to request Api with prefilled host inside Sdk based
         host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
     };
     const sdk = new Sdk(config);
-
     if (
         process.env.SDK_USERNAME &&
         process.env.SDK_PASSWORD &&
@@ -58,7 +57,7 @@ test('it defines host and mode by default to PROD without any parameter', () => 
 
 test('it gets a refreshed token each time the refreshtoken() method is used and if token/refresh token are valid, else it renews all tokens with login()', () => {
     if (process.env.SDK_ACCOUNTID) {
-        const sdk = new Sdk(testConfig);
+        const sdk = new Sdk(localConfig);
         return sdk.authentication
             .refreshToken(process.env.SDK_ACCOUNTID)
             .then((data: any) => {
@@ -136,7 +135,6 @@ const wrongConfig = {
 
 test('it gets an error when trying to refresh with a wrong token', () => {
     const sdk3 = new Sdk(wrongConfig);
-
     if (process.env.SDK_ACCOUNTID) {
         return sdk3.authentication
             .refreshToken(process.env.SDK_ACCOUNTID)

@@ -1,5 +1,5 @@
 require('dotenv').config('/.env');
-const { testConfig } = require('./config/testConfig');
+const { localConfig } = require('./config/localConfig');
 import { Sdk } from '../src';
 import {
     Address,
@@ -10,9 +10,9 @@ import {
     Tools,
     WebEstimate,
 } from '../src/models';
-import { Mode, Transport } from '../src/enums';
+import { Transport } from '../src/enums';
 
-const sdk = new Sdk(testConfig);
+const sdk = new Sdk(localConfig);
 const randomFingerprint = Tools.randomFingerprint();
 
 test('it adds a web estimate', () => {

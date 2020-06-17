@@ -1,5 +1,5 @@
 require('dotenv').config('/.env');
-const { testConfig } = require('./config/testConfig');
+const { localConfig } = require('./config/localConfig');
 import { Sdk } from '../src';
 import {
     ApiResponse,
@@ -7,9 +7,9 @@ import {
     IbanValidation as IbanValidationModel,
     User,
 } from '../src/models';
-import { Bank, Country, Mode, Role } from '../src/enums';
+import { Bank, Country, Role } from '../src/enums';
 
-const sdk = new Sdk(testConfig);
+const sdk = new Sdk(localConfig);
 
 test('it gets all ibans of the current user and then gets all ids directly', () => {
     return sdk.iban.getAll().then((data: any) => {

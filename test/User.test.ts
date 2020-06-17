@@ -1,11 +1,11 @@
 require('dotenv').config('/.env');
-const { testConfig } = require('./config/testConfig');
+const { localConfig } = require('./config/localConfig');
 import { Sdk } from '../src';
 import { User } from '../src/models';
 import { ApiResponse } from '../src/models/ApiResponse';
 import { Country, Mode, Role } from '../src/enums';
 
-const sdk = new Sdk(testConfig);
+const sdk = new Sdk(localConfig);
 
 test('it gets the account based on account id', () => {
     return sdk.user.getAccount().then((data: any) => {
@@ -53,7 +53,6 @@ test('it returns the created user', () => {
         'matt@example.com',
         Country.FR,
     );
-
     return sdk.user.create(userTest).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
             expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
@@ -71,7 +70,6 @@ test('it returns the updated user based on his username', () => {
         lastname: 'coulon2',
         firstname: 'newmatthieu2',
     };
-
     return sdk.user.update(userTest, randomUserName).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', 'coulon2'),
             expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu2'),
@@ -122,7 +120,6 @@ test('it gets an error because of wrong token', () => {
         host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
     };
     const sdk2 = new Sdk(wrongConfig);
-
     return sdk2.user.getAll().then((data: any) => {
         expect(ApiResponse.isInvalid(data)).toBe(true),
             expect(ApiResponse.getErrorMessage(data)).toBe('Unauthorized');

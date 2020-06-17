@@ -1,10 +1,9 @@
 require('dotenv').config('/.env');
-const { testConfig } = require('./config/testConfig');
+const { localConfig } = require('./config/localConfig');
 import { Sdk } from '../src';
-import { Mode } from '../src/enums';
 import { ApiResponse, Tools } from '../src/models';
 
-const sdk = new Sdk(testConfig);
+const sdk = new Sdk(localConfig);
 
 test('it gets carbon statistics without any parameter', () => {
     return sdk.carbonStatistics.get().then((data: any) => {
