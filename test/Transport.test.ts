@@ -8,7 +8,6 @@ const sdk = new Sdk(localConfig);
 test('it gets all transports available inside the Api', () => {
     return sdk.transport.getAll().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.success).toBe(true);
         data.dataInfo._embedded.ccarbon_transport.forEach((e) => {
             expect(e).toHaveProperty('idTransport');
             expect(e).toHaveProperty('idEnergy');
