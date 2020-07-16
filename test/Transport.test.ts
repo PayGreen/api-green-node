@@ -7,11 +7,18 @@ const sdk = new Sdk(localConfig);
 
 test('it gets all transports available inside the Api', () => {
     return sdk.transport.getAll().then((data: any) => {
-        expect(ApiResponse.isSuccessful(data)).toBe(true),
-            expect(data.success).toBe(true);
-        expect(data.dataInfo._embedded.ccarbon_transport[0]).toHaveProperty(
-            'vehicle',
-        );
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.success).toBe(true);
+        data.dataInfo._embedded.ccarbon_transport.forEach((e) => {
+            expect(e).toHaveProperty('idTransport');
+            expect(e).toHaveProperty('idEnergy');
+            expect(e).toHaveProperty('idAccount');
+            expect(e).toHaveProperty('vehicle');
+            expect(e).toHaveProperty('uuid');
+            expect(e).toHaveProperty('name');
+            expect(e).toHaveProperty('maxWeight');
+            expect(e).toHaveProperty('consumption');
+        });
     });
 });
 
