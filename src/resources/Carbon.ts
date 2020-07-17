@@ -9,7 +9,7 @@ import { serialize } from 'typescript-json-serializer';
  * @property {string} url - main url to build Api requests for this class
  */
 export class Carbon extends MainBuilder {
-    // we keep both urls temporary until all methods are updated
+    // we keep both urls temporarily until all methods are updated
     static url = '/carbon/footprints';
     static legacyUrl = '/tree/ccarbon';
 
@@ -74,7 +74,7 @@ export class Carbon extends MainBuilder {
      * @param {Status} status - status of the carbon footprint - based on enum
      * @returns {Promise.<IApiResponse>} - get all carbon footprints associated to fingerprint and filtered by status
      */
-    getAllFootprints = (status: string): Promise<IApiResponse> => {
+    getAllFootprints = (status: Status): Promise<IApiResponse> => {
         return this.axiosRequest
             .get(this.buildUrl(false, Carbon.url) + '?status=' + Status[status])
             .then((res) => {
@@ -90,7 +90,7 @@ export class Carbon extends MainBuilder {
     /**
      * CLOSE FOOTPRINT | /carbon/footprints/{fingerprint}
      * @param {string} fingerPrint - an unique name to identify each carbon footprint
-     * @returns {Promise.<IApiResponse>} - get response with status 200 if success, the carbon footprint is closed and cannot be modified or purchased.
+     * @returns {Promise.<IApiResponse>} - get response with status 200 if success, the carbon footprint is closed and cannot be modified or purchased anymore.
      */
     closeFootprint = (fingerPrint: string): Promise<IApiResponse> => {
         return this.axiosRequest

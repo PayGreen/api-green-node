@@ -10,7 +10,7 @@ import {
     Tools,
     WebEstimate,
 } from '../src/models';
-import { Transport } from '../src/enums';
+import { Status, Transport } from '../src/enums';
 
 const sdk = new Sdk(localConfig);
 const randomFingerprint = Tools.randomFingerprint();
@@ -29,10 +29,11 @@ test('it adds a web estimate', () => {
     });
 });
 
-test('it gets an estimate based on fingerPrint and convert estimated price in euros cents to euros', () => {
-    return sdk.carbon.getEstimate(randomFingerprint).then((data: any) => {
+test('it gets a carbon footprint based on fingerPrint and converts estimated price in euros cents to euros', () => {
+    return sdk.carbon.getOneFootprint(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerprint);
+        expect(data.dataInfo).toHaveProperty('status', 'ONGOING');
         const PriceInEuros = Tools.eurosCentstoEuros(
             data.dataInfo.estimatedPrice,
         );
@@ -40,13 +41,39 @@ test('it gets an estimate based on fingerPrint and convert estimated price in eu
     });
 });
 
-test("it gets an estimate based on fingerPrint and gets its id 'fingerPrint' directly", () => {
-    return sdk.carbon.getEstimate(randomFingerprint).then((data: any) => {
+test('it tries to get a carbon footprint with wrong fingerPrint', () => {
+    return sdk.carbon.getOneFootprint('wrongFingerprint').then((data: any) => {
+        expect(ApiResponse.isInvalid(data)).toBe(true);
+        expect(ApiResponse.getErrorMessage(data)).toBe(
+            'Footprint not found with this fingerprint: wrongFingerprint',
+        );
+    });
+});
+
+test("it gets a carbon footprint based on fingerPrint and gets its id 'fingerPrint' directly", () => {
+    return sdk.carbon.getOneFootprint(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(ApiResponse.getId(data)).toHaveProperty(
             'fingerprint',
             randomFingerprint,
         );
+        expect(data.dataInfo).toHaveProperty('estimatedCarbon');
+        expect(data.dataInfo).toHaveProperty('estimatedPrice');
+    });
+});
+
+test('it empties a carbon footprint based on fingerPrint if it is neither purchased nor closed', () => {
+    return sdk.carbon.emptyFootprint(randomFingerprint).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.status).toEqual(204);
+    });
+});
+
+test('it tries to purchase a footprint after having emptied it', () => {
+    return sdk.carbon.purchaseFootprint(randomFingerprint).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.dataInfo).toHaveProperty('status', 'PURCHASED');
+        expect(data.dataInfo).toHaveProperty('estimatedCarbon', '0');
     });
 });
 
@@ -88,6 +115,26 @@ test('it adds a path estimate', () => {
     });
 });
 
+test('it closes a footprint based on fingerPrint', () => {
+    return sdk.carbon.closeFootprint(randomFingerprint2).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.dataInfo).toHaveProperty('status', 'CLOSED');
+    });
+});
+
+test('it tries to purchase a footprint after having closed it', () => {
+    return sdk.carbon
+        .purchaseFootprint(randomFingerprint2)
+        .then((data: any) => {
+            expect(ApiResponse.isInvalid(data)).toBe(true);
+            expect(ApiResponse.getErrorMessage(data)).toBe(
+                'Purchasing a CarbonFootprint is only allowed when its status is ONGOING (currently CLOSED)',
+            );
+        });
+});
+
+const randomFingerprint3 = Tools.randomFingerprint();
+
 test('it adds a mixed path estimate', () => {
     const address1 = new Coordinate(
         'New-York',
@@ -114,7 +161,7 @@ test('it adds a mixed path estimate', () => {
         Transport['TER France - Diesel'],
     );
 
-    const newPathEstimate = new PathEstimate(randomFingerprint2, 20, 1, [
+    const newPathEstimate = new PathEstimate(randomFingerprint3, 20, 1, [
         path1,
         path2,
     ]);
@@ -125,16 +172,25 @@ test('it adds a mixed path estimate', () => {
     });
 });
 
-test('it completes an estimate based on fingerPrint', () => {
-    return sdk.carbon.completeEstimate(randomFingerprint2).then((data: any) => {
-        expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.status).toEqual(200);
-    });
+test('it purchases a footprint based on fingerPrint', () => {
+    return sdk.carbon
+        .purchaseFootprint(randomFingerprint3)
+        .then((data: any) => {
+            expect(ApiResponse.isSuccessful(data)).toBe(true);
+            expect(data.status).toEqual(200);
+            expect(data.dataInfo).toHaveProperty('status', 'PURCHASED');
+        });
 });
 
-test('it deletes an estimate based on fingerPrint if it is not completed', () => {
-    return sdk.carbon.deleteEstimate(randomFingerprint).then((data: any) => {
+test('it gets all footprint with PURCHASED status', () => {
+    return sdk.carbon.getAllFootprints(Status.PURCHASED).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.status).toEqual(204);
+        expect(data.status).toEqual(200);
+        data.dataInfo._embedded.footprint.forEach((e) => {
+            expect(e).toHaveProperty('fingerprint');
+            expect(e).toHaveProperty('estimatedCarbon');
+            expect(e).toHaveProperty('estimatedPrice');
+            expect(e).toHaveProperty('status', 'PURCHASED');
+        });
     });
 });
