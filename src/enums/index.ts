@@ -6,6 +6,7 @@ import { Identifier } from './Identifier';
 import { Host } from './Host';
 import { Mode } from './Mode';
 import { Role } from './Role';
+import { Status } from './Status';
 import { Transport } from './Transport';
 import { User } from './User';
 
@@ -18,6 +19,7 @@ export {
     Identifier,
     Mode,
     Role,
+    Status,
     Transport,
     User,
 };
