@@ -169,7 +169,11 @@ export class Carbon extends MainBuilder {
      */
     getAllFootprints = (status: Status): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(this.buildUrl(false, Carbon.footprintUrl) + '?status=' + Status[status])
+            .get(
+                this.buildUrl(false, Carbon.footprintUrl) +
+                    '?status=' +
+                    Status[status],
+            )
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
