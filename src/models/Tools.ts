@@ -48,7 +48,7 @@ export class Tools {
 
     /**
      * VERIFY DATA |
-     * @param {any} data - Object created with one of the model classes (user, iban, webestimate, pathestimate,)
+     * @param {any} data - Object created with one of the model classes (user, iban, webFootprint, webFootprintSimulation, transportationFootprint, transportationFootprintSimulation)
      * @returns {any} - New object with all errors informations or a string validation
      */
     static verify = (data: any): any => {

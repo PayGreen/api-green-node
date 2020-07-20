@@ -8,22 +8,55 @@ import {
     Path,
     PathEstimate,
     Tools,
-    WebEstimate,
+    WebFootprint,
+    WebFootprintSimulation,
 } from '../src/models';
 import { Status, Transport } from '../src/enums';
 
 const sdk = new Sdk(localConfig);
 const randomFingerprint = Tools.randomFingerprint();
 
-test('it adds a web estimate', () => {
-    const newWebEstimate = new WebEstimate(
+test('it creates a web footprint simulation without fingerprint', () => {
+    const newWebFootprintSimulation = new WebFootprintSimulation(
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+        140,
+        6,
+        180,
+    );
+    return sdk.carbon
+        .simulateWebFootprint(newWebFootprintSimulation)
+        .then((data: any) => {
+            expect(ApiResponse.isSuccessful(data)).toBe(true);
+            expect(data.status).toEqual(201);
+        });
+});
+
+test('it gets an error when trying to add a footprint simulation without fingerprint', () => {
+    const newWebFootprintSimulation = new WebFootprintSimulation(
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+        140,
+        6,
+        180,
+    );
+    return sdk.carbon
+        .addWebFootprint(newWebFootprintSimulation)
+        .then((data: any) => {
+            expect(ApiResponse.isInvalid(data)).toBe(true);
+            expect(ApiResponse.getErrorMessage(data)).toBe(
+                "you cannot add a web footprint without fingerprint in your web object, data won't be saved",
+            );
+        });
+});
+
+test('it adds a web footprint with fingerprint', () => {
+    const newWebFootprint = new WebFootprint(
         randomFingerprint,
         'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
         140,
         6,
         180,
     );
-    return sdk.carbon.addWebEstimate(newWebEstimate).then((data: any) => {
+    return sdk.carbon.addWebFootprint(newWebFootprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(201);
     });
@@ -109,10 +142,12 @@ test('it adds a path estimate', () => {
         path2,
     ]);
 
-    return sdk.carbon.addPathEstimate(newPathEstimate).then((data: any) => {
-        expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.status).toEqual(201);
-    });
+    return sdk.carbon
+        .addTransportationFootprint(newPathEstimate)
+        .then((data: any) => {
+            expect(ApiResponse.isSuccessful(data)).toBe(true);
+            expect(data.status).toEqual(201);
+        });
 });
 
 test('it closes a footprint based on fingerPrint', () => {
@@ -166,10 +201,12 @@ test('it adds a mixed path estimate', () => {
         path2,
     ]);
 
-    return sdk.carbon.addPathEstimate(newPathEstimate).then((data: any) => {
-        expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.status).toEqual(201);
-    });
+    return sdk.carbon
+        .addTransportationFootprint(newPathEstimate)
+        .then((data: any) => {
+            expect(ApiResponse.isSuccessful(data)).toBe(true);
+            expect(data.status).toEqual(201);
+        });
 });
 
 test('it purchases a footprint based on fingerPrint', () => {

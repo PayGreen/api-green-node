@@ -2,7 +2,8 @@ import { User } from './User';
 import { ApiResponse } from './ApiResponse';
 import { Iban } from './Iban';
 import { IbanValidation } from './IbanValidation';
-import { WebEstimate } from './WebEstimate';
+import { WebFootprint } from './WebFootprint';
+import { WebFootprintSimulation } from './WebFootprintSimulation';
 import { PathEstimate } from './PathEstimate';
 import { Address } from './Address';
 import { Coordinate } from './Coordinate';
@@ -19,5 +20,6 @@ export {
     PathEstimate,
     Tools,
     User,
-    WebEstimate,
+    WebFootprint,
+    WebFootprintSimulation,
 };
