@@ -3,7 +3,7 @@ import { IsInt, ArrayMinSize, ValidateNested } from 'class-validator';
 import { Path, Address } from '.';
 
 /**
- * Transportation Footprint Model Class to create data to add to a Carbon Footprint
+ * Transportation Footprint Simulation Model Class to create data to simulate a carbon transportation footprint
  * @property {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
  * @property {number?} countPackages - number of packages transported
  * @property {Array<Address>?} addresses - an array containing all adresses
@@ -26,7 +26,7 @@ export class TransportationFootprintSimulation {
     public transports?: Array<object>;
 
     /**
-     * Create the path navigation estimate object.
+     * Create the transportation footprint object.
      * @param {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
      * @param {number?} countPackages - number of packages transported
      * @param {Array<object>} path - an array containing all adresses and transports combined
@@ -39,10 +39,7 @@ export class TransportationFootprintSimulation {
         this.weightPackages = weightPackages;
         this.countPackages = countPackages;
         if (path) {
-            const {
-                addresses,
-                transports,
-            } = TransportationFootprintSimulation.formatPath(path);
+            const { addresses, transports } = this.formatPath(path);
             this.addresses = addresses;
             this.transports = transports;
         }

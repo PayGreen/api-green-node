@@ -2,7 +2,7 @@ import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { MinLength, IsInt, IsEmpty } from 'class-validator';
 
 /**
- * WebFootprint Simulation Model Class to create Data to simulate a Carbon Web Footprint
+ * Web Footprint Simulation Model Class to create data to simulate a carbon web footprint
  * @property {string?} userAgent - user agent headers
  * @property {string} device - device will be automatically filled by Api based on the User Agent provided
  * @property {string} browser - browser will be automatically filled by Api based on the User Agent provided
@@ -35,7 +35,7 @@ export class WebFootprintSimulation {
     public externalId?: string;
 
     /**
-     * Create the web navigation estimate object.
+     * Create the web footprint object.
      * @param {string?} userAgent - user agent headers
      * @param {number?} countImages - number of images requested during the navigation
      * @param {number?} countPages - number of pages requested during the navigation
