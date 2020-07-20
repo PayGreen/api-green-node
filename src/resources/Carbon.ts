@@ -261,7 +261,7 @@ export class Carbon extends MainBuilder {
      * GET ALL PURCHASES | /carbon/purchases/
      * @returns {Promise.<IApiResponse>} - get all carbon footprints associated to fingerprint with status 'PURCHASED'
      */
-    getAllPurchases = (status: Status): Promise<IApiResponse> => {
+    getAllPurchases = (): Promise<IApiResponse> => {
         return this.axiosRequest
             .get(this.buildUrl(false, Carbon.purchasesUrl))
             .then((res) => {
