@@ -3,15 +3,13 @@ import {
     MinLength,
     IsInt,
     ArrayMinSize,
-    ValidateNested
+    ValidateNested,
 } from 'class-validator';
-import { EstimateType } from '../enums';
 import { Path, Address } from '../models';
 
 /**
  * PathEstimate Model Class to create data to add to a Carbon Path Estimate
  * @alias PathEstimate
- * @property {EstimateType} type - type of Estimate based on enum
  * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
  * @property {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
  * @property {number?} countPackages - number of packages transported
@@ -20,9 +18,6 @@ import { Path, Address } from '../models';
  */
 @Serializable()
 export class PathEstimate {
-    @JsonProperty('type')
-    @MinLength(1)
-    public type: EstimateType;
     @JsonProperty('fingerprint')
     @MinLength(1)
     public fingerprint?: string | null;
@@ -53,7 +48,6 @@ export class PathEstimate {
         countPackages?: number | null,
         path?: Array<Path>,
     ) {
-        this.type = EstimateType.PATH;
         this.fingerprint = fingerprint;
         this.weightPackages = weightPackages;
         this.countPackages = countPackages;

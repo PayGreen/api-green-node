@@ -1,6 +1,5 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
 import { MinLength, IsInt, IsEmpty, ValidateNested } from 'class-validator';
-import { EstimateType } from '../enums';
 
 /**
  * WebNavigation Model Class to create Web Data
@@ -54,15 +53,11 @@ class WebNavigation {
 
 /**
  * WebEstimate Model Class to create Data to add to a Carbon Web Estimate
- * @property {EstimateType} type - type of Estimate based on enum
  * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
  * @property {WebNavigation} webNavigation - object built with WebNavigation class containing web data
  */
 @Serializable()
 export class WebEstimate {
-    @JsonProperty('type')
-    @MinLength(1)
-    public type: EstimateType;
     @JsonProperty('fingerprint')
     @MinLength(1)
     public fingerprint?: string | null;
@@ -87,7 +82,6 @@ export class WebEstimate {
         time?: number | null,
         externalId?: string | null,
     ) {
-        this.type = EstimateType.WEB;
         this.fingerprint = fingerprint;
         this.webNavigation = new WebNavigation(
             userAgent,

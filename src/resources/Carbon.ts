@@ -9,23 +9,52 @@ import { serialize } from 'typescript-json-serializer';
  * @property {string} url - main url to build Api requests for this class
  */
 export class Carbon extends MainBuilder {
-    // we keep both urls temporarily until all methods are updated
     static url = '/carbon/footprints';
-    static legacyUrl = '/tree/ccarbon';
 
     /**
-     * ADD WEB ESTIMATE | /tree/ccarbon
-     * @param {WebEstimate} newEstimate - object containing all datas about the ongoing web carbon offsetting estimate - Only admin can add web estimate
+     * ADD WEB FOOTPRINT | /carbon/web
+     * @description - to create a web carbon footprint associated with a unique fingerprint and that will be saved in database
+     * @param {WebEstimate} newEstimate - object containing all datas about the ongoing web carbon footprint WITH fingerprint - Only admin can add web footprint
      * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
-    addWebEstimate = (newEstimate: WebEstimate): Promise<IApiResponse> => {
+    addWebFootprint = (newEstimate: WebEstimate): Promise<IApiResponse> => {
+        if (!newEstimate.fingerprint) {
+            return this.ApiResponse.formatResponse(
+                false,
+                "you cannot add a web footprint without fingerprint in your web object, data won't be saved",
+                400,
+            );
+        } else {
+            const serializedEstimate = serialize(newEstimate);
+            return this.axiosRequest
+                .post(this.buildUrl(false, Carbon.url), serializedEstimate)
+                .then((res) => {
+                    return this.ApiResponse.formatResponse(
+                        true,
+                        res.data,
+                        res.status,
+                    );
+                })
+                .catch(this.ApiResponse.formatError);
+        }
+    };
+
+    /**
+     * SIMULATE WEB FOOTPRINT | /carbon/web
+     * @description - to create a web carbon footprint WITHOUT fingerprint and get an estimation that will NOT be saved in database
+     * @param {WebEstimate} newEstimate - object containing all datas about the ongoing web carbon footprint WITHOUT fingerprint - Only admin can add web footprint
+     * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
+     */
+    simulateWebFootprint = (
+        newEstimate: WebEstimate,
+    ): Promise<IApiResponse> => {
         const serializedEstimate = serialize(newEstimate);
         return this.axiosRequest
-            .post(this.buildUrl(false, Carbon.legacyUrl), serializedEstimate)
+            .post(this.buildUrl(false, Carbon.url), serializedEstimate)
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
-                    'web estimate added successfully',
+                    res.data,
                     res.status,
                 );
             })
@@ -33,18 +62,51 @@ export class Carbon extends MainBuilder {
     };
 
     /**
-     * ADD PATH ESTIMATE | /tree/ccarbon
-     * @param {PathEstimate} newEstimate - object containing all datas about the ongoing path carbon offsetting estimate - Only admin can add path estimate
+     * ADD TRANSPORTATION FOOTPRINT | /carbon/transportation
+     * @description - to create a transportation carbon footprint associated with a unique fingerprint and that will be saved in database
+     * @param {PathEstimate} newEstimate - object containing all datas about the ongoing transportation carbon footprint WITH fingerprint - Only admin can add transportation footprint
      * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
-    addPathEstimate = (newEstimate: PathEstimate): Promise<IApiResponse> => {
+    addTransportationFootprint = (
+        newEstimate: PathEstimate,
+    ): Promise<IApiResponse> => {
+        if (!newEstimate.fingerprint) {
+            return this.ApiResponse.formatResponse(
+                false,
+                "you cannot add a web footprint without fingerprint in your transportation object, data won't be saved",
+                400,
+            );
+        } else {
+            const serializedEstimate = serialize(newEstimate);
+            return this.axiosRequest
+                .post(this.buildUrl(false, Carbon.url), serializedEstimate)
+                .then((res) => {
+                    return this.ApiResponse.formatResponse(
+                        true,
+                        res.data,
+                        res.status,
+                    );
+                })
+                .catch(this.ApiResponse.formatError);
+        }
+    };
+
+    /**
+     * SIMULATE TRANSPORTATION FOOTPRINT | /carbon/transportation
+     * @description - to create a transportation carbon footprint WITHOUT fingerprint and get an estimation that will NOT be saved in database
+     * @param {PathEstimate} newEstimate - object containing all datas about the ongoing transportation carbon footprint WITHOUT fingerprint - Only admin can add transportation footprint
+     * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
+     */
+    simulateTransportationFootprint = (
+        newEstimate: PathEstimate,
+    ): Promise<IApiResponse> => {
         const serializedEstimate = serialize(newEstimate);
         return this.axiosRequest
-            .post(this.buildUrl(false, Carbon.legacyUrl), serializedEstimate)
+            .post(this.buildUrl(false, Carbon.url), serializedEstimate)
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
-                    'path estimate added successfully',
+                    res.data,
                     res.status,
                 );
             })
