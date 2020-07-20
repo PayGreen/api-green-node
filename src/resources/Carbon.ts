@@ -14,7 +14,7 @@ import { serialize } from 'typescript-json-serializer';
  * @property {string} footprintUrl - url to build footprints Api requests for this class
  * @property {string} webUrl - url to simulate or add web data footprints for this class
  * @property {string} transportationUrl - url to simulate or add transportation data footprints for this class
- * @property {string} purchasesUrl - url to make purchases Api requests for this class
+ * @property {string} purchasesUrl - url to make footprints purchases Api requests for this class
  */
 export class Carbon extends MainBuilder {
     static footprintUrl = '/carbon/footprints';
@@ -259,7 +259,7 @@ export class Carbon extends MainBuilder {
 
     /**
      * GET ALL PURCHASES | /carbon/purchases/
-     * @returns {Promise.<IApiResponse>} - get all carbon footprints associated to fingerprint with status 'PURCHASED'
+     * @returns {Promise.<IApiResponse>} - get all carbon footprints that have been purchased by user
      */
     getAllPurchases = (): Promise<IApiResponse> => {
         return this.axiosRequest
