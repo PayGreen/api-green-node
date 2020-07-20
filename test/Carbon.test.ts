@@ -293,7 +293,7 @@ test('it gets one specific purchased carbon footprint based on fingerPrint', () 
     });
 });
 
-test('it gets an error t rying to get purchased carbon footprint with wrong fingerPrint', () => {
+test('it gets an error trying to get purchased carbon footprint with wrong fingerPrint', () => {
     return sdk.carbon
         .getOnePurchase('notPurchasedFingerprint')
         .then((data: any) => {
@@ -304,7 +304,7 @@ test('it gets an error t rying to get purchased carbon footprint with wrong fing
         });
 });
 
-test('it gets all footprints with PURCHASED status for one user', () => {
+test('it gets all footprints that have been purchased for one user', () => {
     return sdk.carbon.getAllPurchases().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(200);
