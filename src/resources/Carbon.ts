@@ -11,12 +11,12 @@ import { serialize } from 'typescript-json-serializer';
 
 /**
  * Carbon Class with all methods to request/modify carbon footprints infos
- * @property {string} url - url to build footprints Api requests for this class
+ * @property {string} footprintUrl - url to build footprints Api requests for this class
  * @property {string} webUrl - url to simulate or add web data footprints for this class
  * @property {string} transportationUrl - url to simulate or add transportation data footprints for this class
  */
 export class Carbon extends MainBuilder {
-    static url = '/carbon/footprints';
+    static footprintUrl = '/carbon/footprints';
     static webUrl = '/carbon/web';
     static transportationUrl = '/carbon/transportation';
 
@@ -149,7 +149,7 @@ export class Carbon extends MainBuilder {
      */
     getOneFootprint = (fingerPrint: string): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(this.buildUrl(true, Carbon.url, fingerPrint))
+            .get(this.buildUrl(true, Carbon.footprintUrl, fingerPrint))
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -167,7 +167,7 @@ export class Carbon extends MainBuilder {
      */
     getAllFootprints = (status: Status): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(this.buildUrl(false, Carbon.url) + '?status=' + Status[status])
+            .get(this.buildUrl(false, Carbon.footprintUrl) + '?status=' + Status[status])
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -185,7 +185,7 @@ export class Carbon extends MainBuilder {
      */
     closeFootprint = (fingerPrint: string): Promise<IApiResponse> => {
         return this.axiosRequest
-            .patch(this.buildUrl(true, Carbon.url, fingerPrint), {
+            .patch(this.buildUrl(true, Carbon.footprintUrl, fingerPrint), {
                 status: 'CLOSED',
             })
             .then((res) => {
@@ -205,7 +205,7 @@ export class Carbon extends MainBuilder {
      */
     purchaseFootprint = (fingerPrint: string): Promise<IApiResponse> => {
         return this.axiosRequest
-            .patch(this.buildUrl(true, Carbon.url, fingerPrint), {
+            .patch(this.buildUrl(true, Carbon.footprintUrl, fingerPrint), {
                 status: 'PURCHASED',
             })
             .then((res) => {
@@ -226,7 +226,7 @@ export class Carbon extends MainBuilder {
      */
     emptyFootprint = (fingerPrint: string): Promise<IApiResponse> => {
         return this.axiosRequest
-            .delete(this.buildUrl(true, Carbon.url, fingerPrint))
+            .delete(this.buildUrl(true, Carbon.footprintUrl, fingerPrint))
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
