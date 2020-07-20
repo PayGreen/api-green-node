@@ -7,10 +7,12 @@ import {
     Iban,
     IbanValidation,
     Path,
-    PathEstimate,
+    TransportationFootprint,
+    TransportationFootprintSimulation,
     Tools,
     User,
-    WebEstimate,
+    WebFootprint,
+    WebFootprintSimulation,
 } from './models';
 
 export { Sdk };
@@ -22,8 +24,10 @@ export {
     Iban,
     IbanValidation,
     Path,
-    PathEstimate,
+    TransportationFootprint,
+    TransportationFootprintSimulation,
     Tools,
     User,
-    WebEstimate,
+    WebFootprint,
+    WebFootprintSimulation,
 };

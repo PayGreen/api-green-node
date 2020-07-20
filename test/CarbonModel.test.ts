@@ -4,7 +4,7 @@ import {
     Address,
     Coordinate,
     Path,
-    PathEstimate,
+    TransportationFootprint,
     Tools,
     WebFootprint,
     WebFootprintSimulation,
@@ -43,7 +43,7 @@ test('it creates a web data with fingerprint of a carbon footprint with Model', 
 });
 
 
-test('it creates a web simulation of a carbon footprint with Model', () => {
+test('it creates a web simulation of a carbon footprint withput fingerprint with Model', () => {
     const webSimulationTest = new WebFootprintSimulation(
         'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
         140,
@@ -91,7 +91,7 @@ test('it creates a path simulation for carbon estimate with Address Model', () =
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new PathEstimate('NewFingerPrint', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewFingerPrint', 20, 1, [path1, path2]);
 
     expect(pathTest).toMatchObject({
         fingerprint: 'NewFingerPrint',
@@ -155,7 +155,7 @@ test('Verify method returns error with the name of the wrong property latitude',
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new PathEstimate('NewMixNYFrance', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewMixNYFrance', 20, 1, [path1, path2]);
     return Tools.verify(pathTest).then((data: any) => {
         expect(data[0].children[0].children[0]).toHaveProperty(
             'property',
@@ -190,7 +190,7 @@ test('it creates a mixed path simulation for carbon estimate with Address + Coor
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new PathEstimate('NewMixNYFrance', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewMixNYFrance', 20, 1, [path1, path2]);
 
     expect(pathTest).toMatchObject({
         fingerprint: 'NewMixNYFrance',

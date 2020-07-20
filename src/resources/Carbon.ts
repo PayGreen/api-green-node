@@ -1,12 +1,19 @@
 import { IApiResponse } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
-import { PathEstimate, WebFootprint, WebFootprintSimulation } from '../models';
+import {
+    TransportationFootprint,
+    TransportationFootprintSimulation,
+    WebFootprint,
+    WebFootprintSimulation,
+} from '../models';
 import { Status } from '../enums';
 import { serialize } from 'typescript-json-serializer';
 
 /**
  * Carbon Class with all methods to request/modify carbon footprints infos
- * @property {string} url - main url to build Api requests for this class
+ * @property {string} url - url to build footprints Api requests for this class
+ * @property {string} webUrl - url to simulate or add web data footprints for this class
+ * @property {string} transportationUrl - url to simulate or add transportation data footprints for this class
  */
 export class Carbon extends MainBuilder {
     static url = '/carbon/footprints';
@@ -49,7 +56,7 @@ export class Carbon extends MainBuilder {
     /**
      * SIMULATE WEB FOOTPRINT | /carbon/web
      * @description - to create a web carbon footprint WITHOUT fingerprint and get an estimation that will NOT be saved in database
-     * @param {WebFootprintSimulation} newWebFootprintSimulation - object containing all datas about the ongoing web carbon footprint WITHOUT fingerprint - Only admin can add web footprint
+     * @param {WebFootprintSimulation} newWebFootprintSimulation - object containing all datas about the ongoing web carbon footprint WITHOUT fingerprint - Only admin can add simulation web footprint
      * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
     simulateWebFootprint = (
@@ -76,24 +83,26 @@ export class Carbon extends MainBuilder {
     /**
      * ADD TRANSPORTATION FOOTPRINT | /carbon/transportation
      * @description - to create a transportation carbon footprint associated with a unique fingerprint and that will be saved in database
-     * @param {PathEstimate} newEstimate - object containing all datas about the ongoing transportation carbon footprint WITH fingerprint - Only admin can add transportation footprint
+     * @param {TransportationFootprint} newTransportationFootprint - object containing all datas about the ongoing transportation carbon footprint WITH fingerprint - Only admin can add transportation footprint
      * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
     addTransportationFootprint = async (
-        newEstimate: PathEstimate,
+        newTransportationFootprint: TransportationFootprint,
     ): Promise<IApiResponse> => {
-        if (!newEstimate.fingerprint) {
+        if (!newTransportationFootprint.fingerprint) {
             return await this.ApiResponse.formatResponse(
                 false,
-                "you cannot add a web footprint without fingerprint in your transportation object, data won't be saved",
+                "you cannot add a transportation footprint without fingerprint in your transportation object, data won't be saved",
                 400,
             );
         } else {
-            const serializedEstimate = serialize(newEstimate);
+            const serializedTransportationFootprint = serialize(
+                newTransportationFootprint,
+            );
             return this.axiosRequest
                 .post(
                     this.buildUrl(false, Carbon.transportationUrl),
-                    serializedEstimate,
+                    serializedTransportationFootprint,
                 )
                 .then((res) => {
                     return this.ApiResponse.formatResponse(
@@ -109,17 +118,19 @@ export class Carbon extends MainBuilder {
     /**
      * SIMULATE TRANSPORTATION FOOTPRINT | /carbon/transportation
      * @description - to create a transportation carbon footprint WITHOUT fingerprint and get an estimation that will NOT be saved in database
-     * @param {PathEstimate} newEstimate - object containing all datas about the ongoing transportation carbon footprint WITHOUT fingerprint - Only admin can add transportation footprint
+     * @param {TransportationFootprintSimulation} newTransportationFootprintSimulation - object containing all datas about the ongoing transportation carbon footprint WITHOUT fingerprint - Only admin can add transportation simulation footprint
      * @returns {Promise.<IApiResponse>} - get object with new carbon cost estimated.
      */
     simulateTransportationFootprint = (
-        newEstimate: PathEstimate,
+        newTransportationFootprintSimulation: TransportationFootprintSimulation,
     ): Promise<IApiResponse> => {
-        const serializedEstimate = serialize(newEstimate);
+        const serializedTransportationFootprintSimulation = serialize(
+            newTransportationFootprintSimulation,
+        );
         return this.axiosRequest
             .post(
                 this.buildUrl(false, Carbon.transportationUrl),
-                serializedEstimate,
+                serializedTransportationFootprintSimulation,
             )
             .then((res) => {
                 return this.ApiResponse.formatResponse(

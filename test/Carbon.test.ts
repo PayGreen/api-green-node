@@ -6,7 +6,8 @@ import {
     Coordinate,
     ApiResponse,
     Path,
-    PathEstimate,
+    TransportationFootprint,
+    TransportationFootprintSimulation,
     Tools,
     WebFootprint,
     WebFootprintSimulation,
@@ -14,15 +15,14 @@ import {
 import { Status, Transport } from '../src/enums';
 
 const sdk = new Sdk(localConfig);
-const randomFingerprint = Tools.randomFingerprint();
+const newWebFootprintSimulation = new WebFootprintSimulation(
+    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+    140,
+    6,
+    180,
+);
 
 test('it creates a web footprint simulation without fingerprint', () => {
-    const newWebFootprintSimulation = new WebFootprintSimulation(
-        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
-        140,
-        6,
-        180,
-    );
     return sdk.carbon
         .simulateWebFootprint(newWebFootprintSimulation)
         .then((data: any) => {
@@ -31,13 +31,7 @@ test('it creates a web footprint simulation without fingerprint', () => {
         });
 });
 
-test('it gets an error when trying to add a footprint simulation without fingerprint', () => {
-    const newWebFootprintSimulation = new WebFootprintSimulation(
-        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
-        140,
-        6,
-        180,
-    );
+test('it gets an error when trying to add a web footprint simulation without fingerprint using addWebFootprint() method', () => {
     return sdk.carbon
         .addWebFootprint(newWebFootprintSimulation)
         .then((data: any) => {
@@ -47,6 +41,8 @@ test('it gets an error when trying to add a footprint simulation without fingerp
             );
         });
 });
+
+const randomFingerprint = Tools.randomFingerprint();
 
 test('it adds a web footprint with fingerprint', () => {
     const newWebFootprint = new WebFootprint(
@@ -112,7 +108,7 @@ test('it tries to purchase a footprint after having emptied it', () => {
 
 const randomFingerprint2 = Tools.randomFingerprint();
 
-test('it adds a path estimate', () => {
+test('it adds a transportation footprint with fingerprint', () => {
     const address1 = new Address(
         '22 rue Capitaine Cocart',
         '91120',
@@ -137,16 +133,63 @@ test('it adds a path estimate', () => {
         address3,
         Transport['TER France - Diesel'],
     );
-    const newPathEstimate = new PathEstimate(randomFingerprint2, 20, 1, [
-        path1,
-        path2,
-    ]);
+    const newTransportationFootprint = new TransportationFootprint(
+        randomFingerprint2,
+        20,
+        1,
+        [path1, path2],
+    );
 
     return sdk.carbon
-        .addTransportationFootprint(newPathEstimate)
+        .addTransportationFootprint(newTransportationFootprint)
         .then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true);
             expect(data.status).toEqual(201);
+            expect(data.dataInfo).toHaveProperty(
+                'fingerprint',
+                randomFingerprint2,
+            );
+        });
+});
+
+const address1 = new Address(
+    '22 rue Capitaine Cocart',
+    '91120',
+    'Palaiseau',
+    'France',
+);
+const address2 = new Address(
+    '72 rue de la République',
+    '76140',
+    'Le Petit Quevilly',
+    'France',
+);
+const address3 = new Address('24 rue du Faubourg', '75003', 'Paris', 'France');
+const path1 = new Path(address1, address2, Transport.Bus);
+const path2 = new Path(address2, address3, Transport['TER France - Diesel']);
+const newTransportationFootprintSimulation = new TransportationFootprintSimulation(
+    20,
+    1,
+    [path1, path2],
+);
+
+test('it creates a transportation footprint simulation without fingerprint', () => {
+    return sdk.carbon
+        .simulateTransportationFootprint(newTransportationFootprintSimulation)
+        .then((data: any) => {
+            expect(ApiResponse.isSuccessful(data)).toBe(true);
+            expect(data.status).toEqual(201);
+        });
+});
+
+test('it gets an error when trying to add a transportation footprint simulation without fingerprint using addWebFootprint() method', () => {
+    return sdk.carbon
+        .addTransportationFootprint(newTransportationFootprintSimulation)
+        .then((data: any) => {
+            expect(ApiResponse.isInvalid(data)).toBe(true);
+            expect(ApiResponse.getErrorMessage(data)).toBe(
+                "you cannot add a transportation footprint without fingerprint in your transportation object, data won't be saved",
+            );
         });
 });
 
@@ -196,16 +239,22 @@ test('it adds a mixed path estimate', () => {
         Transport['TER France - Diesel'],
     );
 
-    const newPathEstimate = new PathEstimate(randomFingerprint3, 20, 1, [
-        path1,
-        path2,
-    ]);
+    const newTransportationFootprint = new TransportationFootprint(
+        randomFingerprint3,
+        20,
+        1,
+        [path1, path2],
+    );
 
     return sdk.carbon
-        .addTransportationFootprint(newPathEstimate)
+        .addTransportationFootprint(newTransportationFootprint)
         .then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true);
             expect(data.status).toEqual(201);
+            expect(data.dataInfo).toHaveProperty(
+                'fingerprint',
+                randomFingerprint3,
+            );
         });
 });
 
@@ -216,6 +265,10 @@ test('it purchases a footprint based on fingerPrint', () => {
             expect(ApiResponse.isSuccessful(data)).toBe(true);
             expect(data.status).toEqual(200);
             expect(data.dataInfo).toHaveProperty('status', 'PURCHASED');
+            expect(data.dataInfo).toHaveProperty(
+                'fingerprint',
+                randomFingerprint3,
+            );
         });
 });
 

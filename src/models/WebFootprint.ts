@@ -41,7 +41,7 @@ export class WebFootprint extends WebFootprintSimulation {
 
     /**
      * Create the web navigation footprint object.
-     * @param {string?} fingerprint - unique string to identify a Carbon offsetting estimate file
+     * @param {string?} fingerprint - unique string to identify a web footprint calculation
      */
     constructor(
         fingerprint?: string | null,
