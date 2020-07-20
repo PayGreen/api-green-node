@@ -293,6 +293,17 @@ test('it gets one specific purchased carbon footprint based on fingerPrint', () 
     });
 });
 
+test('it gets an error t rying to get purchased carbon footprint with wrong fingerPrint', () => {
+    return sdk.carbon
+        .getOnePurchase('notPurchasedFingerprint')
+        .then((data: any) => {
+            expect(ApiResponse.isInvalid(data)).toBe(true);
+            expect(ApiResponse.getErrorMessage(data)).toBe(
+                'Purchase not found with this fingerprint: notPurchasedFingerprint',
+            );
+        });
+});
+
 test('it gets all footprints with PURCHASED status for one user', () => {
     return sdk.carbon.getAllPurchases().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
