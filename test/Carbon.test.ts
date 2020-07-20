@@ -182,7 +182,7 @@ test('it creates a transportation footprint simulation without fingerprint', () 
         });
 });
 
-test('it gets an error when trying to add a transportation footprint simulation without fingerprint using addWebFootprint() method', () => {
+test('it gets an error when trying to add a transportation footprint simulation without fingerprint using addTransportationFootprint() method', () => {
     return sdk.carbon
         .addTransportationFootprint(newTransportationFootprintSimulation)
         .then((data: any) => {
