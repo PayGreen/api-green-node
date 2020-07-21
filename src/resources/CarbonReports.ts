@@ -10,21 +10,21 @@ export class CarbonReports extends MainBuilder {
 
     /**
      * GET | /carbon/statistics/reports?
-     * @param {string?} beginValue - optional, if no date specified, date one month ago from current day will be used, accepted format YYYY-MM-DD
-     * @param {string?} endValue - optional, if no date specified current day will be used, accepted format YYYY-MM-DD
+     * @param {string?} beginDate - optional, if no date specified, date one month ago from current day will be used, accepted format YYYY-MM-DD
+     * @param {string?} endDate - optional, if no date specified current day will be used, accepted format YYYY-MM-DD
      * @returns {Promise.<IApiResponse>} - get datas on last month or on a specific period
      */
-    get = (beginValue?: string, endValue?: string): Promise<IApiResponse> => {
+    get = (beginDate?: string, endDate?: string): Promise<IApiResponse> => {
         const today = new Date().toISOString().substring(0, 10);
-        const endDate = endValue ? endValue : today;
+        const defaultEndDate = endDate || today;
         return this.axiosRequest
             .get(
                 CarbonReports.url,
-                beginValue
+                beginDate
                     ? {
                           params: {
-                              begin: beginValue,
-                              end: endDate,
+                              begin: beginDate,
+                              end: defaultEndDate,
                           },
                       }
                     : null,
