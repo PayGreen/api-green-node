@@ -10,8 +10,8 @@ export class CarbonReports extends MainBuilder {
 
     /**
      * GET | /carbons/reports
-     * @param {string?} begin - optional, if no date specified, date one month ago from current day will be used, accepted format YYYY-MM-DD
-     * @param {string?} end - optional, if no date specified current day will be used, accepted format YYYY-MM-DD
+     * @param {string?} beginValue - optional, if no date specified, date one month ago from current day will be used, accepted format YYYY-MM-DD
+     * @param {string?} endValue - optional, if no date specified current day will be used, accepted format YYYY-MM-DD
      * @returns {Promise.<IApiResponse>} - get datas on last month or on a specific period
      */
     get = (beginValue?: string, endValue?: string): Promise<IApiResponse> => {
