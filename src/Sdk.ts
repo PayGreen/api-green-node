@@ -4,7 +4,7 @@ import {
     Iban,
     Transport,
     User,
-    CarbonStatistics,
+    CarbonReports,
 } from './resources';
 import { IConfig, IIdentity, ITokens } from './interfaces';
 import { Host, Mode } from './enums';
@@ -16,7 +16,7 @@ export class Sdk {
     public transport: Transport;
     public user: User;
     public carbon: Carbon;
-    public carbonStatistics: CarbonStatistics;
+    public carbonReports: CarbonReports;
 
     private _identity: IIdentity = {
         accountId: '',
@@ -69,7 +69,7 @@ export class Sdk {
             this._host,
         );
         this.carbon = new Carbon(this._tokens, this._identity, this._host);
-        this.carbonStatistics = new CarbonStatistics(
+        this.carbonReports = new CarbonReports(
             this._tokens,
             this._identity,
             this._host,
