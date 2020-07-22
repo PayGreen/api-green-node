@@ -4,6 +4,7 @@ import { WebFootprintSimulation } from './WebFootprintSimulation';
 
 /**
  * WebEstimate Model Class to create Data to add to a Carbon Web Estimate
+ * @extends WebFootprintSimulation
  * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
  * @property {string?} userAgent - user agent headers
  * @property {string} device - device will be automatically filled by Api based on the User Agent provided
@@ -42,6 +43,11 @@ export class WebFootprint extends WebFootprintSimulation {
     /**
      * Create the web navigation footprint object.
      * @param {string?} fingerprint - unique string to identify a web footprint calculation
+     * @param {string?} userAgent - user agent headers
+     * @param {number?} countImages - number of images requested during the navigation
+     * @param {number?} countPages - number of pages requested during the navigation
+     * @param {number?} time - time spent during the navigation (in seconds)
+     * @param {string?} externalId - user ExternalId you may use to identify him in your system
      */
     constructor(
         fingerprint?: string | null,
