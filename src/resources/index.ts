@@ -1,8 +1,8 @@
-import { User } from './User';
 import { Authentication } from './Authentication';
-import { Iban } from './Iban';
-import { Transport } from './Transport'
 import { Carbon } from './Carbon';
-import { CarbonStatistics } from './CarbonStatistics';
+import { CarbonReports } from './CarbonReports';
+import { Iban } from './Iban';
+import { Transport } from './Transport';
+import { User } from './User';
 
-export { Authentication, Carbon, CarbonStatistics, Iban, Transport, User };
+export { Authentication, Carbon, CarbonReports, Iban, Transport, User };

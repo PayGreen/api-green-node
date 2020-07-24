@@ -3,8 +3,8 @@ import { Coordinate } from './Coordinate';
 import { Transport } from '../enums';
 
 /**
- * Path Model to generate a complete path object necessary to create Carbon PathEstimate
- * @see PathEstimate
+ * Path Model to generate a complete path object necessary to create Carbon Transportation
+ * @see TransportationFootprint
  * @alias Path
  * @property {Address | Coordinate} addressDeparture - address object generated with Address or Coordinate Models
  * @property {Address | Coordinate} addressArrival - address object generated with Address or Coordinate Models

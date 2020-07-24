@@ -35,14 +35,20 @@ export class ApiResponse {
      *  @returns {IApiResponse} - global object with complete response formatted
      */
     static formatError = (error: any): IApiResponse => {
-        if (error.response.data) {
-            return ApiResponse.formatResponse(false, error.response.data);
-        } else {
+        if (error.response?.data) {
+            return ApiResponse.formatResponse(
+                false,
+                error.response.data,
+                error.response.data.status,
+            );
+        } else if (error.response) {
             return ApiResponse.formatResponse(
                 false,
                 error.response.statusText,
                 error.response.status,
             );
+        } else {
+            return ApiResponse.formatResponse(false, error.message, 500);
         }
     };
 
@@ -91,7 +97,7 @@ export class ApiResponse {
      *  @returns {number} Get status of the http response
      */
     static getStatus = (data: any): number => {
-        return data.dataInfo.status ? data.dataInfo.status : data.status;
+        return data.status;
     };
 
     /**
@@ -144,7 +150,7 @@ export class ApiResponse {
                 const keyName = Identifier[key];
                 data.dataInfo._embedded[key].map((value) => {
                     newIdObject[keyName] = value[keyName];
-                    idArray.push({...newIdObject});
+                    idArray.push({ ...newIdObject });
                 });
             }
         }
