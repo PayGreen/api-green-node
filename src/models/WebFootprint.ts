@@ -3,9 +3,9 @@ import { MinLength, IsEmpty, IsInt } from 'class-validator';
 import { WebFootprintSimulation } from './WebFootprintSimulation';
 
 /**
- * WebEstimate Model Class to create Data to add to a Carbon Web Estimate
+ * WebFootprint Model Class to create Data to add to a Carbon Web Footprint
  * @extends WebFootprintSimulation
- * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
+ * @property {string?} fingerprint - unique string to identify a Carbon offsetting footprint data
  * @property {string?} userAgent - user agent headers
  * @property {string} device - device will be automatically filled by Api based on the User Agent provided
  * @property {string} browser - browser will be automatically filled by Api based on the User Agent provided

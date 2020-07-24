@@ -11,7 +11,7 @@ import { TransportationFootprintSimulation } from './TransportationFootprintSimu
 /**
  * Transportation Footprint Model Class to create data to add to a Carbon Footprint
  * @extends TransportationFootprintSimulation
- * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
+ * @property {string?} fingerprint - unique string to identify a Carbon offsetting footprint data
  * @property {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
  * @property {number?} countPackages - number of packages transported
  * @property {Array<Address>?} addresses - an array containing all adresses
@@ -37,7 +37,7 @@ export class TransportationFootprint extends TransportationFootprintSimulation {
     public transports?: Array<object>;
 
     /**
-     * Create the path navigation estimate object.
+     * Create the path navigation footprint object.
      * @param {string?} fingerprint - unique string to identify a transportation footprint calculation
      * @param {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
      * @param {number?} countPackages - number of packages transported

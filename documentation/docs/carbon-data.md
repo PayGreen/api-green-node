@@ -1,25 +1,26 @@
 ---
 id: carbon-data
-title: Create Paths & Web Estimates
+title: Create Paths & Web Footprints
 ---
 
-Here you will find all informations to create a New Path Estimate and New Web Estimate Objects with our Model classes.
-- Each estimate is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check our [special method here.](tools#randomfingerprint) 
-- You can make a carbon offsetting estimate in multiple calls, mix transports, add a web estimate on top of it, as long as you use the SAME fingerprint.
-- After its creation, the estimate is considered as ongoing, and you can either:
-    - add data to the estimate (as many calls as you need)
-    - check the current estimate results (computed with available data)
-    - complete the estimate (no further addition will be accepted) and validate the purchase of carbon offsetting credits.
-    - or delete the estimate (all provided data associated with this fingerprint will be removed).
+Here you will find all informations to create a New Transportation and New Web Footprints Objects with our Model classes.
+- First of all, our Api gives you the possibility to create Footprints that will be saved in our database and after retrievable via a `fingerprint` but also the possibility to simulate Footprints. These simulations WON'T have fingerprint and WON'T be saved in database.
+- Each carbon footprint is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check our [special method here.](tools#randomfingerprint) 
+- You can make a carbon footprint in multiple calls, mix transports, add a web footprint on top of it, as long as you use the SAME fingerprint.
+- After its creation, the footprint is considered with status 'ONGOING', and you can either:
+    - add data to the footprint (as many calls as you need)
+    - check the current footprint results (computed with available data)
+    - purchase the footprint (no further addition nor deletion will be accepted) and doing so, you validate the price for its compensation and footprint's status will be 'PURCHASED'.
+    - close the footprint (no further addition nor deletion will be possible). It won't be possible to purchase it anymore and footprint's status will be 'PURCHASED'.
+    - or empty the footprint (all provided data associated with this footprint will be removed).
 
-# Web Estimate : 
+# Web Footprint : 
 
 ## Object expected by API Green : 
 
 | Name | Type | Description |
 | --- | --- | --- |
-| type | <code>enum</code> | type of Estimate based on enum - prefilled with 'web' value|
-| fingerprint | <code>string</code> | unique string to identify a Carbon offsetting estimate data |
+| fingerprint | <code>string</code> | unique string to identify a web footprint calculation |
 | userAgent | <code>string</code> | user agent headers |
 | device | <code>string</code> | device will be automatically filled by Api based on the User Agent provided |
 | browser | <code>string</code> | browser will be automatically filled by Api based on the User Agent provided |
@@ -29,37 +30,34 @@ Here you will find all informations to create a New Path Estimate and New Web Es
 | externalId | <code>string</code> | optional - user ExternalId you may use to identify him in your system |
 ```
 {
-    type: 'web',
     fingerprint: string,
-    webNavigation: {
-        userAgent: string,
-        device: '',
-        browser: '',
-        countImages: number,
-        countPages: number,
-        time: number,
-        externalId?: string,
+    userAgent: string,
+    device: '',
+    browser: '',
+    countImages: number,
+    countPages: number,
+    time: number,
+    externalId?: string,
     },
 }
 ```
-when you use the WebEstimate Model Class, type is prefilled with 'web' value.
 
 ## Add one information at a time :
 
 ```
-import { Tools, WebEstimate } from 'api-green-node';
+import { Tools, WebFootprint } from 'api-green-node';
 
 const randomFingerprint = Tools.randomFingerprint();
 
-const newWebData = new WebEstimate();
+const newWebData = new WebFootprint();
 newWebData.fingerprint = randomFingerprint;
 ```
 ## Or all at once  :
 adding fingerprint + userAgent + number of Pages + number of Images + Time
 ```
-import { WebEstimate } from 'api-green-node';
+import { WebFootprint } from 'api-green-node';
 
-const newWebData = new WebEstimate(
+const newWebData = new WebFootprint(
     randomFingerprint,
     'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
     140,
@@ -68,12 +66,12 @@ const newWebData = new WebEstimate(
 );
 ```
 
-# Path Estimate :
+# Path Footprint :
 
-- A `PathEstimate` includes the quantity and weight of the packages sent and the `Path(s)` they have traveled. 
+- A `TransportationFootprint` includes the quantity and weight of the packages sent and the `Path(s)` they have traveled. 
 - A `Path` combines a point of departure, a point of arrival and a mode of transport associated.
 - A point of departure/arrival can be created with either our model `Coordinate` for Plane and Ferry (that require latitude and longitude) or our model class `Address` for all other transports. 
-- Let's create a PathEstimate step by step! 
+- Let's create a TransportationFootprint step by step! 
 
 ## Step 1 : We create 3 addresses:
 ## Adress Model
@@ -131,24 +129,21 @@ const path1 = new Path(address1, address2, Transport['Plane < 10000km']);
 const path2 = new Path(address2, address3, Transport['TER France - Diesel'],
 );
 ```
-## Step 3 : We build the PathEstimate :
+## Step 3 : We build the TransportationFootprint :
 ## Object expected by API Green : 
 
 | Name | Type | Description |
 | --- | --- | --- |
-| type | <code>EstimateType</code> | type of Estimate based on enum |
 | fingerprint | <code>string</code> | unique string to identify a Carbon offsetting estimate data |
 | weightPackages | <code>number</code> | accumulated weight of all packages transported (in kilogram) |
 | countPackages | <code>number</code> | number of packages transported |
 | addresses | <code>Array.&lt;Address&gt;</code> | an array containing all adresses |
 | transports | <code>Array.&lt;object&gt;</code> | an array containing all transports |
 
-when you use the PathEstimate Model Class, type is prefilled with 'path' value.
-
 ```
-import { PathEstimate } from 'api-green-node';
+import { TransportationFootprint } from 'api-green-node';
 
-const pathTest = new PathEstimate(
+const pathTest = new TransportationFootprint(
     'NewMixNYFrance',
     20,
     1,
@@ -159,7 +154,6 @@ what our final object will look like :
 
 ```
 {
-    type: 'path',
     fingerprint: 'NewMixNYFrance',
     weightPackages: 20,
     countPackages: 1,
@@ -196,6 +190,31 @@ what our final object will look like :
         },
     ],
 }
+```
+
+# Footprints Simulations : 
+Web and Transportation Footprints simulations objects have the same structure than the regular ones except they DON'T NEED fingerprint. 
+
+so for Web Simulation :
+```
+import { WebFootprintSimulation } from 'api-green-node';
+
+const newWebSimulation = new WebFootprintSimulation(
+    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+    140,
+    6,
+    180,
+);
+```
+and for Transportation Simulation :
+```
+import { TransportationFootprintSimulation } from 'api-green-node';
+
+const transportationSimulation = new TransportationFootprintSimulation(
+    20,
+    1,
+    [path1, path2]
+    );
 ```
 
 ### We have built special method to verify the data before sending it to API. [Try it here](tools#verify)
