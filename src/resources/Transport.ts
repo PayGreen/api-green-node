@@ -6,10 +6,10 @@ import { MainBuilder } from '../MainBuilder';
  * @property {string} url - main url to build Api requests for this class
  */
 export class Transport extends MainBuilder {
-    static url: string = '/tree/ccarbon-transport';
+    static url: string = '/carbon/transportation-mode';
 
     /**
-     * GET ALL | /tree/ccarbon-transport
+     * GET ALL | /carbon/transportation-mode
      * @returns {Promise.<IApiResponseList>} Get a list of the different transports available inside the Api
      */
     getAll = (): Promise<IApiResponseList> => {
