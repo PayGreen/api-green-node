@@ -14,11 +14,13 @@ import { serialize } from 'typescript-json-serializer';
  * @property {string} footprintUrl - url to build footprints Api requests for this class
  * @property {string} webUrl - url to simulate or add web data footprints for this class
  * @property {string} transportationUrl - url to simulate or add transportation data footprints for this class
+ * @property {string} purchasesUrl - url to make footprints purchases Api requests for this class
  */
 export class Carbon extends MainBuilder {
     static footprintUrl = '/carbon/footprints';
     static webUrl = '/carbon/web';
     static transportationUrl = '/carbon/transportation';
+    static purchasesUrl = '/carbon/purchases';
 
     /**
      * ADD WEB FOOTPRINT | /carbon/web
@@ -167,7 +169,11 @@ export class Carbon extends MainBuilder {
      */
     getAllFootprints = (status: Status): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(this.buildUrl(false, Carbon.footprintUrl) + '?status=' + Status[status])
+            .get(
+                this.buildUrl(false, Carbon.footprintUrl) +
+                    '?status=' +
+                    Status[status],
+            )
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
@@ -231,6 +237,41 @@ export class Carbon extends MainBuilder {
                 return this.ApiResponse.formatResponse(
                     true,
                     'carbon footprint emptied successfully',
+                    res.status,
+                );
+            })
+            .catch(this.ApiResponse.formatError);
+    };
+
+    /**
+     * GET ONE PURCHASE | /carbon/purchases/{fingerprint}
+     * @param {string} fingerPrint - an unique name to identify each carbon footprint
+     * @returns {Promise.<IApiResponse>} - get information about one specific carbon footprint with status 'PURCHASED'
+     */
+    getOnePurchase = (fingerPrint: string): Promise<IApiResponse> => {
+        return this.axiosRequest
+            .get(this.buildUrl(true, Carbon.purchasesUrl, fingerPrint))
+            .then((res) => {
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
+            })
+            .catch(this.ApiResponse.formatError);
+    };
+
+    /**
+     * GET ALL PURCHASES | /carbon/purchases/
+     * @returns {Promise.<IApiResponse>} - get all carbon footprints that have been purchased by user
+     */
+    getAllPurchases = (): Promise<IApiResponse> => {
+        return this.axiosRequest
+            .get(this.buildUrl(false, Carbon.purchasesUrl))
+            .then((res) => {
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
                     res.status,
                 );
             })

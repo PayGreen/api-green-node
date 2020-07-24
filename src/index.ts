@@ -1,5 +1,5 @@
 import { Sdk } from './Sdk';
-import { Bank, Country, Host, Mode, Role, Transport } from './enums';
+import { Bank, Country, Host, Mode, Role, Status, Transport } from './enums';
 import {
     Address,
     ApiResponse,
@@ -16,7 +16,7 @@ import {
 } from './models';
 
 export { Sdk };
-export { Bank, Country, Host, Mode, Role, Transport };
+export { Bank, Country, Host, Mode, Role, Status, Transport };
 export {
     Address,
     ApiResponse,

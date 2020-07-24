@@ -272,15 +272,46 @@ test('it purchases a footprint based on fingerPrint', () => {
         });
 });
 
-test('it gets all footprint with PURCHASED status', () => {
-    return sdk.carbon.getAllFootprints(Status.PURCHASED).then((data: any) => {
+test('it gets all footprints with CLOSED status', () => {
+    return sdk.carbon.getAllFootprints(Status.CLOSED).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(200);
         data.dataInfo._embedded.footprint.forEach((e) => {
             expect(e).toHaveProperty('fingerprint');
             expect(e).toHaveProperty('estimatedCarbon');
             expect(e).toHaveProperty('estimatedPrice');
-            expect(e).toHaveProperty('status', 'PURCHASED');
+            expect(e).toHaveProperty('status', 'CLOSED');
+        });
+    });
+});
+
+test('it gets one specific purchased carbon footprint based on fingerPrint', () => {
+    return sdk.carbon.getOnePurchase(randomFingerprint3).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.status).toEqual(200);
+        expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerprint3);
+    });
+});
+
+test('it gets an error trying to get purchased carbon footprint with wrong fingerPrint', () => {
+    return sdk.carbon
+        .getOnePurchase('notPurchasedFingerprint')
+        .then((data: any) => {
+            expect(ApiResponse.isInvalid(data)).toBe(true);
+            expect(ApiResponse.getErrorMessage(data)).toBe(
+                'Purchase not found with this fingerprint: notPurchasedFingerprint',
+            );
+        });
+});
+
+test('it gets all footprints that have been purchased for one user', () => {
+    return sdk.carbon.getAllPurchases().then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.status).toEqual(200);
+        data.dataInfo._embedded.purchase.forEach((e) => {
+            expect(e).toHaveProperty('fingerprint');
+            expect(e).toHaveProperty('estimatedCarbon');
+            expect(e).toHaveProperty('estimatedPrice');
         });
     });
 });
