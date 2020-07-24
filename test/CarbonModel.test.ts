@@ -4,21 +4,22 @@ import {
     Address,
     Coordinate,
     Path,
-    PathEstimate,
+    TransportationFootprint,
     Tools,
-    WebEstimate,
+    WebFootprint,
+    WebFootprintSimulation,
 } from '../src/models';
 
 const randomFingerprint = Tools.randomFingerprint();
 
 test('it adds a fingerprint of a web estimation with Model', () => {
-    const webEstimationTest = new WebEstimate();
-    webEstimationTest.fingerprint = randomFingerprint;
-    expect(webEstimationTest.fingerprint).toEqual(randomFingerprint);
+    const webFootprintTest = new WebFootprint();
+    webFootprintTest.fingerprint = randomFingerprint;
+    expect(webFootprintTest.fingerprint).toEqual(randomFingerprint);
 });
 
-test('it creates a web estimation of a carbon estimate with Model', () => {
-    const webTest = new WebEstimate(
+test('it creates a web data with fingerprint of a carbon footprint with Model', () => {
+    const webTest = new WebFootprint(
         'NewFingerPrint',
         'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
         140,
@@ -26,20 +27,40 @@ test('it creates a web estimation of a carbon estimate with Model', () => {
         180,
     );
     expect(webTest).toMatchObject({
-        type: 'web',
+        userAgent:
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+        device: '',
+        browser: '',
+        countImages: 140,
+        countPages: 6,
+        time: 180,
+        externalId: "",
         fingerprint: 'NewFingerPrint',
-        webNavigation: {
-            userAgent:
-                'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
-            device: '',
-            browser: '',
-            countImages: 140,
-            countPages: 6,
-            time: 180,
-            externalId: null,
-        },
     });
     return Tools.verify(webTest).then((data: any) => {
+        expect(data).toBe('validation succeed');
+    });
+});
+
+
+test('it creates a web simulation of a carbon footprint withput fingerprint with Model', () => {
+    const webSimulationTest = new WebFootprintSimulation(
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+        140,
+        6,
+        180,
+    );
+    expect(webSimulationTest).toMatchObject({
+        userAgent:
+        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+        device: '',
+        browser: '',
+        countImages: 140,
+        countPages: 6,
+        time: 180,
+        externalId: "",
+    });
+    return Tools.verify(webSimulationTest).then((data: any) => {
         expect(data).toBe('validation succeed');
     });
 });
@@ -70,10 +91,9 @@ test('it creates a path simulation for carbon estimate with Address Model', () =
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new PathEstimate('NewFingerPrint', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewFingerPrint', 20, 1, [path1, path2]);
 
     expect(pathTest).toMatchObject({
-        type: 'path',
         fingerprint: 'NewFingerPrint',
         addresses: [
             {
@@ -135,7 +155,7 @@ test('Verify method returns error with the name of the wrong property latitude',
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new PathEstimate('NewMixNYFrance', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewMixNYFrance', 20, 1, [path1, path2]);
     return Tools.verify(pathTest).then((data: any) => {
         expect(data[0].children[0].children[0]).toHaveProperty(
             'property',
@@ -170,10 +190,9 @@ test('it creates a mixed path simulation for carbon estimate with Address + Coor
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new PathEstimate('NewMixNYFrance', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewMixNYFrance', 20, 1, [path1, path2]);
 
     expect(pathTest).toMatchObject({
-        type: 'path',
         fingerprint: 'NewMixNYFrance',
         addresses: [
             {

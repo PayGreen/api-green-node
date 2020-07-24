@@ -1,13 +1,15 @@
-import { User } from './User';
+import { Address } from './Address';
 import { ApiResponse } from './ApiResponse';
+import { Coordinate } from './Coordinate';
 import { Iban } from './Iban';
 import { IbanValidation } from './IbanValidation';
-import { WebEstimate } from './WebEstimate';
-import { PathEstimate } from './PathEstimate';
-import { Address } from './Address';
-import { Coordinate } from './Coordinate';
 import { Path } from './Path';
 import { Tools } from './Tools';
+import { TransportationFootprint } from './TransportationFootprint';
+import { TransportationFootprintSimulation } from './TransportationFootprintSimulation';
+import { User } from './User';
+import { WebFootprint } from './WebFootprint';
+import { WebFootprintSimulation } from './WebFootprintSimulation';
 
 export {
     Address,
@@ -16,8 +18,10 @@ export {
     Iban,
     IbanValidation,
     Path,
-    PathEstimate,
     Tools,
+    TransportationFootprint,
+    TransportationFootprintSimulation,
     User,
-    WebEstimate,
+    WebFootprint,
+    WebFootprintSimulation,
 };

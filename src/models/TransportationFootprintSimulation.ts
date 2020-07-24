@@ -1,31 +1,16 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
-import {
-    MinLength,
-    IsInt,
-    ArrayMinSize,
-    ValidateNested
-} from 'class-validator';
-import { EstimateType } from '../enums';
-import { Path, Address } from '../models';
+import { IsInt, ArrayMinSize, ValidateNested } from 'class-validator';
+import { Path, Address } from '.';
 
 /**
- * PathEstimate Model Class to create data to add to a Carbon Path Estimate
- * @alias PathEstimate
- * @property {EstimateType} type - type of Estimate based on enum
- * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
+ * Transportation Footprint Simulation Model Class to create data to simulate a carbon transportation footprint
  * @property {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
  * @property {number?} countPackages - number of packages transported
  * @property {Array<Address>?} addresses - an array containing all adresses
  * @property {Array<object>?} transports - an array containing all transports
  */
 @Serializable()
-export class PathEstimate {
-    @JsonProperty('type')
-    @MinLength(1)
-    public type: EstimateType;
-    @JsonProperty('fingerprint')
-    @MinLength(1)
-    public fingerprint?: string | null;
+export class TransportationFootprintSimulation {
     @JsonProperty('weightPackages')
     @IsInt()
     public weightPackages?: number | null;
@@ -41,20 +26,16 @@ export class PathEstimate {
     public transports?: Array<object>;
 
     /**
-     * Create the path navigation estimate object.
-     * @param {string?} fingerprint - unique string to identify a Carbon offsetting estimate file
+     * Create the transportation footprint object.
      * @param {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
      * @param {number?} countPackages - number of packages transported
      * @param {Array<object>} path - an array containing all adresses and transports combined
      */
     constructor(
-        fingerprint?: string | null,
         weightPackages?: number | null,
         countPackages?: number | null,
         path?: Array<Path>,
     ) {
-        this.type = EstimateType.PATH;
-        this.fingerprint = fingerprint;
         this.weightPackages = weightPackages;
         this.countPackages = countPackages;
         if (path) {

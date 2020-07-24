@@ -1,7 +1,6 @@
 import { Account } from './Account';
 import { Bank } from './Bank';
 import { Country } from './Country';
-import { EstimateType } from './EstimateType';
 import { Identifier } from './Identifier';
 import { Host } from './Host';
 import { Mode } from './Mode';
@@ -14,7 +13,6 @@ export {
     Account,
     Bank,
     Country,
-    EstimateType,
     Host,
     Identifier,
     Mode,
