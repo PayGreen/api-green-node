@@ -1,62 +1,43 @@
 ---
-id: carbon-statistics-api-requests
-title: Carbon Statistics - Api Requests
+id: carbon-reports-api-requests
+title: Carbon Reports - Api Requests
 ---
 
-If you have created and completed carbon offsetting estimates, you can now get statistics and see all your carbon offsetting credit purchases, filtered in many ways.
+If you have created and completed carbon footprints, you can now get statistics reports and see all your carbon footprints credit purchases, filtered in many ways.
 
-## carbonStatistics.get()
-- default mode : get automatically data from last month until today
-```
-    return sdk.carbonStatistics
-        .get()
-        .then((res) => {
-            console.log(res)
-        });
-```
-## carbonStatistics.getADate()
-- get datas on a specific date
+## carbonReports.get()
+- get carbon reports from last month by default or on a specific requested period
 
 | Param | Type | Description |
 | --- | --- | --- |
-| date | <code>string</code> | accepted formats are YYYY-MM-DD(show a day), YYYY-MM(show a month), YYYY(show a year) |
+| beginDate? | <code>string</code> |  optional, if no date specified, date one month ago from current day will be used, accepted format YYYY-MM-DD |
+| endDate? | <code>string</code> | optional, if no date specified, current day will be used, accepted format YYYY-MM-DD |
 
 ```
-    return sdk.carbonStatistics
-        .getADate(date)
-        .then((res) => {
-            console.log(res)
-        });
-```
-## carbonStatistics.getAPeriod()
-- get datas on a specific period
-
-| Param | Type | Description |
-| --- | --- | --- |
-| start | <code>string</code> | accepted format YYYY-MM-DD |
-| end? | <code>string</code> | optional, if no date specified current day will be used, accepted format YYYY-MM-DD |
-
-```
-    return sdk.carbonStatistics
-        .getAPeriod(start, end?)
+    return sdk.carbonReports
+        .get(beginDate?, endDate?)
         .then((res) => {
             console.log(res)
         });
 ```
 ## API Response
-The object inside response contains the count of carbon estimates, the total carbon in kilograms, the total of purchases in euros cents and the period requested.
+The object inside response contains all informations about carbon footprints associated to a specific user & during the period requested, among which, the total carbon emitted and offset in kilograms and the total purchases price in euros cents.
 ```
 {
     success: true,
-    dataInfo : {
-        count: '24',
-        estimatedCarbon: '0.47815984000000045',
-        estimatedPrice: '334.7122166156769',
-        period: {
-          start: '2020-03-29T00:00:00+00:00',
-          end: '2020-04-17T00:00:00+00:00'
-        },
-    status: 201
+    dataInfo: {
+        idAccount: 'yourAccountId',
+        idUser: 25,
+        begin: '2020-06-26',
+        end: '2020-07-26',
+        ongoingFootprintCount: '17',
+        closedFootprintCount: '67',
+        purchasedFootprintCount: '120',
+        carbonEmitted: '0.5042697442695498',
+        carbonOffset: '0.14832419552840292',
+        carbonOffsetPrice: '103.82410109043121'
+    },
+    status: 200
 }   
 ```
 We have created special tools to handle/convert data inside the response, like Carbon or Price. You can find them [here.](tools.md) 

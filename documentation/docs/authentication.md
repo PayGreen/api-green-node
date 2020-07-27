@@ -48,6 +48,24 @@ const config = {
 ```
     sdk.username = 'myUserName';
 ```
+- You can also use a dotenv environment file to load your environment variables if you need a specific configuration.
+
+```dotenv
+SDK_MODE = choose between DEV, PREPROD and PROD (if no mode provided, default mode will be PROD and the requests will automatically be made with url http://localhost)
+SDK_HOST = your url here to overwrite hosts inside SDK(if no host provided, the requests will automatically be made with url http://localhost)
+```
+
+```Javascript
+require('dotenv').config('/.env');
+import { Sdk, Mode } from 'api-green-node';
+
+const specialConfig = {
+        mode: Mode[process.env.SDK_MODE] ?? undefined,
+        host: process.env.SDK_HOST || undefined,
+    };
+
+const sdk = new Sdk(specialConfig);
+```
 
 ## API Responses Schemas
 

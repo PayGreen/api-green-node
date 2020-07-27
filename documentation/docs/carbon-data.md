@@ -66,7 +66,7 @@ const newWebData = new WebFootprint(
 );
 ```
 
-# Path Footprint :
+# Transportation Footprint :
 
 - A `TransportationFootprint` includes the quantity and weight of the packages sent and the `Path(s)` they have traveled. 
 - A `Path` combines a point of departure, a point of arrival and a mode of transport associated.

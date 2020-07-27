@@ -1,6 +1,6 @@
 # Api Green Node
 
--   An ease-to-use Node Sdk for API Green. Carbon offsetting estimate and carbon credits purchase are the heart of our API.
+-   An ease-to-use Node Sdk for API Green. Carbon footprints and carbon credits purchase are the heart of our API.
 -   For contributors, please check technical specifications [here.](#For-contributors)
 
 ## Documentation
@@ -188,11 +188,11 @@ Please, remind, that the access level of your User Status (Administrator or User
         });
 ```
 
-### Adding web carbon estimate
+### Adding web carbon footprint
 
-If you have completed your profile (user + IBAN) you can add and manage carbon offsetting estimate!
+If you have completed your profile (user + IBAN) you can add and manage carbon footprint!
 
-Here we will show you how to create a web carbon estimate but in API Green there are two kind of carbon offsetting estimations:
+Here we will show you how to create a web carbon footprint but in API Green there are two kind of carbon footprints estimations:
 
 -   web browsing or navigation (dependent on time, device type, number of images loaded, number of pages visited, etc.)
 -   transport of persons or goods (dependent on weight, method of transport and the kind of energy used).
@@ -201,8 +201,8 @@ Here we will show you how to create a web carbon estimate but in API Green there
 
 STEP 1: CREATE THE WEB ESTIMATE OFFSET
 
--   Each estimate is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check [Documentation](https://github.com/PayGreen/api-green-node/doc).
--   You can make a carbon offsetting estimate in multiple calls, mix transports, add a web estimate on top of it, as long as you use the SAME fingerprint and if you haven't completed (= finalized) the carbon offset.
+-   Each footprint is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check [Documentation](https://github.com/PayGreen/api-green-node/doc).
+-   You can make a carbon footprint in multiple calls, mix transports, add a web footprint on top of it, as long as you use the SAME fingerprint and if you haven't completed (= finalized) the carbon offset.
 
 ```
 import { WebEstimate } from 'api-green-node';
@@ -216,7 +216,7 @@ const newWebData = new WebEstimate(
 );
 ```
 
-STEP 2 : ADD THE WEB ESTIMATE (Only admin can add a carbon estimate)
+STEP 2 : ADD THE WEB ESTIMATE (Only admin can add a carbon footprint)
 
 ```
     return sdk.carbon

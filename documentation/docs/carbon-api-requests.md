@@ -1,9 +1,9 @@
 ---
 id: carbon-api-requests
-title: Carbon Estimate - API Requests
+title: Carbon Footprints - API Requests
 ---
 
-If you have completed your profile you can now add and manage carbon footprints!
+**If you have completed your profile you can now add and manage carbon footprints!**
 
 Carbon footprints and carbon credits purchase are the heart of our API.
 We have selected two kind of carbon footprints:
@@ -19,7 +19,7 @@ to create a web carbon footprint associated with a unique fingerprint and that w
 | Param | Type | Description |
 | --- | --- | --- |
 | newWebFootprint | <code>WebFootprint</code> | object containing all datas about the ongoing web carbon footprint WITH fingerprint - Only admin can add web footprint |
-You can find details about how to build the object new WebFootprint [here.](carbon-data#web-estimate-)
+You can find details about how to build the object new WebFootprint [here.](carbon-data#web-footprint-)
 - add object with new carbon cost estimated.
 ```
     return sdk.carbon
@@ -32,7 +32,16 @@ You can find details about how to build the object new WebFootprint [here.](carb
 ```
 {
     success: true,
-    dataInfo: 'web estimate added successfully',
+    dataInfo: {
+        idAccount: 'yourAccountId',
+        idUser: '25',
+        fingerprint: 'yourFingerprint',
+        estimatedCarbon: '0.000002',
+        estimatedPrice: '0.0011',
+        createdAt: 1595799361,
+        updatedAt: 1595799361,
+        status: 'ONGOING'
+    },
     status: 201
 }
 ```
@@ -43,7 +52,7 @@ to create a web carbon footprint WITHOUT fingerprint and get an estimation that 
 | Param | Type | Description |
 | --- | --- | --- |
 | newWebFootprintSimulation | <code>WebFootprintSimulation</code> | object containing all datas about the ongoing web carbon footprint WITHOUT fingerprint - Only admin can add simulation web footprint |
-You can find details about how to build the object new WebFootprintSimulation [here.](carbon-data#web-estimate-)
+You can find details about how to build the object new WebFootprintSimulation [here.](carbon-data#footprints-simulations-)
 - add object with new carbon cost estimated.
 ```
     return sdk.carbon
@@ -52,11 +61,20 @@ You can find details about how to build the object new WebFootprintSimulation [h
             console.log(res)
         });
 ```
-- API Response
+- API Response (the API will automatically send back a timestamp as fingerprint)
 ```
 {
     success: true,
-    dataInfo: 'web estimate added successfully',
+    dataInfo: {
+        idAccount: 'yourAccountId',
+        idUser: '25',
+        fingerprint: 1595799361,
+        estimatedCarbon: '0.000002',
+        estimatedPrice: '0.0011',
+        createdAt: 1595799361,
+        updatedAt: 1595799361,
+        status: 'ONGOING'
+    },
     status: 201
 }
 ```
@@ -67,7 +85,7 @@ to create a transportation carbon footprint associated with a unique fingerprint
 | Param | Type | Description |
 | --- | --- | --- |
 | newTransportationFootprint | <code>TransportationFootprint</code> | object containing all datas about the ongoing transportation carbon footprint WITH fingerprint - Only admin can add transportation footprint |
-You can find details about how to build the object newTransportationFootprint [here.](carbon-data#path-estimate-)
+You can find details about how to build the object newTransportationFootprint [here.](carbon-data#transportation-footprint-)
 - add object with new carbon cost estimated.
 ```
     return sdk.carbon
@@ -80,7 +98,16 @@ You can find details about how to build the object newTransportationFootprint [h
 ```
 {
     success: true,
-    dataInfo: 'path estimate added successfully',
+    dataInfo: {
+        idAccount: 'yourAccountId',
+        idUser: '25',
+        fingerprint: 'yourFingerprint',
+        estimatedCarbon: '0.003585',
+        estimatedPrice: '2.5097',
+        createdAt: 1595799362,
+        updatedAt: 1595799362,
+        status: 'ONGOING'
+    },
     status: 201
 }
 ```
@@ -99,7 +126,7 @@ to create a transportation carbon footprint associated with a unique fingerprint
 | Param | Type | Description |
 | --- | --- | --- |
 | newTransportationFootprint | <code>TransportationFootprint</code> | object containing all datas about the ongoing transportation carbon footprint WITH fingerprint - Only admin can add transportation footprint |
-You can find details about how to build the object newTransportationFootprintSimulation [here.](carbon-data#path-estimate-)
+You can find details about how to build the object newTransportationFootprintSimulation [here.](carbon-data#footprints-simulations-)
 - add object with new carbon cost estimated.
 ```
     return sdk.carbon
@@ -108,11 +135,20 @@ You can find details about how to build the object newTransportationFootprintSim
             console.log(res)
         });
 ```
-- API Response
+- API Response (the API will automatically send back a timestamp as fingerprint)
 ```
 {
     success: true,
-    dataInfo: 'path estimate added successfully',
+    dataInfo: {
+        idAccount: 'yourAccountId',
+        idUser: '25',
+        fingerprint: 1595799363,
+        estimatedCarbon: '0.003585',
+        estimatedPrice: '2.5097',
+        createdAt: 1595799363,
+        updatedAt: 1595799363,
+        status: 'ONGOING'
+    },
     status: 201
 }
 ```
@@ -135,15 +171,15 @@ You can find details about how to build the object newTransportationFootprintSim
     success: true,
     dataInfo: {
         idAccount: 'yourAccountId',
-        idUser: '12',
-        fingerprint: '158711654547ccac1b310b',
-        estimatedCarbon: '0.03191955',
-        estimatedPrice: '22.343700408935547',
-        computedTime: 0,
-        createdAt: 1587127136,
-        data: null,
+        idUser: '25',
+        fingerprint: 'yourFingerprint',
+        estimatedCarbon: '0.000002',
+        estimatedPrice: '0.0011',
+        createdAt: '1595799361',
+        updatedAt: '1595799361',
+        status: 'ONGOING',
         _links: { self: [Object] }
-},
+    },
     status: 200
 }
 ```
@@ -164,16 +200,10 @@ You can find details about how to build the object newTransportationFootprintSim
 {
     success: true,
     dataInfo: {
-        idAccount: 'yourAccountId',
-        idUser: '12',
-        fingerprint: '158711654547ccac1b310b',
-        estimatedCarbon: '0.03191955',
-        estimatedPrice: '22.343700408935547',
-        computedTime: 0,
-        createdAt: 1587127136,
-        data: null,
-        _links: { self: [Object] }
-},
+        _links: { self: [Object] },
+        _embedded: { footprint: [Array] },
+        total_items: 50
+    },
     status: 200
 }
 ```
@@ -193,7 +223,17 @@ You can find details about how to build the object newTransportationFootprintSim
 ```
 {
     success: true,
-    dataInfo: 'carbon estimate completed successfully',
+    dataInfo: {
+        idAccount: 'yourAccountId',
+        idUser: '25',
+        fingerprint: 'yourFingerprint',
+        estimatedCarbon: '0.003585',
+        estimatedPrice: '2.5097',
+        createdAt: '1595799362',
+        updatedAt: 1595799363,
+        status: 'CLOSED',
+        _links: { self: [Object] }
+    },
     status: 200
 }
 ```
@@ -213,7 +253,17 @@ You can find details about how to build the object newTransportationFootprintSim
 ```
 {
     success: true,
-    dataInfo: 'carbon estimate completed successfully',
+    dataInfo: {
+        idAccount: 'yourAccountId',
+        idUser: '25',
+        fingerprint: 'yourFingerprint',
+        estimatedCarbon: '0.001177',
+        estimatedPrice: '0.8235',
+        createdAt: '1595799363',
+        updatedAt: 1595799364,
+        status: 'PURCHASED',
+        _links: { self: [Object] }
+    },
     status: 200
 }
 ```
@@ -258,15 +308,13 @@ You can find details about how to build the object newTransportationFootprintSim
     success: true,
     dataInfo: {
         idAccount: 'yourAccountId',
-        idUser: '12',
-        fingerprint: '158711654547ccac1b310b',
-        estimatedCarbon: '0.03191955',
-        estimatedPrice: '22.343700408935547',
-        computedTime: 0,
-        createdAt: 1587127136,
-        data: null,
+        idUser: '25',
+        fingerprint: 'yourFingerprint',
+        estimatedCarbon: '0.001177',
+        estimatedPrice: '0.8235',
+        createdAt: '1595799363',
         _links: { self: [Object] }
-},
+    },
     status: 200
 }
 ```
@@ -285,16 +333,10 @@ You can find details about how to build the object newTransportationFootprintSim
 {
     success: true,
     dataInfo: {
-        idAccount: 'yourAccountId',
-        idUser: '12',
-        fingerprint: '158711654547ccac1b310b',
-        estimatedCarbon: '0.03191955',
-        estimatedPrice: '22.343700408935547',
-        computedTime: 0,
-        createdAt: 1587127136,
-        data: null,
-        _links: { self: [Object] }
-},
+        _links: { self: [Object] },
+        _embedded: { purchase: [Array] },
+        total_items: 50
+    },
     status: 200
 }
 ```
