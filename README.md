@@ -260,7 +260,7 @@ STEP 3 : PURCHASE (FINALIZE) THE WEB FOOTPRINT
         });
 ```
 
-### Get your carbon reportss
+### Get your carbon reports
 
 -   If you have created and completed carbon footprints, you can now get reports and see all your carbon footprints credit purchases, filtered in many ways.
 -   default mode : get automatically data from last month until today
