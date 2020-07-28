@@ -4,16 +4,18 @@ title: Ibans - Create Data
 ---
 
 Here you will find all informations to create a New Iban Object with our Iban Model class.
-- both country and bankName are based on enumeration for autocompletion.
-- for country : all countries are available in format ISO31661Alpha2.
 
-## Object expected by API Green : 
-| Name | Type | Description |
-| --- | --- | --- |
-| bankName | <code>enum</code> | bank of the iban |
-| iban | <code>string</code> | number of the iban |
-| bic | <code>string</code> | bic of the iban |
-| country | <code>enum</code> | country of the iban |
+-   both country and bankName are based on enumeration for autocompletion.
+-   for country : all countries are available in format ISO31661Alpha2.
+
+## Object expected by API Green :
+
+| Name     | Type                | Description         |
+| -------- | ------------------- | ------------------- |
+| bankName | <code>enum</code>   | bank of the iban    |
+| iban     | <code>string</code> | number of the iban  |
+| bic      | <code>string</code> | bic of the iban     |
+| country  | <code>enum</code>   | country of the iban |
 
 ```
 {
@@ -32,7 +34,8 @@ import { Iban } from 'api-green-node';
 const newIban = new Iban();
     newIban.iban = 'FR7640618802980004033009519';
 ```
-## Or all at once  :
+
+## Or all at once :
 
 ```
 import { Iban, Bank, Country } from 'api-green-node';
@@ -45,23 +48,26 @@ const newIban = new Iban(
 );
 ```
 
-## Build Validation Iban Object  :
+## Build Validation Iban Object :
+
 > For 'Paygreen' users only :
 
 You can use our Iban Validation Model Class when you want to [validate an Iban](ibans-api-requests#ibanvalidate), it generates an object with the status at 'VALID' and the timestamp of validation automatically.
 
-| Name | Type | Description |
-| --- | --- | --- |
-| bankName | <code>enum</code> | bank of the iban |
-| status | <code>string</code> | prefilled at value 'VALID' |
-| validatedAt | <code>date</code> | created automatically |
+| Name        | Type                | Description                |
+| ----------- | ------------------- | -------------------------- |
+| bankName    | <code>enum</code>   | bank of the iban           |
+| status      | <code>string</code> | prefilled at value 'VALID' |
+| validatedAt | <code>date</code>   | created automatically      |
 
 ```
 import { IbanValidation, Bank } from 'api-green-node';
 
 const newIbanValidated = new IbanValidation(Bank.LCL);
 ```
-the final object will look like : 
+
+the final object will look like :
+
 ```
 {
     bankName: 'LCL',

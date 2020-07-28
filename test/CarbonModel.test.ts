@@ -64,7 +64,7 @@ test('it creates a web simulation of a carbon footprint withput fingerprint with
     });
 });
 
-test('it creates a path simulation for carbon estimate with Address Model', () => {
+test('it creates a path simulation for carbon footprint with Address Model', () => {
     const address1 = new Address(
         '22 rue Capitaine Cocart',
         '91120',
@@ -169,7 +169,7 @@ test('Verify method returns error with the name of the wrong property latitude',
     });
 });
 
-test('it creates a mixed path simulation for carbon estimate with Address + Coordinate Models', () => {
+test('it creates a mixed path simulation for carbon footprint with Address + Coordinate Models', () => {
     const address1 = new Coordinate(
         'New-York',
         'Etats-Unis',

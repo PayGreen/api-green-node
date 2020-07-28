@@ -17,7 +17,8 @@ The API Green uses an OAuth2 security scheme with a Token/Refresh Url. If you do
 | password | <code>string</code> | your password |
 | accountId | <code>string</code> | your accountId |
 
-- here we choose 'DEV', it's the corresponding url inside the Sdk that will be used.
+-   here we choose 'DEV', it's the corresponding url inside the Sdk that will be used.
+
 ```
 import { Sdk, Mode } from 'api-green-node';
 
@@ -33,7 +34,8 @@ const sdk = new Sdk(config)
         });
 ```
 
-- in case you need a specific url : 
+-   in case you need a specific url :
+
 ```
 import { Sdk, Mode } from 'api-green-node';
 
@@ -48,7 +50,8 @@ const config = {
 ```
     sdk.username = 'myUserName';
 ```
-- You can also use a dotenv environment file to load your environment variables if you need a specific configuration.
+
+-   You can also use a dotenv environment file to load your environment variables if you need a specific configuration.
 
 ```dotenv
 SDK_MODE = choose between DEV, PREPROD and PROD (if no mode provided, default mode will be PROD and the requests will automatically be made with url http://localhost)

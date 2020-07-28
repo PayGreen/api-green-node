@@ -28,4 +28,5 @@ const { Sdk } = require('api-green-node');
 ```
 const sdk = new Sdk();
 ```
-Here, you have your first instance of the Sdk. Now to access to API Green, it needs to be configured with your account informations and/or tokens, if you already have them. It's time to [authenticate!](authentication.md)   
+
+Here, you have your first instance of the Sdk. Now to access to API Green, it needs to be configured with your account informations and/or tokens, if you already have them. It's time to [authenticate!](authentication.md)

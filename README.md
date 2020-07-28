@@ -82,7 +82,8 @@ const config = {
 
 -   You can also use a dotenv environment file to load your environment variables if you need a specific configuration.
 
-```dotenv
+```
+your .env file:
 SDK_MODE = choose between DEV, PREPROD and PROD (if no mode provided, default mode will be PROD and the requests will automatically be made with url http://localhost)
 SDK_HOST = your url here to overwrite hosts inside SDK(if no host provided, the requests will automatically be made with url http://localhost)
 ```
@@ -249,7 +250,7 @@ STEP 2 : ADD THE WEB FOOTPRINT (Only admin can add a carbon footprint)
         });
 ```
 
-STEP 3 : PURCHASE (FINALIZE) THE WEB ESTIMATE
+STEP 3 : PURCHASE (FINALIZE) THE WEB FOOTPRINT
 
 ```
     return sdk.carbon
@@ -280,7 +281,7 @@ STEP 3 : PURCHASE (FINALIZE) THE WEB ESTIMATE
 | endDate? | <code>string</code> | optional, if no date specified, current day will be used, accepted format YYYY-MM-DD |
 
 ```
-    return sdk.carbonStatistics
+    return sdk.carbonReports
         .get(beginDate?, endDate?)
         .then((res) => {
             console.log(res)
