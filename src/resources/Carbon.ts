@@ -39,7 +39,6 @@ export class Carbon extends MainBuilder {
             );
         } else {
             const serializedWebFootprint = serialize(newWebFootprint);
-            console.log('serialized', serializedWebFootprint);
             return this.axiosRequest
                 .post(
                     this.buildUrl(false, Carbon.webUrl),
