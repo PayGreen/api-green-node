@@ -1,0 +1,305 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Ibans - API Requests · API GREEN NODE</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="- In order to purchase carbon offset, you need to register an IBAN. This IBAN will be used to make bank wire transfers. An IBAN is associated to the User that registers it. IBAN registration is mandatory and is associated to a User."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Ibans - API Requests · API GREEN NODE"/><meta property="og:type" content="website"/><meta property="og:url" content="https://your-docusaurus-test-site.com/"/><meta property="og:description" content="- In order to purchase carbon offset, you need to register an IBAN. This IBAN will be used to make bank wire transfers. An IBAN is associated to the User that registers it. IBAN registration is mandatory and is associated to a User."/><meta property="og:image" content="https://your-docusaurus-test-site.com/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://your-docusaurus-test-site.com/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/e-transparent-disque-vert.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai-sublime.min.css"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&amp;display=swap"/><link rel="stylesheet" href="https://buttons.github.io/buttons.js"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script><script type="text/javascript" src="/js/code-block-buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/prism.css"/><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/e-transparent-disque-blanc.ico" alt="API GREEN NODE"/><h2 class="headerTitleWithLogo">API GREEN NODE</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/#try" target="_self">Getting Started</a></li><li class="siteNavGroupActive"><a href="/docs/start-sdk" target="_self">Docs</a></li><li class=""><a href="https://github.com/PayGreen/api-green-node" target="_self">Github</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Setup Complete User Profile</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">First Api Requests</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/start-sdk">Import Sdk</a></li><li class="navListItem"><a class="navItem" href="/docs/authentication">Authentication</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Setup Complete User Profile</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/account">Account - Api Request</a></li><li class="navListItem"><a class="navItem" href="/docs/users-api-requests">Users - Api Requests</a></li><li class="navListItem"><a class="navItem" href="/docs/users-data">Users - Create Data</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/ibans-api-requests">Ibans - API Requests</a></li><li class="navListItem"><a class="navItem" href="/docs/ibans-data">Ibans - Create Data</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Transports</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/transports">Get Transports</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Carbon Estimate</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/carbon-api-requests">Carbon Estimate - API Requests</a></li><li class="navListItem"><a class="navItem" href="/docs/carbon-data">Create Paths &amp; Web Estimates</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Carbon Statistics</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/carbon-statistics-api-requests">Carbon Statistics - Api Requests</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Tools</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/tools">Helpful methods for handling API Requests &amp; Responses</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Ibans - API Requests</h1></header><article><div><span><ul>
+<li>In order to purchase carbon offset, you need to register an IBAN. This IBAN will be used to make bank wire transfers. An IBAN is associated to the User that registers it. IBAN registration is mandatory and is associated to a User.</li>
+<li>After this step, your IBAN will be validated by our Account Managers. Once an IBAN is validated (marked in a VALID status), it can't be updated anymore. If there is a problem with your IBAN, it will be marked in a ERROR status.</li>
+<li>The first IBAN created by a User becomes the default IBAN for your User.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="ibangetall"></a><a href="#ibangetall" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iban.getAll()</h2>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>userNameValue</td><td><code>string</code></td><td>Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to get all ibans of a different user of the company account</td></tr>
+</tbody>
+</table>
+<ul>
+<li>Get a list of ibans based on accountId and username</li>
+</ul>
+<pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.iban
+        .getAll(userNameValue?)
+        .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(res)
+        });
+</code></pre>
+<ul>
+<li>API Response
+The _embedded object inside API response contains an array of all ibans associated to the username.</li>
+</ul>
+<pre><code class="hljs">{
+    <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">dataInfo</span>: {
+        <span class="hljs-attr">_links</span>: { <span class="hljs-attr">self</span>: [<span class="hljs-built_in">Object</span>] },
+        <span class="hljs-attr">_embedded</span>: { <span class="hljs-attr">rib</span>: [<span class="hljs-built_in">Array</span>] },
+        <span class="hljs-attr">total_items</span>: <span class="hljs-number">22</span>
+    },
+    <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>
+}   
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ibancreate"></a><a href="#ibancreate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iban.create()</h2>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>newIban</td><td><code>IbanModel</code></td><td>object containing all new iban information, only Admin can create Iban</td></tr>
+<tr><td>userNameValue</td><td><code>string</code></td><td>Optional, by default UserName used will be the one from identity</td></tr>
+</tbody>
+</table>
+<ul>
+<li>To create a new iban object, we highly recommend you to use our Iban Model Class to ensure full compatibility with the API. <a href="/docs/ibans-data">Try it here</a></li>
+<li>Get object with new iban created.</li>
+</ul>
+<pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.iban
+        .create(newIban, userNameValue?)
+        .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(res)
+        });
+</code></pre>
+<ul>
+<li>API Response</li>
+</ul>
+<pre><code class="hljs">{
+    <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">dataInfo</span>: {
+        <span class="hljs-attr">idRib</span>: <span class="hljs-string">'17'</span>,
+        <span class="hljs-attr">model</span>: <span class="hljs-string">'ApiUser'</span>,
+        <span class="hljs-attr">idModel</span>: <span class="hljs-string">'12'</span>,
+        <span class="hljs-attr">status</span>: <span class="hljs-string">'VALID'</span>,
+        <span class="hljs-attr">bankName</span>: <span class="hljs-string">'BNP Paribas Particuliers'</span>,
+        <span class="hljs-attr">iban</span>: <span class="hljs-string">'FR7640618802980004033009519'</span>,
+        <span class="hljs-attr">bic</span>: <span class="hljs-string">'BNPFRPPXXX'</span>,
+        <span class="hljs-attr">country</span>: <span class="hljs-string">'FR'</span>,
+        <span class="hljs-attr">isDefault</span>: <span class="hljs-number">0</span>,
+        <span class="hljs-attr">createdAt</span>: <span class="hljs-number">1587138210</span>,
+        <span class="hljs-attr">validatedAt</span>: <span class="hljs-number">1587138210</span>,
+        <span class="hljs-attr">_links</span>: { <span class="hljs-attr">self</span>: [<span class="hljs-built_in">Object</span>] }
+    },
+    <span class="hljs-attr">status</span>: <span class="hljs-number">201</span>
+}   
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ibangetone"></a><a href="#ibangetone" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iban.getOne()</h2>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>ibanId</td><td><code>number</code></td><td>unique number to identify the iban</td></tr>
+<tr><td>userNameValue</td><td><code>string</code></td><td>Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to get an iban of another user</td></tr>
+</tbody>
+</table>
+<ul>
+<li>Get information about a specific iban</li>
+</ul>
+<pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.iban
+        .getOne(ibanId, userNameValue?)
+        .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(res)
+        });
+</code></pre>
+<ul>
+<li>API Response
+The object inside API response contains all informations about the iban requested.</li>
+</ul>
+<pre><code class="hljs">{
+    <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">dataInfo</span>: {
+        <span class="hljs-attr">idRib</span>: <span class="hljs-string">'18'</span>,
+        <span class="hljs-attr">model</span>: <span class="hljs-string">'ApiUser'</span>,
+        <span class="hljs-attr">idModel</span>: <span class="hljs-string">'12'</span>,
+        <span class="hljs-attr">status</span>: <span class="hljs-string">'VALID'</span>,
+        <span class="hljs-attr">bankName</span>: <span class="hljs-string">'Boursorama'</span>,
+        <span class="hljs-attr">iban</span>: <span class="hljs-string">'FR7640618802980004033009519'</span>,
+        <span class="hljs-attr">bic</span>: <span class="hljs-string">'BOUSFRPPXXX'</span>,
+        <span class="hljs-attr">country</span>: <span class="hljs-string">'FR'</span>,
+        <span class="hljs-attr">isDefault</span>: <span class="hljs-string">'1'</span>,
+        <span class="hljs-attr">createdAt</span>: <span class="hljs-string">'1584026655'</span>
+        <span class="hljs-attr">validatedAt</span>: <span class="hljs-string">'1584026655'</span> }
+        <span class="hljs-attr">_links</span>: { <span class="hljs-attr">self</span>: [<span class="hljs-built_in">Object</span>] }
+    },
+    <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>
+}   
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ibansetasdefault"></a><a href="#ibansetasdefault" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iban.setAsDefault()</h2>
+<blockquote>
+<p>(this method is working in API Green version 1.7.1 and above)</p>
+</blockquote>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>ibanId</td><td><code>number</code></td><td>unique number to identify the iban</td></tr>
+<tr><td>userNameValue</td><td><code>string</code></td><td>Optional, by default UserName used will be the one from identity, only Admin can change default iban</td></tr>
+</tbody>
+</table>
+<ul>
+<li>Set one iban as default one.</li>
+</ul>
+<pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.iban
+        .setAsDefault(ibanId, userNameValue?)
+        .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(res)
+        });
+</code></pre>
+<ul>
+<li>API Response
+The object contains the boolean 'isDefault' set to '1';</li>
+</ul>
+<pre><code class="hljs">{
+    <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">dataInfo</span>: {
+        <span class="hljs-string">"idRib"</span>: <span class="hljs-string">"1"</span>,
+        <span class="hljs-string">"idUser"</span>: <span class="hljs-string">"1"</span>,
+        <span class="hljs-string">"status"</span>: <span class="hljs-string">"VALID"</span>,
+        <span class="hljs-string">"bankName"</span>: <span class="hljs-string">"MyBank"</span>,
+        <span class="hljs-string">"iban"</span>: <span class="hljs-string">"FR7613106005002000743520962"</span>,
+        <span class="hljs-string">"bic"</span>: <span class="hljs-string">"CMCIFR2A"</span>,
+        <span class="hljs-string">"country"</span>: <span class="hljs-string">"FR"</span>,
+        <span class="hljs-string">"isDefault"</span>: <span class="hljs-string">"1"</span>,
+        <span class="hljs-string">"createdAt"</span>: <span class="hljs-string">"1514761200"</span>,
+        <span class="hljs-string">"enabledAt"</span>: <span class="hljs-string">"1514761200"</span>,
+        <span class="hljs-string">"_links"</span>: {
+        <span class="hljs-string">"self"</span>: {}
+        }
+    },
+    <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>
+}   
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ibanvalidate"></a><a href="#ibanvalidate" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iban.validate()</h2>
+<blockquote>
+<p>(reserved to 'Paygreen' account users)</p>
+</blockquote>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>ibanId</td><td><code>number</code></td><td>unique number to identify the iban</td></tr>
+<tr><td>ValidatedIban</td><td><code>IbanValidationModel</code></td><td>Object containing all new iban information</td></tr>
+<tr><td>userNameValue</td><td><code>string</code></td><td>UserName of the owner of the iban</td></tr>
+</tbody>
+</table>
+<ul>
+<li>To create a new ValidatedIban object, we highly recommend you to use our Iban Model Class to ensure full compatibility with the API. <a href="/docs/ibans-data">Try it here</a></li>
+<li>Get object with iban validated.</li>
+</ul>
+<pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.iban
+        .validate(ibanId, ValidatedIban, userNameValue)
+        .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(res)
+        });
+</code></pre>
+<ul>
+<li>API Response
+The object inside API response contains iban object with 'status':'VALID' and date of validation.</li>
+</ul>
+<pre><code class="hljs">{
+    <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">dataInfo</span>: {
+        <span class="hljs-attr">idRib</span>: <span class="hljs-string">'589'</span>,
+        <span class="hljs-attr">model</span>: <span class="hljs-string">'ApiUser'</span>,
+        <span class="hljs-attr">idModel</span>: <span class="hljs-string">'12'</span>,
+        <span class="hljs-attr">status</span>: <span class="hljs-string">'VALID'</span>,
+        <span class="hljs-attr">bankName</span>: <span class="hljs-string">'LCL'</span>,
+        <span class="hljs-attr">iban</span>: <span class="hljs-string">'FR7640618802980004033009519'</span>,
+        <span class="hljs-attr">bic</span>: <span class="hljs-string">'BNPFRPPXXX'</span>,
+        <span class="hljs-attr">country</span>: <span class="hljs-string">'FR'</span>,
+        <span class="hljs-attr">isDefault</span>: <span class="hljs-string">'0'</span>,
+        <span class="hljs-attr">createdAt</span>: <span class="hljs-string">'1587138210'</span>,
+        <span class="hljs-attr">validatedAt</span>: <span class="hljs-string">'1587138210'</span>,
+        <span class="hljs-attr">_links</span>: { <span class="hljs-attr">self</span>: [<span class="hljs-built_in">Object</span>] }
+    },
+    <span class="hljs-attr">status</span>: <span class="hljs-number">200</span>
+}   
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="ibandelete"></a><a href="#ibandelete" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iban.delete()</h2>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>ibanId</td><td><code>number</code></td><td>unique number to identify the iban</td></tr>
+<tr><td>UserNameValue</td><td><code>string</code></td><td>Optional, by default UserName used will be the one from identity, only Admin can delete iban</td></tr>
+</tbody>
+</table>
+<ul>
+<li>Get response with status 204 if iban is deleted successfully.</li>
+<li>The Default IBAN can't be deleted. Instead, you have to:
+<ul>
+<li>create another IBAN</li>
+<li>make the newly created IBAN your default one</li>
+<li>delete your old IBAN (which is no longer the default one)</li>
+</ul></li>
+</ul>
+<pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.iban
+        .delete(ibanId, userNameValue?)
+        .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
+            <span class="hljs-built_in">console</span>.log(res)
+        });
+</code></pre>
+<ul>
+<li>API Response</li>
+</ul>
+<pre><code class="hljs">{
+    <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">dataInfo</span>: <span class="hljs-string">'user deleted successfully'</span>,
+    <span class="hljs-attr">status</span>: <span class="hljs-number">204</span>
+}   
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/users-data"><span class="arrow-prev">← </span><span>Users - Create Data</span></a><a class="docs-next button" href="/docs/ibans-data"><span>Ibans - Create Data</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#ibangetall">iban.getAll()</a></li><li><a href="#ibancreate">iban.create()</a></li><li><a href="#ibangetone">iban.getOne()</a></li><li><a href="#ibansetasdefault">iban.setAsDefault()</a></li><li><a href="#ibanvalidate">iban.validate()</a></li><li><a href="#ibandelete">iban.delete()</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/en/start-sdk">First Api Request</a><a href="/docs/en/account">Set Up User Profile</a></div><div><h5>About Us</h5><a href="https://solidaire.paygreen.fr/documentation/green" target="_blank" rel="noreferrer noopener">ApiGreen by Paygreen</a><a href="https://www.paygreen.io/" target="_blank" rel="noreferrer noopener">Paygreen</a></div><div><h5>More</h5><a href="https://github.com/PayGreen/api-green-node" target="_blank">GitHub</a><a class="github-button" href="https://github.com/PayGreen/api-green-node" data-icon="octicon-star" data-count-href="/facebook/docusaurus/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><a href="https://opensource.facebook.com/" target="_blank" rel="noreferrer noopener" class="fbOpenSource"><img src="/img/oss_logo.png" alt="Facebook Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2020 Paygreen</section></footer></div></body></html>
