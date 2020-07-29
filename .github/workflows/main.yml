@@ -41,3 +41,4 @@ jobs:
               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               BRANCH: gh-pages # The branch the action should deploy to.
               FOLDER: documentation/website/build/api-green-node
+              CLEAN: true
