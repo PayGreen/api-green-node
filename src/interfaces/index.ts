@@ -5,7 +5,6 @@ import { ITokens } from './ITokens';
 import { IIdentity } from './IIdentity';
 import { IIban } from './IIban';
 import { IUser } from './IUser';
-import { IWebNavigation } from './IWebNavigation';
 
 export {
     IApiResponse,
@@ -15,5 +14,4 @@ export {
     IIdentity,
     IIban,
     IUser,
-    IWebNavigation,
 };
