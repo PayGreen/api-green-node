@@ -31,9 +31,9 @@ jobs:
                 registry-url: https://registry.npmjs.org/
           - run : npm install
             working-directory: ${{env.working-directory}}
-          - run : npm build
+          - run : npm run build
             working-directory: ${{env.working-directory}}
-          - run : npm build
+          - run : npm run build
             working-directory: ${{env.working-directory}}
           - name: Deploy to GitHub Pages
             uses: JamesIves/github-pages-deploy-action@3.5.9
