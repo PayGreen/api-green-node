@@ -1,6 +1,6 @@
 # Api Green Node
 
--   An ease-to-use Node Sdk for API Green. Carbon offsetting estimate and carbon credits purchase are the heart of our API.
+-   An ease-to-use Node Sdk for API Green. Carbon footprints and carbon credits purchase are the heart of our API.
 -   For contributors, please check technical specifications [here.](#For-contributors)
 
 ## Documentation
@@ -80,6 +80,26 @@ const config = {
 };
 ```
 
+-   You can also use a dotenv environment file to load your environment variables if you need a specific configuration.
+
+```
+your .env file:
+SDK_MODE = choose between DEV, PREPROD and PROD (if no mode provided, default mode will be PROD and the requests will automatically be made with url http://localhost)
+SDK_HOST = your url here to overwrite hosts inside SDK(if no host provided, the requests will automatically be made with url http://localhost)
+```
+
+```Javascript
+require('dotenv').config('/.env');
+import { Sdk, Mode } from 'api-green-node';
+
+const specialConfig = {
+        mode: Mode[process.env.SDK_MODE] ?? undefined,
+        host: process.env.SDK_HOST || undefined,
+    };
+
+const sdk = new Sdk(specialConfig);
+```
+
 -   Login with Tokens
     If you already have your tokens, you just need to instanciate our sdk with a config object.
 
@@ -136,16 +156,20 @@ const sdk = new Sdk(config);
     transport.getAll()
 
 //Carbon Class
-    carbon.addWebEstimate()
-    carbon.addPathEstimate()
-    carbon.getEstimate()
-    carbon.completeEstimate()
-    carbon.deleteEstimate()
+    carbon.addWebFootprint()
+    carbon.simulateWebFootprint()
+    carbon.addTransportationFootprint()
+    carbon.simulateTransportationFootprint()
+    carbon.getOneFootprint()
+    carbon.getAllFootprints()
+    carbon.closeFootprint()
+    carbon.purchaseFootprint()
+    carbon.emptyFootprint()
+    carbon.getOnePurchase()
+    carbon.getAllPurchases()
 
-//CarbonStastitics Class
-    carbonStatistics.get()
-    carbonStatistics.getADate()
-    carbonStatistics.getAPeriod()
+//CarbonReports Class
+    carbonReports.get()
 
 ```
 
@@ -188,26 +212,26 @@ Please, remind, that the access level of your User Status (Administrator or User
         });
 ```
 
-### Adding web carbon estimate
+### Adding web carbon footprint
 
-If you have completed your profile (user + IBAN) you can add and manage carbon offsetting estimate!
+If you have completed your profile (user + IBAN) you can add and manage carbon footprint!
 
-Here we will show you how to create a web carbon estimate but in API Green there are two kind of carbon offsetting estimations:
+Here we will show you how to create a web carbon footprint but in API Green there are two kind of carbon footprints estimations:
 
 -   web browsing or navigation (dependent on time, device type, number of images loaded, number of pages visited, etc.)
 -   transport of persons or goods (dependent on weight, method of transport and the kind of energy used).
 -   so you can easily estimate the carbon cost for the web browsing made by a user to shop a product and the carbon cost for the transport of this product to be delivered to consumer.
 -   estimated carbon is in tons CO2eq and estimated price amount in euros cents (100 = 1€).
 
-STEP 1: CREATE THE WEB ESTIMATE OFFSET
+STEP 1: CREATE THE WEB FOOTPRINT
 
--   Each estimate is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check [Documentation](https://github.com/PayGreen/api-green-node/doc).
--   You can make a carbon offsetting estimate in multiple calls, mix transports, add a web estimate on top of it, as long as you use the SAME fingerprint and if you haven't completed (= finalized) the carbon offset.
+-   Each footprint is identified by its unique `fingerprint`. To be sure to have a unique fingerPrint, please check [Documentation](https://github.com/PayGreen/api-green-node/doc).
+-   You can make a carbon footprint in multiple calls, mix with transportation, add a web footprint on top of it, as long as you use the SAME fingerprint and if you haven't closed or purchased the carbon footprint.
 
 ```
-import { WebEstimate } from 'api-green-node';
+import { WebFootprint } from 'api-green-node';
 
-const newWebData = new WebEstimate(
+const newWebData = new WebFootprint(
     fingerprint,
     'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
     140,
@@ -216,33 +240,33 @@ const newWebData = new WebEstimate(
 );
 ```
 
-STEP 2 : ADD THE WEB ESTIMATE (Only admin can add a carbon estimate)
+STEP 2 : ADD THE WEB FOOTPRINT (Only admin can add a carbon footprint)
 
 ```
     return sdk.carbon
-        .addWebEstimate(newWebData)
+        .addWebFootprint(newWebData)
         .then((res) => {
             console.log(res)
         });
 ```
 
-STEP 3 : COMPLETE (FINALIZE) THE WEB ESTIMATE
+STEP 3 : PURCHASE (FINALIZE) THE WEB FOOTPRINT
 
 ```
     return sdk.carbon
-        .completeEstimate(fingerprint)
+        .purchaseFootprint(fingerprint)
         .then((res) => {
             console.log(res)
         });
 ```
 
-### Get your carbon statitics
+### Get your carbon reports
 
--   If you have created and completed carbon offsetting estimates, you can now get statistics and see all your carbon offsetting credit purchases, filtered in many ways.
+-   If you have created and completed carbon footprints, you can now get reports and see all your carbon footprints credit purchases, filtered in many ways.
 -   default mode : get automatically data from last month until today
 
 ```
-    return sdk.carbonStatistics
+    return sdk.carbonReports
         .get()
         .then((res) => {
             console.log(res)
@@ -251,13 +275,14 @@ STEP 3 : COMPLETE (FINALIZE) THE WEB ESTIMATE
 
 -   get datas on a specific date
 
-| Param | Type                | Description                                                                           |
-| ----- | ------------------- | ------------------------------------------------------------------------------------- |
-| date  | <code>string</code> | accepted formats are YYYY-MM-DD(show a day), YYYY-MM(show a month), YYYY(show a year) |
+| Param | Type | Description |
+| --- | --- | --- |
+| beginDate? | <code>string</code> |  optional, if no date specified, date one month ago from current day will be used, accepted format YYYY-MM-DD |
+| endDate? | <code>string</code> | optional, if no date specified, current day will be used, accepted format YYYY-MM-DD |
 
 ```
-    return sdk.carbonStatistics
-        .getADate(date)
+    return sdk.carbonReports
+        .get(beginDate?, endDate?)
         .then((res) => {
             console.log(res)
         });

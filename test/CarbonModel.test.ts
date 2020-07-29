@@ -28,20 +28,19 @@ test('it creates a web data with fingerprint of a carbon footprint with Model', 
     );
     expect(webTest).toMatchObject({
         userAgent:
-        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+            'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
         device: '',
         browser: '',
         countImages: 140,
         countPages: 6,
         time: 180,
-        externalId: "",
+        externalId: '',
         fingerprint: 'NewFingerPrint',
     });
     return Tools.verify(webTest).then((data: any) => {
         expect(data).toBe('validation succeed');
     });
 });
-
 
 test('it creates a web simulation of a carbon footprint withput fingerprint with Model', () => {
     const webSimulationTest = new WebFootprintSimulation(
@@ -52,20 +51,20 @@ test('it creates a web simulation of a carbon footprint withput fingerprint with
     );
     expect(webSimulationTest).toMatchObject({
         userAgent:
-        'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
+            'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
         device: '',
         browser: '',
         countImages: 140,
         countPages: 6,
         time: 180,
-        externalId: "",
+        externalId: '',
     });
     return Tools.verify(webSimulationTest).then((data: any) => {
         expect(data).toBe('validation succeed');
     });
 });
 
-test('it creates a path simulation for carbon estimate with Address Model', () => {
+test('it creates a path simulation for carbon footprint with Address Model', () => {
     const address1 = new Address(
         '22 rue Capitaine Cocart',
         '91120',
@@ -91,7 +90,10 @@ test('it creates a path simulation for carbon estimate with Address Model', () =
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new TransportationFootprint('NewFingerPrint', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewFingerPrint', 20, 1, [
+        path1,
+        path2,
+    ]);
 
     expect(pathTest).toMatchObject({
         fingerprint: 'NewFingerPrint',
@@ -155,7 +157,10 @@ test('Verify method returns error with the name of the wrong property latitude',
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new TransportationFootprint('NewMixNYFrance', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewMixNYFrance', 20, 1, [
+        path1,
+        path2,
+    ]);
     return Tools.verify(pathTest).then((data: any) => {
         expect(data[0].children[0].children[0]).toHaveProperty(
             'property',
@@ -164,7 +169,7 @@ test('Verify method returns error with the name of the wrong property latitude',
     });
 });
 
-test('it creates a mixed path simulation for carbon estimate with Address + Coordinate Models', () => {
+test('it creates a mixed path simulation for carbon footprint with Address + Coordinate Models', () => {
     const address1 = new Coordinate(
         'New-York',
         'Etats-Unis',
@@ -190,7 +195,10 @@ test('it creates a mixed path simulation for carbon estimate with Address + Coor
         Transport['TER France - Diesel'],
     );
 
-    const pathTest = new TransportationFootprint('NewMixNYFrance', 20, 1, [path1, path2]);
+    const pathTest = new TransportationFootprint('NewMixNYFrance', 20, 1, [
+        path1,
+        path2,
+    ]);
 
     expect(pathTest).toMatchObject({
         fingerprint: 'NewMixNYFrance',

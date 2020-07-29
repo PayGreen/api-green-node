@@ -3,17 +3,18 @@ id: ibans-api-requests
 title: Ibans - API Requests
 ---
 
-- In order to purchase carbon offset, you need to register an IBAN. This IBAN will be used to make bank wire transfers. An IBAN is associated to the User that registers it. IBAN registration is mandatory and is associated to a User.
-- After this step, your IBAN will be validated by our Account Managers. Once an IBAN is validated (marked in a VALID status), it can't be updated anymore. If there is a problem with your IBAN, it will be marked in a ERROR status.
-- The first IBAN created by a User becomes the default IBAN for your User.
+-   In order to purchase carbon offset, you need to register an IBAN. This IBAN will be used to make bank wire transfers. An IBAN is associated to the User that registers it. IBAN registration is mandatory and is associated to a User.
+-   After this step, your IBAN will be validated by our Account Managers. Once an IBAN is validated (marked in a VALID status), it can't be updated anymore. If there is a problem with your IBAN, it will be marked in a ERROR status.
+-   The first IBAN created by a User becomes the default IBAN for your User.
 
 ## iban.getAll()
 
-| Param | Type | Description |
-| --- | --- | --- |
+| Param         | Type                | Description                                                                                                                                                               |
+| ------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to get all ibans of a different user of the company account |
 
-- Get a list of ibans based on accountId and username
+-   Get a list of ibans based on accountId and username
+
 ```
     return sdk.iban
         .getAll(userNameValue?)
@@ -21,8 +22,10 @@ title: Ibans - API Requests
             console.log(res)
         });
 ```
-- API Response
-The _embedded object inside API response contains an array of all ibans associated to the username.
+
+-   API Response
+    The \_embedded object inside API response contains an array of all ibans associated to the username.
+
 ```
 {
     success: true,
@@ -32,16 +35,18 @@ The _embedded object inside API response contains an array of all ibans associat
         total_items: 22
     },
     status: 200
-}   
+}
 ```
+
 ## iban.create()
 
-| Param | Type | Description |
-| --- | --- | --- |
-| newIban | <code>IbanModel</code> | object containing all new iban information, only Admin can create Iban |
-| userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity |
-- To create a new iban object, we highly recommend you to use our Iban Model Class to ensure full compatibility with the API. [Try it here](ibans-data.md)
-- Get object with new iban created.  
+| Param         | Type                   | Description                                                            |
+| ------------- | ---------------------- | ---------------------------------------------------------------------- |
+| newIban       | <code>IbanModel</code> | object containing all new iban information, only Admin can create Iban |
+| userNameValue | <code>string</code>    | Optional, by default UserName used will be the one from identity       |
+
+-   To create a new iban object, we highly recommend you to use our Iban Model Class to ensure full compatibility with the API. [Try it here](ibans-data.md)
+-   Get object with new iban created.
 
 ```
     return sdk.iban
@@ -50,7 +55,9 @@ The _embedded object inside API response contains an array of all ibans associat
             console.log(res)
         });
 ```
-- API Response
+
+-   API Response
+
 ```
 {
     success: true,
@@ -69,15 +76,17 @@ The _embedded object inside API response contains an array of all ibans associat
         _links: { self: [Object] }
     },
     status: 201
-}   
+}
 ```
+
 ## iban.getOne()
 
-| Param | Type | Description |
-| --- | --- | --- |
-| ibanId | <code>number</code> | unique number to identify the iban |
+| Param         | Type                | Description                                                                                                                                  |
+| ------------- | ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| ibanId        | <code>number</code> | unique number to identify the iban                                                                                                           |
 | userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can use a specific UserNameValue to get an iban of another user |
-- Get information about a specific iban  
+
+-   Get information about a specific iban
 
 ```
     return sdk.iban
@@ -86,8 +95,10 @@ The _embedded object inside API response contains an array of all ibans associat
             console.log(res)
         });
 ```
-- API Response
-The object inside API response contains all informations about the iban requested.
+
+-   API Response
+    The object inside API response contains all informations about the iban requested.
+
 ```
 {
     success: true,
@@ -106,16 +117,19 @@ The object inside API response contains all informations about the iban requeste
         _links: { self: [Object] }
     },
     status: 200
-}   
+}
 ```
-## iban.setAsDefault()
->(this method is working in API Green version 1.7.1 and above)
 
-| Param | Type | Description |
-| --- | --- | --- |
-| ibanId | <code>number</code> | unique number to identify the iban |
+## iban.setAsDefault()
+
+> (this method is working in API Green version 1.7.1 and above)
+
+| Param         | Type                | Description                                                                                          |
+| ------------- | ------------------- | ---------------------------------------------------------------------------------------------------- |
+| ibanId        | <code>number</code> | unique number to identify the iban                                                                   |
 | userNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can change default iban |
-- Set one iban as default one. 
+
+-   Set one iban as default one.
 
 ```
     return sdk.iban
@@ -124,8 +138,10 @@ The object inside API response contains all informations about the iban requeste
             console.log(res)
         });
 ```
-- API Response
-The object contains the boolean 'isDefault' set to '1';
+
+-   API Response
+    The object contains the boolean 'isDefault' set to '1';
+
 ```
 {
     success: true,
@@ -145,19 +161,21 @@ The object contains the boolean 'isDefault' set to '1';
         }
     },
     status: 200
-}   
+}
 ```
 
 ## iban.validate()
->(reserved to 'Paygreen' account users)
 
-| Param | Type | Description |
-| --- | --- | --- |
-| ibanId | <code>number</code> | unique number to identify the iban |
+> (reserved to 'Paygreen' account users)
+
+| Param         | Type                             | Description                                |
+| ------------- | -------------------------------- | ------------------------------------------ |
+| ibanId        | <code>number</code>              | unique number to identify the iban         |
 | ValidatedIban | <code>IbanValidationModel</code> | Object containing all new iban information |
-| userNameValue | <code>string</code> | UserName of the owner of the iban |
-- To create a new ValidatedIban object, we highly recommend you to use our Iban Model Class to ensure full compatibility with the API. [Try it here](ibans-data.md)
--  Get object with iban validated. 
+| userNameValue | <code>string</code>              | UserName of the owner of the iban          |
+
+-   To create a new ValidatedIban object, we highly recommend you to use our Iban Model Class to ensure full compatibility with the API. [Try it here](ibans-data.md)
+-   Get object with iban validated.
 
 ```
     return sdk.iban
@@ -166,8 +184,10 @@ The object contains the boolean 'isDefault' set to '1';
             console.log(res)
         });
 ```
-- API Response
-The object inside API response contains iban object with 'status':'VALID' and date of validation.
+
+-   API Response
+    The object inside API response contains iban object with 'status':'VALID' and date of validation.
+
 ```
 {
     success: true,
@@ -186,19 +206,21 @@ The object inside API response contains iban object with 'status':'VALID' and da
         _links: { self: [Object] }
     },
     status: 200
-}   
+}
 ```
+
 ## iban.delete()
 
-| Param | Type | Description |
-| --- | --- | --- |
-| ibanId | <code>number</code> | unique number to identify the iban |
+| Param         | Type                | Description                                                                                  |
+| ------------- | ------------------- | -------------------------------------------------------------------------------------------- |
+| ibanId        | <code>number</code> | unique number to identify the iban                                                           |
 | UserNameValue | <code>string</code> | Optional, by default UserName used will be the one from identity, only Admin can delete iban |
-- Get response with status 204 if iban is deleted successfully.
-- The Default IBAN can't be deleted. Instead, you have to:
-    - create another IBAN
-    - make the newly created IBAN your default one
-    - delete your old IBAN (which is no longer the default one)
+
+-   Get response with status 204 if iban is deleted successfully.
+-   The Default IBAN can't be deleted. Instead, you have to:
+    -   create another IBAN
+    -   make the newly created IBAN your default one
+    -   delete your old IBAN (which is no longer the default one)
 
 ```
     return sdk.iban
@@ -207,12 +229,13 @@ The object inside API response contains iban object with 'status':'VALID' and da
             console.log(res)
         });
 ```
-- API Response
+
+-   API Response
 
 ```
 {
     success: true,
     dataInfo: 'user deleted successfully',
     status: 204
-}   
+}
 ```

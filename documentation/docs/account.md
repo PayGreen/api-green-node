@@ -7,7 +7,8 @@ An Account is the base of your identity in our API. This is like a namespace for
 
 ## user.getAccount()
 
-- get information of the account based on accountId.
+-   get information of the account based on accountId.
+
 ```
     return sdk.user
         .getAccount()
@@ -15,7 +16,9 @@ An Account is the base of your identity in our API. This is like a namespace for
             console.log(res)
         });
 ```
-- Api Response
+
+-   Api Response
+
 ```
 {
     success: true,

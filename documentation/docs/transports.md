@@ -3,10 +3,12 @@ id: transports
 title: Get Transports
 ---
 
-If you wish to estimate the carbon offsetting of a transport, we provide you with a detailed list of vehicles types (including the energy used for fuel) that are commonly used. This include trucks (arranged by maximum weight capacity), vans, motorcycle, cars, buses, trains, planes, ferry, and even a bike.
+If you wish to estimate the carbon footprint of a transport, we provide you with a detailed list of vehicles types (including the energy used for fuel) that are commonly used. This include trucks (arranged by maximum weight capacity), vans, motorcycle, cars, buses, trains, planes, ferry, and even a bike.
 
 ## transport.getAll()
-- Get a list of all the different transports available inside the API
+
+-   Get a list of all the different transports available inside the API
+
 ```
     return sdk.transport
         .getAll()
@@ -14,8 +16,11 @@ If you wish to estimate the carbon offsetting of a transport, we provide you wit
             console.log(res)
         });
 ```
+
 ## API Response
-The _embedded object inside API response contains an array of all transport modes availables.
+
+The \_embedded object inside API response contains an array of all transport modes availables.
+
 ```
 {
     success: true,
@@ -25,9 +30,11 @@ The _embedded object inside API response contains an array of all transport mode
         total_items: 39
     },
     status: 200
-}   
+}
 ```
- _embedded object close-up :
+
+\_embedded object close-up :
+
 ```
 {   ccarbon_transport: [
         ...,
@@ -57,6 +64,7 @@ The _embedded object inside API response contains an array of all transport mode
         },
         ...
     ]
-}   
+}
 ```
+
 We have created special tools to handle/convert data inside the response, like getting directly the name of each transport. You can find them [here.](tools#getidlist)

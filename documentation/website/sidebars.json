@@ -1,13 +1,19 @@
 {
-  "docs": {
-    "Getting Started": ["doc1"]
-  },
-  "docs-other": {
-    "First Api Requests": ["start-sdk", "authentication"],
-    "Setup Complete User Profile": ["account", "users-api-requests", "users-data", "ibans-api-requests", "ibans-data"],
-    "Transports" : ["transports"],
-    "Carbon Estimate": ["carbon-api-requests", "carbon-data"],
-    "Carbon Statistics": ["carbon-statistics-api-requests"],
-    "Tools": ["tools"]
-  }
+    "docs": {
+        "Getting Started": ["doc1"]
+    },
+    "docs-other": {
+        "First Api Requests": ["start-sdk", "authentication"],
+        "Setup Complete User Profile": [
+            "account",
+            "users-api-requests",
+            "users-data",
+            "ibans-api-requests",
+            "ibans-data"
+        ],
+        "Transports": ["transports"],
+        "Carbon Footprints": ["carbon-api-requests", "carbon-data"],
+        "Carbon Reports": ["carbon-reports-api-requests"],
+        "Tools": ["tools"]
+    }
 }

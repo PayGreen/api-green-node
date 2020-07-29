@@ -1,43 +1,21 @@
 import { Serializable, JsonProperty } from 'typescript-json-serializer';
-import {
-    MinLength,
-    IsInt,
-    ArrayMinSize,
-    ValidateNested,
-} from 'class-validator';
-import { Path, Address } from '.';
+import { MinLength } from 'class-validator';
+import { Path } from '.';
 import { TransportationFootprintSimulation } from './TransportationFootprintSimulation';
 
 /**
  * Transportation Footprint Model Class to create data to add to a Carbon Footprint
  * @extends TransportationFootprintSimulation
- * @property {string?} fingerprint - unique string to identify a Carbon offsetting estimate data
- * @property {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
- * @property {number?} countPackages - number of packages transported
- * @property {Array<Address>?} addresses - an array containing all adresses
- * @property {Array<object>?} transports - an array containing all transports
+ * @property {string?} fingerprint - unique string to identify a Carbon offsetting footprint data
  */
-@Serializable()
+@Serializable('TransportationFootprintSimulation')
 export class TransportationFootprint extends TransportationFootprintSimulation {
     @JsonProperty('fingerprint')
     @MinLength(1)
     public fingerprint?: string | null;
-    @JsonProperty('weightPackages')
-    @IsInt()
-    public weightPackages?: number | null;
-    @JsonProperty('countPackages')
-    @IsInt()
-    public countPackages?: number | null;
-    @JsonProperty('addresses')
-    @ArrayMinSize(2)
-    @ValidateNested()
-    public addresses?: Array<Address>;
-    @JsonProperty('transports')
-    @ArrayMinSize(1)
-    public transports?: Array<object>;
 
     /**
-     * Create the path navigation estimate object.
+     * Create the path navigation footprint object.
      * @param {string?} fingerprint - unique string to identify a transportation footprint calculation
      * @param {number?} weightPackages - accumulated weight of all packages transported (in kilogram)
      * @param {number?} countPackages - number of packages transported
@@ -49,11 +27,7 @@ export class TransportationFootprint extends TransportationFootprintSimulation {
         countPackages?: number | null,
         path?: Array<Path>,
     ) {
-        super(
-            (weightPackages = weightPackages),
-            (countPackages = countPackages),
-            (path = path),
-        );
+        super(weightPackages, countPackages, path);
 
         this.fingerprint = fingerprint;
     }

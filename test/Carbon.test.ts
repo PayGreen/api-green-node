@@ -213,7 +213,7 @@ test('it tries to purchase a footprint after having closed it', () => {
 
 const randomFingerprint3 = Tools.randomFingerprint();
 
-test('it adds a mixed path estimate', () => {
+test('it adds a mixed path footprint', () => {
     const address1 = new Coordinate(
         'New-York',
         'Etats-Unis',
