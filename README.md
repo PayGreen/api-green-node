@@ -5,7 +5,7 @@
 
 ## Documentation
 
--   Here are a few examples of API calls made with our Sdk. Please see the full documentation to get the best of [API-Green-Node](https://github.com/PayGreen/api-green-node/doc).
+-   Here are a few examples of API calls made with our Sdk. Please see the full documentation to get the best of [API-Green-Node](https://paygreen.github.io/api-green-node/).
 -   For more information specifically about API Green, please visit https://solidaire.paygreen.fr/documentation/green.
 
 ## Features
