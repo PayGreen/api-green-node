@@ -1,5 +1,4 @@
 require('dotenv').config('/.env');
-const { localConfig } = require('./config/localConfig');
 import { Sdk } from '../src';
 import {
     Address,
@@ -12,10 +11,10 @@ import {
     WebFootprint,
     WebFootprintSimulation,
 } from '../src/models';
-import { Status, Transport } from '../src/enums';
 import { IFootprintURLParams, IPurchaseURLParams } from '../src/interfaces';
+import { Status, Transport, UserType } from '../src/enums';
+import autoConfig from './config/autoConfig';
 
-const sdk = new Sdk(localConfig);
 const newWebFootprintSimulation = new WebFootprintSimulation(
     'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
     140,
@@ -23,7 +22,9 @@ const newWebFootprintSimulation = new WebFootprintSimulation(
     180,
 );
 
-test('it creates a web footprint simulation without fingerprint', () => {
+test('it creates a web footprint simulation without fingerprint', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon
         .simulateWebFootprint(newWebFootprintSimulation)
         .then((data: any) => {
@@ -31,7 +32,8 @@ test('it creates a web footprint simulation without fingerprint', () => {
         });
 });
 
-test('it gets an error when trying to add a web footprint simulation without fingerprint using addWebFootprint() method', () => {
+test('it gets an error when trying to add a web footprint simulation without fingerprint using addWebFootprint() method', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     return sdk.carbon
         .addWebFootprint(newWebFootprintSimulation)
         .then((data: any) => {
@@ -44,7 +46,7 @@ test('it gets an error when trying to add a web footprint simulation without fin
 
 const randomFingerprint = Tools.randomFingerprint();
 
-test('it adds a web footprint with fingerprint', () => {
+test('it adds a web footprint with fingerprint', async () => {
     const newWebFootprint = new WebFootprint(
         randomFingerprint,
         'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/60.0',
@@ -52,12 +54,16 @@ test('it adds a web footprint with fingerprint', () => {
         6,
         180,
     );
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.addWebFootprint(newWebFootprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
     });
 });
 
-test('it gets a carbon footprint based on fingerPrint and converts estimated price in euros cents to euros', () => {
+test('it gets a carbon footprint based on fingerPrint and converts estimated price in euros cents to euros', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getOneFootprint(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerprint);
@@ -69,7 +75,9 @@ test('it gets a carbon footprint based on fingerPrint and converts estimated pri
     });
 });
 
-test('it tries to get a carbon footprint with wrong fingerPrint', () => {
+test('it tries to get a carbon footprint with wrong fingerPrint', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getOneFootprint('wrongFingerprint').then((data: any) => {
         expect(ApiResponse.isInvalid(data)).toBe(true);
         expect(ApiResponse.getErrorMessage(data)).toBe(
@@ -78,7 +86,9 @@ test('it tries to get a carbon footprint with wrong fingerPrint', () => {
     });
 });
 
-test("it gets a carbon footprint based on fingerPrint and gets its id 'fingerPrint' directly", () => {
+test("it gets a carbon footprint based on fingerPrint and gets its id 'fingerPrint' directly", async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getOneFootprint(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(ApiResponse.getId(data)).toHaveProperty(
@@ -90,14 +100,18 @@ test("it gets a carbon footprint based on fingerPrint and gets its id 'fingerPri
     });
 });
 
-test('it empties a carbon footprint based on fingerPrint if it is neither purchased nor closed', () => {
+test('it empties a carbon footprint based on fingerPrint if it is neither purchased nor closed', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.emptyFootprint(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.status).toEqual(204);
     });
 });
 
-test('it tries to purchase a footprint after having emptied it', () => {
+test('it tries to purchase a footprint after having emptied it', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.purchaseFootprint(randomFingerprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('status', 'PURCHASED');
@@ -107,7 +121,7 @@ test('it tries to purchase a footprint after having emptied it', () => {
 
 const randomFingerprint2 = Tools.randomFingerprint();
 
-test('it adds a transportation footprint with fingerprint', () => {
+test('it adds a transportation footprint with fingerprint', async () => {
     const address1 = new Address(
         '22 rue Capitaine Cocart',
         '91120',
@@ -139,6 +153,7 @@ test('it adds a transportation footprint with fingerprint', () => {
         [path1, path2],
     );
 
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     return sdk.carbon
         .addTransportationFootprint(newTransportationFootprint)
         .then((data: any) => {
@@ -171,7 +186,9 @@ const newTransportationFootprintSimulation = new TransportationFootprintSimulati
     [path1, path2],
 );
 
-test('it creates a transportation footprint simulation without fingerprint', () => {
+test('it creates a transportation footprint simulation without fingerprint', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon
         .simulateTransportationFootprint(newTransportationFootprintSimulation)
         .then((data: any) => {
@@ -179,7 +196,9 @@ test('it creates a transportation footprint simulation without fingerprint', () 
         });
 });
 
-test('it gets an error when trying to add a transportation footprint simulation without fingerprint using addTransportationFootprint() method', () => {
+test('it gets an error when trying to add a transportation footprint simulation without fingerprint using addTransportationFootprint() method', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon
         .addTransportationFootprint(newTransportationFootprintSimulation)
         .then((data: any) => {
@@ -190,14 +209,18 @@ test('it gets an error when trying to add a transportation footprint simulation 
         });
 });
 
-test('it closes a footprint based on fingerPrint', () => {
+test('it closes a footprint based on fingerPrint', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.closeFootprint(randomFingerprint2).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('status', 'CLOSED');
     });
 });
 
-test('it tries to purchase a footprint after having closed it', () => {
+test('it tries to purchase a footprint after having closed it', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon
         .purchaseFootprint(randomFingerprint2)
         .then((data: any) => {
@@ -210,7 +233,8 @@ test('it tries to purchase a footprint after having closed it', () => {
 
 const randomFingerprint3 = Tools.randomFingerprint();
 
-test('it adds a mixed path footprint', () => {
+test('it adds a mixed path footprint', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     const address1 = new Coordinate(
         'New-York',
         'Etats-Unis',
@@ -254,7 +278,9 @@ test('it adds a mixed path footprint', () => {
         });
 });
 
-test('it purchases a footprint based on fingerPrint', () => {
+test('it purchases a footprint based on fingerPrint', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon
         .purchaseFootprint(randomFingerprint3)
         .then((data: any) => {
@@ -267,7 +293,9 @@ test('it purchases a footprint based on fingerPrint', () => {
         });
 });
 
-test('it gets all footprints with no filter', () => {
+test('it gets all footprints with no filter', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getAllFootprints().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
 
@@ -284,10 +312,11 @@ test('it gets all footprints with no filter', () => {
     });
 });
 
-test('it gets all footprints with CLOSED status', () => {
+test('it gets all footprints with CLOSED status', async () => {
     const params: IFootprintURLParams = {
         status: Status.CLOSED,
     };
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
 
     return sdk.carbon.getAllFootprints(params).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
@@ -318,7 +347,9 @@ const currentDayParams = {
 const timestampBegin = new Date(currentDayParams.begin).getTime() / 1000; // we convert timestamp from milliseconds to seconds to fit timestamps format from API
 const timestampEnd = new Date(currentDayParams.end).getTime() / 1000;
 
-test('it gets all footprints limited with begin and end dates covering the current day', () => {
+test('it gets all footprints limited with begin and end dates covering the current day', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getAllFootprints(currentDayParams).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
 
@@ -331,7 +362,8 @@ test('it gets all footprints limited with begin and end dates covering the curre
     });
 });
 
-test('it gets all footprints limited to 20 results maximum', () => {
+test('it gets all footprints limited to 20 results maximum', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     const params: IFootprintURLParams = {
         limit: 20,
     };
@@ -344,7 +376,8 @@ test('it gets all footprints limited to 20 results maximum', () => {
     });
 });
 
-test('it gets all footprints in rolling mode', () => {
+test('it gets all footprints in rolling mode', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     const params: IFootprintURLParams = {
         type: 'rolling',
     };
@@ -355,7 +388,8 @@ test('it gets all footprints in rolling mode', () => {
     });
 });
 
-test('it gets all footprints with PURCHASED status and limited to 10 results maximum', () => {
+test('it gets all footprints with PURCHASED status and limited to 10 results maximum', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     const params: IFootprintURLParams = {
         status: Status.PURCHASED,
         limit: 10,
@@ -372,14 +406,18 @@ test('it gets all footprints with PURCHASED status and limited to 10 results max
     });
 });
 
-test('it gets one specific purchased carbon footprint based on fingerPrint', () => {
+test('it gets one specific purchased carbon footprint based on fingerPrint', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getOnePurchase(randomFingerprint3).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerprint3);
     });
 });
 
-test('it gets an error trying to get purchased carbon footprint with wrong fingerPrint', () => {
+test('it gets an error trying to get purchased carbon footprint with wrong fingerPrint', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon
         .getOnePurchase('notPurchasedFingerprint')
         .then((data: any) => {
@@ -390,7 +428,9 @@ test('it gets an error trying to get purchased carbon footprint with wrong finge
         });
 });
 
-test('it gets all footprints that have been purchased for one user with no filter', () => {
+test('it gets all footprints that have been purchased for one user with no filter', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getAllPurchases().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
 
@@ -407,7 +447,9 @@ test('it gets all footprints that have been purchased for one user with no filte
     });
 });
 
-test('it gets all purchases limited with begin and end dates covering the current day', () => {
+test('it gets all purchases limited with begin and end dates covering the current day', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getAllPurchases(currentDayParams).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
 
@@ -420,7 +462,8 @@ test('it gets all purchases limited with begin and end dates covering the curren
     });
 });
 
-test('it gets all purchases limited to 20 results maximum', () => {
+test('it gets all purchases limited to 20 results maximum', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     const params: IPurchaseURLParams = {
         limit: 20,
     };
@@ -431,7 +474,8 @@ test('it gets all purchases limited to 20 results maximum', () => {
     });
 });
 
-test('it gets all purchases in rolling mode', () => {
+test('it gets all purchases in rolling mode', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     const params: IPurchaseURLParams = {
         type: 'rolling',
     };
@@ -442,7 +486,9 @@ test('it gets all purchases in rolling mode', () => {
     });
 });
 
-test("it gets all projects linked to the user's account", () => {
+test("it gets all projects linked to the user's account", async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbon.getAllProjects().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(ApiResponse.getIdList(data).length).toBeGreaterThan(0);

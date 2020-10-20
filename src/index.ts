@@ -1,8 +1,18 @@
 import { Sdk } from './Sdk';
-import { Bank, Country, Host, Mode, Role, Status, Transport } from './enums';
+import {
+    Bank,
+    Country,
+    FieldOfAction,
+    Host,
+    Mode,
+    Role,
+    Status,
+    Transport,
+} from './enums';
 import {
     Address,
     ApiResponse,
+    Charity,
     Coordinate,
     Iban,
     IbanValidation,
@@ -16,10 +26,11 @@ import {
 } from './models';
 
 export { Sdk };
-export { Bank, Country, Host, Mode, Role, Status, Transport };
+export { Bank, Country, FieldOfAction, Host, Mode, Role, Status, Transport };
 export {
     Address,
     ApiResponse,
+    Charity,
     Coordinate,
     Iban,
     IbanValidation,

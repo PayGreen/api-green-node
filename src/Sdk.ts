@@ -1,10 +1,11 @@
 import {
     Authentication,
     Carbon,
+    CarbonReports,
+    Charity,
     Iban,
     Transport,
     User,
-    CarbonReports,
 } from './resources';
 import { IConfig, IIdentity, ITokens } from './interfaces';
 import { Host, Mode } from './enums';
@@ -12,11 +13,12 @@ import { Host, Mode } from './enums';
 /** The Sdk Main Class to make APIGreen Calls. */
 export class Sdk {
     public authentication: Authentication;
+    public carbon: Carbon;
+    public charity: Charity;
+    public carbonReports: CarbonReports;
     public iban: Iban;
     public transport: Transport;
     public user: User;
-    public carbon: Carbon;
-    public carbonReports: CarbonReports;
 
     private _identity: IIdentity = {
         accountId: '',
@@ -52,14 +54,8 @@ export class Sdk {
             this._mode = Mode.SANDBOX;
             this._host = Host[Mode[Mode.SANDBOX]];
         }
-        this.user = new User(this._tokens, this._identity, this._host);
+
         this.authentication = new Authentication(
-            this._tokens,
-            this._identity,
-            this._host,
-        );
-        this.iban = new Iban(this._tokens, this._identity, this._host);
-        this.transport = new Transport(
             this._tokens,
             this._identity,
             this._host,
@@ -70,6 +66,14 @@ export class Sdk {
             this._identity,
             this._host,
         );
+        this.charity = new Charity(this._tokens, this._identity, this._host);
+        this.iban = new Iban(this._tokens, this._identity, this._host);
+        this.transport = new Transport(
+            this._tokens,
+            this._identity,
+            this._host,
+        );
+        this.user = new User(this._tokens, this._identity, this._host);
     }
 
     get accountId(): string | null {

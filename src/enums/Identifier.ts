@@ -6,4 +6,5 @@ export enum Identifier {
     'rib' = 'idRib',
     'transportation_mode' = 'name',
     'user' = 'username',
+    'association' = 'idAssociation',
 }

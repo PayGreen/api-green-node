@@ -1,5 +1,6 @@
 import { Address } from './Address';
 import { ApiResponse } from './ApiResponse';
+import { Charity } from './Charity';
 import { Coordinate } from './Coordinate';
 import { Iban } from './Iban';
 import { IbanValidation } from './IbanValidation';
@@ -14,6 +15,7 @@ import { WebFootprintSimulation } from './WebFootprintSimulation';
 export {
     Address,
     ApiResponse,
+    Charity,
     Coordinate,
     Iban,
     IbanValidation,

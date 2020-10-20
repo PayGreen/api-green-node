@@ -23,7 +23,7 @@ export class Address {
     /**
      * Build the address object to define a point of departure or arrival
      * @param {string} address - street name
-     * @param {string} zipCode
+     * @param {string} zipCode - zipCode
      * @param {string} city - city name
      * @param {string} country - country (must be written out in full)
      */

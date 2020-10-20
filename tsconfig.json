@@ -18,9 +18,12 @@
   },
   "include": [
     "src/**/*",
-    "test/*.ts"
+    "test/**/*",
   ],
   "exclude": [
     "node_modules"
+  ],
+  "files": [
+    "test/config/autoConfig.ts",
   ]
 }

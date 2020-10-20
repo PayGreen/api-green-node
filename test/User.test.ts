@@ -1,29 +1,32 @@
 require('dotenv').config('/.env');
-const { localConfig } = require('./config/localConfig');
+import Chance from 'chance';
 import { Sdk } from '../src';
 import { User } from '../src/models';
 import { ApiResponse } from '../src/models/ApiResponse';
-import { Country, Mode, Role } from '../src/enums';
+import { Country, Mode, Role, UserType } from '../src/enums';
+import autoConfig from './config/autoConfig';
 
-const sdk = new Sdk(localConfig);
+test('it gets the account based on account id', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
 
-test('it gets the account based on account id', () => {
     return sdk.user.getAccount().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true),
             expect(data.success).toBe(true),
             expect(data.dataInfo).toHaveProperty(
                 'client_id',
-                process.env.SDK_ACCOUNTID,
+                process.env.SDK_SHOP_ACCOUNTID,
             );
         expect(data.dataInfo.client_secret).toBeUndefined();
         expect(ApiResponse.getId(data)).toHaveProperty(
             'client_id',
-            process.env.SDK_ACCOUNTID,
+            process.env.SDK_SHOP_ACCOUNTID,
         );
     });
 });
 
-test('it gets all users of one account id and then gets all ids directly', () => {
+test('it gets all users of one account id and then gets all ids directly', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.user.getAll().then((data: any) => {
         expect(data).toBeDefined();
         for (let key in ApiResponse.getIdList(data)) {
@@ -32,7 +35,18 @@ test('it gets all users of one account id and then gets all ids directly', () =>
     });
 });
 
-test('it gets an error message because of wrong username', () => {
+test('it cannot get all users of one account  with charity user type (role=ASSOCIATION)', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.CHARITY));
+
+    return sdk.user.getAll().then((data: any) => {
+        expect(data.success).toBe(false);
+        expect(ApiResponse.isInvalid(data)).toBe(true);
+    });
+});
+
+test('it gets an error message because of wrong username', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.user.getOne('paygreendfd').then((data: any) => {
         expect(ApiResponse.isInvalid(data)).toBe(true),
             expect(ApiResponse.getErrorMessage(data)).toBe('Entity not found.');
@@ -40,73 +54,102 @@ test('it gets an error message because of wrong username', () => {
     });
 });
 
-const randomUserName = `mc${Math.floor(Math.random() * 10000)}`;
+// Creating a new random user with Chance.js
+const newUser = () => {
+    let chance = new Chance();
 
-test('it returns the created user', () => {
-    const userTest = new User(
-        'coulon',
-        'matthieu',
-        'mattmatt',
+    const randomPublicUserName = chance.name();
+    const randomUserFirstName = randomPublicUserName.substr(
+        0,
+        randomPublicUserName.indexOf(' '),
+    );
+    const randomUserLastName = randomPublicUserName.substr(
+        randomPublicUserName.indexOf(' ') + 1,
+        randomPublicUserName.length,
+    );
+    const randomUserName = randomPublicUserName.replace(' ', '').toLowerCase();
+
+    const newUser = new User(
+        randomUserLastName,
+        randomUserFirstName,
+        randomPublicUserName,
         Role.ADMIN,
         randomUserName,
-        'mcpassword',
-        'matt@example.com',
+        `${randomUserFirstName.slice(0, 1)}${randomUserLastName.slice(
+            0,
+            1,
+        )}password`,
+        `${randomUserName}@mail.com`,
         Country.FR,
     );
+
+    return newUser;
+};
+
+const userTest = newUser();
+
+test('it returns the created user', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.user.create(userTest).then((data: any) => {
-        expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
-            expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
-            expect(data.dataInfo).toHaveProperty('publicname', 'mattmatt'),
+        expect(data.dataInfo).toHaveProperty('lastname', userTest.lastname),
+            expect(data.dataInfo).toHaveProperty(
+                'firstname',
+                userTest.firstname,
+            ),
+            expect(data.dataInfo).toHaveProperty(
+                'publicname',
+                userTest.publicname,
+            ),
             expect(data.dataInfo).toHaveProperty('role', 'ADMIN');
         expect(ApiResponse.getId(data)).toHaveProperty(
             'username',
-            randomUserName,
+            userTest.username,
         );
     });
 });
 
-test('it returns the updated user based on his username', () => {
-    const userTest = {
-        lastname: 'coulon2',
-        firstname: 'newmatthieu2',
+test('it returns the updated user based on his username', async () => {
+    const updatedUser = {
+        lastname: 'coulon',
+        firstname: 'matthieu',
     };
-    return sdk.user.update(userTest, randomUserName).then((data: any) => {
-        expect(data.dataInfo).toHaveProperty('lastname', 'coulon2'),
-            expect(data.dataInfo).toHaveProperty('firstname', 'newmatthieu2'),
+
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const username: string = userTest.username as string;
+
+    return sdk.user.update(updatedUser, username).then((data: any) => {
+        expect(data.dataInfo).toHaveProperty('lastname', 'coulon'),
+            expect(data.dataInfo).toHaveProperty('firstname', 'matthieu'),
             expect(ApiResponse.getId(data)).toHaveProperty(
                 'username',
-                randomUserName,
+                userTest.username,
             );
     });
 });
 
-test('it returns 204 status when deleting user', () => {
-    return sdk.user.delete(randomUserName).then((data: any) => {
+test('it returns 204 status when deleting user', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const username: string = userTest.username as string;
+
+    return sdk.user.delete(username).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true),
             expect(data.status).toEqual(204);
     });
 });
 
-test('it gets one user based on his username and then gets his id directly', () => {
-    const randomUserName = `mc${Math.floor(Math.random() * 10000)}`;
-    const userTest = new User(
-        'coulon',
-        'newmatthieu',
-        'mattmatt',
-        Role.ADMIN,
-        randomUserName,
-        'mcpassword',
-        'matt@example.com',
-        Country.FR,
-    );
-    return sdk.user.create(userTest).then((data: any) => {
+test('it gets one user based on his username and then gets his id directly', async () => {
+    const userTest2 = newUser();
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
+    return sdk.user.create(userTest2).then((data: any) => {
         const userId = data.dataInfo.username;
         return sdk.user.getOne(userId).then((data: any) => {
             expect(data.dataInfo).toHaveProperty('firstname');
             expect(data.dataInfo).toHaveProperty('lastname');
             expect(ApiResponse.getId(data)).toHaveProperty(
                 'username',
-                randomUserName,
+                userTest2.username,
             );
         });
     });
@@ -120,9 +163,12 @@ test('it gets an error because of wrong token', () => {
         host: process.env.SDK_HOST ? process.env.SDK_HOST : null,
     };
     const sdk2 = new Sdk(wrongConfig);
+
     return sdk2.user.getAll().then((data: any) => {
         expect(ApiResponse.isInvalid(data)).toBe(true),
             expect(ApiResponse.getErrorMessage(data)).toBe('Unauthorized');
         expect(ApiResponse.getStatus(data)).toEqual(401);
     });
 });
+
+export { newUser };
