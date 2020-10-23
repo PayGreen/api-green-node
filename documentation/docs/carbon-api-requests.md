@@ -230,13 +230,23 @@ You can find details about how to build the object newTransportationFootprintSim
 
 | Param  | Type                | Description                                                                         |
 | ------ | ------------------- | ----------------------------------------------------------------------------------- |
-| status | <code>Status</code> | status of the carbon footprint - based on enum 'ONGOING' or 'CLOSED' or 'PURCHASED' |
+| params | <code>IFootprintURLParams</code> | optional, all query params to filter footprints requests based on IFootprintURLParams interface  |
 
--   get all carbon footprints associated to fingerprint and filtered by status.
+
+-  IFootprintURLParams: object with specifications of all possible params to apply to filter data :
+  ```      
+    params = { 
+        status?: Status | null; // based on enum, choose between 'PURCHASED', 'CLOSED', 'ONGOING' footprints
+        limit?: number | null; // number of entities received inside API response per page, limit is 50 by default
+        page?: number | null; // numerotation of page, number is 1 by default
+    }
+```
+
+-   get all carbon footprints, no filter applied.
 
 ```
     return sdk.carbon
-        .getAllFootprints(status)
+        .getAllFootprints()
         .then((res) => {
             console.log(res)
         });

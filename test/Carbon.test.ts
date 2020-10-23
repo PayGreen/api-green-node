@@ -27,7 +27,6 @@ test('it creates a web footprint simulation without fingerprint', () => {
         .simulateWebFootprint(newWebFootprintSimulation)
         .then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true);
-            expect(data.status).toEqual(201);
         });
 });
 
@@ -54,7 +53,6 @@ test('it adds a web footprint with fingerprint', () => {
     );
     return sdk.carbon.addWebFootprint(newWebFootprint).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.status).toEqual(201);
     });
 });
 
@@ -144,7 +142,6 @@ test('it adds a transportation footprint with fingerprint', () => {
         .addTransportationFootprint(newTransportationFootprint)
         .then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true);
-            expect(data.status).toEqual(201);
             expect(data.dataInfo).toHaveProperty(
                 'fingerprint',
                 randomFingerprint2,
@@ -178,7 +175,6 @@ test('it creates a transportation footprint simulation without fingerprint', () 
         .simulateTransportationFootprint(newTransportationFootprintSimulation)
         .then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true);
-            expect(data.status).toEqual(201);
         });
 });
 
@@ -250,7 +246,6 @@ test('it adds a mixed path footprint', () => {
         .addTransportationFootprint(newTransportationFootprint)
         .then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true);
-            expect(data.status).toEqual(201);
             expect(data.dataInfo).toHaveProperty(
                 'fingerprint',
                 randomFingerprint3,
@@ -263,7 +258,6 @@ test('it purchases a footprint based on fingerPrint', () => {
         .purchaseFootprint(randomFingerprint3)
         .then((data: any) => {
             expect(ApiResponse.isSuccessful(data)).toBe(true);
-            expect(data.status).toEqual(200);
             expect(data.dataInfo).toHaveProperty('status', 'PURCHASED');
             expect(data.dataInfo).toHaveProperty(
                 'fingerprint',
@@ -272,10 +266,24 @@ test('it purchases a footprint based on fingerPrint', () => {
         });
 });
 
-test('it gets all footprints with CLOSED status', () => {
-    return sdk.carbon.getAllFootprints(Status.CLOSED).then((data: any) => {
+test('it gets all footprints with no filter', () => {
+    return sdk.carbon.getAllFootprints().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.status).toEqual(200);
+        data.dataInfo._embedded.footprint.forEach((e) => {
+            expect(e).toHaveProperty('fingerprint');
+            expect(e).toHaveProperty('estimatedCarbon');
+            expect(e).toHaveProperty('estimatedPrice');
+        });
+    });
+});
+
+test('it gets all footprints with CLOSED status', () => {
+    const params = {
+        status: Status.CLOSED,
+    };
+
+    return sdk.carbon.getAllFootprints(params).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
         data.dataInfo._embedded.footprint.forEach((e) => {
             expect(e).toHaveProperty('fingerprint');
             expect(e).toHaveProperty('estimatedCarbon');
@@ -285,10 +293,39 @@ test('it gets all footprints with CLOSED status', () => {
     });
 });
 
+test('it gets all footprints limited to 20 results maximum', () => {
+    const params = {
+        limit: 20,
+    };
+
+    return sdk.carbon.getAllFootprints(params).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.dataInfo._embedded.footprint.length).toBeLessThanOrEqual(
+            20,
+        );
+    });
+});
+
+test('it gets all footprints with PURCHASED status and limited to 10 results maximum', () => {
+    const params = {
+        status: Status.PURCHASED,
+        limit: 10,
+    };
+
+    return sdk.carbon.getAllFootprints(params).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        data.dataInfo._embedded.footprint.forEach((e) => {
+            expect(e).toHaveProperty('status', 'PURCHASED');
+        });
+        expect(data.dataInfo._embedded.footprint.length).toBeLessThanOrEqual(
+            10,
+        );
+    });
+});
+
 test('it gets one specific purchased carbon footprint based on fingerPrint', () => {
     return sdk.carbon.getOnePurchase(randomFingerprint3).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.status).toEqual(200);
         expect(data.dataInfo).toHaveProperty('fingerprint', randomFingerprint3);
     });
 });
@@ -307,7 +344,6 @@ test('it gets an error trying to get purchased carbon footprint with wrong finge
 test('it gets all footprints that have been purchased for one user', () => {
     return sdk.carbon.getAllPurchases().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.status).toEqual(200);
         data.dataInfo._embedded.purchase.forEach((e) => {
             expect(e).toHaveProperty('fingerprint');
             expect(e).toHaveProperty('estimatedCarbon');

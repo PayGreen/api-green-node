@@ -8,7 +8,7 @@ const sdk = new Sdk(localConfig);
 test('it gets all transports available inside the Api', () => {
     return sdk.transport.getAll().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
-        data.dataInfo._embedded.ccarbon_transport.forEach((e) => {
+        data.dataInfo._embedded.transportation_mode.forEach((e) => {
             expect(e).toHaveProperty('idTransport');
             expect(e).toHaveProperty('idEnergy');
             expect(e).toHaveProperty('idAccount');
@@ -23,6 +23,8 @@ test('it gets all transports available inside the Api', () => {
 
 test('it gets all id from transports available inside the Api', () => {
     return sdk.transport.getAll().then((data: any) => {
+        expect(ApiResponse.getIdList(data).length).toBeGreaterThan(0);
+
         for (let key in ApiResponse.getIdList(data)) {
             expect(ApiResponse.getIdList(data)[key]).toHaveProperty('name');
         }

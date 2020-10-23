@@ -1,5 +1,5 @@
 export enum Identifier {
-    'ccarbon_transport' = 'name',
+    'transportation_mode' = 'name',
     'client_id' = 'client_id',
     'fingerprint' = 'fingerprint',
     'rib' = 'idRib',

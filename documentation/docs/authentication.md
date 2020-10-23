@@ -11,19 +11,19 @@ Accounts are created by PayGreen only. To create an Account, please email us at 
 The API Green uses an OAuth2 security scheme with a Token/Refresh Url. If you don't have any tokens yet, you need to make a first API Call using your username, password and account id. Use the `authentication.login()` method. If all informations provided are correct, the API response will contain an access token and a refresh token.
 | Name | Type | Description |
 | --- | --- | --- |
-| mode | <code>Enum</code> | optional - choose between 3 modes 'DEV', 'PREPROD', 'PROD' that correspond to 3 different host urls - if nothing is provided 'PROD' mode and the corresponding host will be used by default |
-| host | <code>string</code> | optional - the sdk contains already 3 defined hosts to request API, based on each mode. You can overwrite these urls if you need to use a specific host, just choose between 'DEV' and 'PREPROD' and specify the url of your host. You CANNOT overwrite 'PROD' mode. |
+| mode | <code>Enum</code> | optional - choose between 3 modes 'RECETTE', 'SANDBOX', 'PROD' that correspond to 3 different host urls - if nothing is provided 'SANDBOX' mode and the corresponding host will be used by default |
+| host | <code>string</code> | optional - the sdk contains already 3 defined hosts to request API, based on each mode. You can overwrite these urls if you need to use a specific host, just choose between 'RECETTE' and 'SANDBOX' and specify the url of your host. If you don't specify a mode, the host won't be overwritten! |
 | username | <code>string</code> | your username |
 | password | <code>string</code> | your password |
 | accountId | <code>string</code> | your accountId |
 
--   here we choose 'DEV', it's the corresponding url inside the Sdk that will be used.
+-   here we choose 'RECETTE', it's the corresponding url inside the Sdk that will be used.
 
 ```
 import { Sdk, Mode } from 'api-green-node';
 
 const config = {
-    mode: Mode.DEV,
+    mode: Mode.RECETTE,
 };
 
 const sdk = new Sdk(config)
@@ -40,7 +40,7 @@ const sdk = new Sdk(config)
 import { Sdk, Mode } from 'api-green-node';
 
 const config = {
-    mode: Mode.DEV,
+    mode: Mode.RECETTE,
     host: 'http://myspecialurl'
 };
 ```
@@ -54,8 +54,8 @@ const config = {
 -   You can also use a dotenv environment file to load your environment variables if you need a specific configuration.
 
 ```dotenv
-SDK_MODE = choose between DEV, PREPROD and PROD (if no mode provided, default mode will be PROD and the requests will automatically be made with url http://localhost)
-SDK_HOST = your url here to overwrite hosts inside SDK(if no host provided, the requests will automatically be made with url http://localhost)
+SDK_MODE = choose between RECETTE, SANDBOX and PROD (if no mode provided, default mode will be SANDBOX and the requests will automatically be made with url https://sb.forcharity.io)
+SDK_HOST = your customed url here (you need to choose a specific mode (RECETTE or SANDBOX) as well to be allowed to custom the url inside sdk)
 ```
 
 ```Javascript
@@ -143,7 +143,7 @@ If you already have your tokens, you just need to instanciate our sdk with a con
 | --- | --- | --- |
 | token | <code>string</code> | access token which expires in 14400s |
 | refreshToken | <code>string</code> | refresh token to get a new valid access token |
-| mode | <code>Enum</code> | optional - choose between 3 modes 'DEV', 'PREPROD', 'PROD' that correspond to 3 different host urls. if nothing is provided mode 'PROD' will be used by default
+| mode | <code>Enum</code> | optional - choose between 3 modes 'RECETTE', 'SANDBOX, 'PROD' that correspond to 3 different host urls. if nothing is provided mode 'SANDBOX' will be used by default
 
 ```
 const config = {
@@ -160,7 +160,7 @@ import { Sdk, Mode } from 'api-green-node';
 const config = {
     token: yourToken,
     refreshToken: yourRefreshToken,
-    mode: Mode.DEV,
+    mode: Mode.RECETTE,
 };
 const sdk = new Sdk(config);
 ```

@@ -1,5 +1,5 @@
 export enum Status {
-    'ONGOING',
-    'CLOSED',
-    'PURCHASED',
+    ONGOING = 'ONGOING',
+    CLOSED = 'CLOSED',
+    PURCHASED = 'PURCHASED',
 }

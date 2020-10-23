@@ -1,5 +1,5 @@
 export enum Mode {
-    'DEV',
-    'PREPROD',
+    'RECETTE',
+    'SANDBOX',
     'PROD',
 }

@@ -1,4 +1,4 @@
-import { IApiResponse } from '../interfaces';
+import { IApiResponse, IFootprintURLParams } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import {
     TransportationFootprint,
@@ -6,7 +6,6 @@ import {
     WebFootprint,
     WebFootprintSimulation,
 } from '../models';
-import { Status } from '../enums';
 import { serialize } from 'typescript-json-serializer';
 
 /**
@@ -163,17 +162,17 @@ export class Carbon extends MainBuilder {
     };
 
     /**
-     * GET ALL FOOTPRINTS | /carbon/footprints?status={Status}
-     * @param {Status} status - status of the carbon footprint - based on enum
-     * @returns {Promise.<IApiResponse>} - get all carbon footprints associated to fingerprint and filtered by status
+     * GET ALL FOOTPRINTS | /carbon/footprints?status={Status}&limit={limit}&page={page}
+     * @param {IFootprintURLParams?} params - all query params to filter footprints requests based on IFootprintURLParams interface
+     * @returns {Promise.<IApiResponse>} - get all carbon footprints associated to fingerprint and filtered, if specified by status
      */
-    getAllFootprints = (status: Status): Promise<IApiResponse> => {
+    getAllFootprints = (
+        params?: IFootprintURLParams,
+    ): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(
-                this.buildUrl(false, Carbon.footprintUrl) +
-                    '?status=' +
-                    Status[status],
-            )
+            .get(Carbon.footprintUrl + '?', {
+                params: params,
+            })
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,
