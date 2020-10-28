@@ -63,20 +63,20 @@ Accounts are created by PayGreen only. To create an Account, please email us at 
 <tr><th>Name</th><th>Type</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>mode</td><td><code>Enum</code></td><td>optional - choose between 3 modes 'DEV', 'PREPROD', 'PROD' that correspond to 3 different host urls - if nothing is provided 'PROD' mode and the corresponding host will be used by default</td></tr>
-<tr><td>host</td><td><code>string</code></td><td>optional - the sdk contains already 3 defined hosts to request API, based on each mode. You can overwrite these urls if you need to use a specific host, just choose between 'DEV' and 'PREPROD' and specify the url of your host. You CANNOT overwrite 'PROD' mode.</td></tr>
+<tr><td>mode</td><td><code>Enum</code></td><td>optional - choose between 3 modes 'RECETTE', 'SANDBOX', 'PROD' that correspond to 3 different host urls - if nothing is provided 'SANDBOX' mode and the corresponding host will be used by default</td></tr>
+<tr><td>host</td><td><code>string</code></td><td>optional - the sdk contains already 3 defined hosts to request API, based on each mode. You can overwrite these urls if you need to use a specific host, just choose between 'RECETTE' and 'SANDBOX' and specify the url of your host. If you don't specify a mode, the host won't be overwritten!</td></tr>
 <tr><td>username</td><td><code>string</code></td><td>your username</td></tr>
 <tr><td>password</td><td><code>string</code></td><td>your password</td></tr>
 <tr><td>accountId</td><td><code>string</code></td><td>your accountId</td></tr>
 </tbody>
 </table>
 <ul>
-<li>here we choose 'DEV', it's the corresponding url inside the Sdk that will be used.</li>
+<li>here we choose 'RECETTE', it's the corresponding url inside the Sdk that will be used.</li>
 </ul>
 <pre><code class="hljs"><span class="hljs-keyword">import</span> { Sdk, Mode } <span class="hljs-keyword">from</span> <span class="hljs-string">'api-green-node'</span>;
 
 <span class="hljs-keyword">const</span> config = {
-    <span class="hljs-attr">mode</span>: Mode.DEV,
+    <span class="hljs-attr">mode</span>: Mode.RECETTE,
 };
 
 <span class="hljs-keyword">const</span> sdk = <span class="hljs-keyword">new</span> Sdk(config)
@@ -92,7 +92,7 @@ Accounts are created by PayGreen only. To create an Account, please email us at 
 <pre><code class="hljs"><span class="hljs-keyword">import</span> { Sdk, Mode } <span class="hljs-keyword">from</span> <span class="hljs-string">'api-green-node'</span>;
 
 <span class="hljs-keyword">const</span> config = {
-    <span class="hljs-attr">mode</span>: Mode.DEV,
+    <span class="hljs-attr">mode</span>: Mode.RECETTE,
     <span class="hljs-attr">host</span>: <span class="hljs-string">'http://myspecialurl'</span>
 };
 </code></pre>
@@ -104,8 +104,8 @@ Accounts are created by PayGreen only. To create an Account, please email us at 
 <ul>
 <li>You can also use a dotenv environment file to load your environment variables if you need a specific configuration.</li>
 </ul>
-<pre><code class="hljs css language-dotenv">SDK_MODE = choose between DEV, PREPROD <span class="hljs-keyword">and</span> PROD (<span class="hljs-keyword">if</span> no mode provided, default mode will be PROD <span class="hljs-keyword">and</span> the requests will automatically be made <span class="hljs-keyword">with</span> url http:<span class="hljs-comment">//localhost)</span>
-SDK_HOST = your url here <span class="hljs-keyword">to</span> overwrite hosts inside <span class="hljs-constructor">SDK(<span class="hljs-params">if</span> <span class="hljs-params">no</span> <span class="hljs-params">host</span> <span class="hljs-params">provided</span>, <span class="hljs-params">the</span> <span class="hljs-params">requests</span> <span class="hljs-params">will</span> <span class="hljs-params">automatically</span> <span class="hljs-params">be</span> <span class="hljs-params">made</span> <span class="hljs-params">with</span> <span class="hljs-params">url</span> <span class="hljs-params">http</span>:<span class="hljs-operator">/</span><span class="hljs-operator">/</span><span class="hljs-params">localhost</span>)</span>
+<pre><code class="hljs css language-dotenv">SDK_MODE = choose between RECETTE, SANDBOX <span class="hljs-built_in">and</span> PROD (<span class="hljs-keyword">if</span> <span class="hljs-keyword">no</span> <span class="hljs-keyword">mode</span> provided, default <span class="hljs-keyword">mode</span> will <span class="hljs-keyword">be</span> SANDBOX <span class="hljs-built_in">and</span> the requests will automatically <span class="hljs-keyword">be</span> made with url http<span class="hljs-variable">s:</span>//<span class="hljs-keyword">sb</span>.forcharity.io)
+SDK_HOST = your customed url here (you need <span class="hljs-keyword">to</span> choose <span class="hljs-keyword">a</span> specific <span class="hljs-keyword">mode</span> (RECETTE <span class="hljs-built_in">or</span> SANDBOX) <span class="hljs-keyword">as</span> well <span class="hljs-keyword">to</span> <span class="hljs-keyword">be</span> allowed <span class="hljs-keyword">to</span> custom the url inside sdk)
 </code></pre>
 <pre><code class="hljs css language-Javascript"><span class="hljs-built_in">require</span>(<span class="hljs-string">'dotenv'</span>).config(<span class="hljs-string">'/.env'</span>);
 <span class="hljs-keyword">import</span> { Sdk, Mode } <span class="hljs-keyword">from</span> <span class="hljs-string">'api-green-node'</span>;
@@ -181,7 +181,7 @@ SDK_HOST = your url here <span class="hljs-keyword">to</span> overwrite hosts in
 <tbody>
 <tr><td>token</td><td><code>string</code></td><td>access token which expires in 14400s</td></tr>
 <tr><td>refreshToken</td><td><code>string</code></td><td>refresh token to get a new valid access token</td></tr>
-<tr><td>mode</td><td><code>Enum</code></td><td>optional - choose between 3 modes 'DEV', 'PREPROD', 'PROD' that correspond to 3 different host urls. if nothing is provided mode 'PROD' will be used by default</td></tr>
+<tr><td>mode</td><td><code>Enum</code></td><td>optional - choose between 3 modes 'RECETTE', 'SANDBOX, 'PROD' that correspond to 3 different host urls. if nothing is provided mode 'SANDBOX' will be used by default</td></tr>
 </tbody>
 </table>
 <pre><code class="hljs"><span class="hljs-keyword">const</span> config = {
@@ -196,7 +196,7 @@ SDK_HOST = your url here <span class="hljs-keyword">to</span> overwrite hosts in
 <span class="hljs-keyword">const</span> config = {
     <span class="hljs-attr">token</span>: yourToken,
     <span class="hljs-attr">refreshToken</span>: yourRefreshToken,
-    <span class="hljs-attr">mode</span>: Mode.DEV,
+    <span class="hljs-attr">mode</span>: Mode.RECETTE,
 };
 <span class="hljs-keyword">const</span> sdk = <span class="hljs-keyword">new</span> Sdk(config);
 </code></pre>

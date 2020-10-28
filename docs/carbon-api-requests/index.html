@@ -277,14 +277,23 @@ We have selected two kind of carbon footprints:</p>
 <tr><th>Param</th><th>Type</th><th>Description</th></tr>
 </thead>
 <tbody>
-<tr><td>status</td><td><code>Status</code></td><td>status of the carbon footprint - based on enum 'ONGOING' or 'CLOSED' or 'PURCHASED'</td></tr>
+<tr><td>params</td><td><code>IFootprintURLParams</code></td><td>optional, all query params to filter footprints requests based on IFootprintURLParams interface</td></tr>
 </tbody>
 </table>
 <ul>
-<li>get all carbon footprints associated to fingerprint and filtered by status.</li>
+<li>IFootprintURLParams: object with specifications of all possible params to apply to filter data :</li>
+</ul>
+<pre><code class="hljs">  params = { 
+      status?: Status | <span class="hljs-literal">null</span>; <span class="hljs-comment">// based on enum, choose between 'PURCHASED', 'CLOSED', 'ONGOING' footprints</span>
+      limit?: number | <span class="hljs-literal">null</span>; <span class="hljs-comment">// number of entities received inside API response per page, limit is 50 by default</span>
+      page?: number | <span class="hljs-literal">null</span>; <span class="hljs-comment">// numerotation of page, number is 1 by default</span>
+  }
+</code></pre>
+<ul>
+<li>get all carbon footprints, no filter applied.</li>
 </ul>
 <pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.carbon
-        .getAllFootprints(status)
+        .getAllFootprints()
         .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
             <span class="hljs-built_in">console</span>.log(res)
         });
