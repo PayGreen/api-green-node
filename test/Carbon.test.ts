@@ -269,8 +269,14 @@ test('it purchases a footprint based on fingerPrint', () => {
 test('it gets all footprints with no filter', () => {
     return sdk.carbon.getAllFootprints().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
+
+        for (let key in ApiResponse.getIdList(data)) {
+            expect(ApiResponse.getIdList(data)[key]).toHaveProperty(
+                'fingerprint',
+            );
+        }
+
         data.dataInfo._embedded.footprint.forEach((e) => {
-            expect(e).toHaveProperty('fingerprint');
             expect(e).toHaveProperty('estimatedCarbon');
             expect(e).toHaveProperty('estimatedPrice');
         });
@@ -284,12 +290,43 @@ test('it gets all footprints with CLOSED status', () => {
 
     return sdk.carbon.getAllFootprints(params).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
+        for (let key in ApiResponse.getIdList(data)) {
+            expect(ApiResponse.getIdList(data)[key]).toHaveProperty(
+                'fingerprint',
+            );
+        }
+
         data.dataInfo._embedded.footprint.forEach((e) => {
-            expect(e).toHaveProperty('fingerprint');
             expect(e).toHaveProperty('estimatedCarbon');
             expect(e).toHaveProperty('estimatedPrice');
             expect(e).toHaveProperty('status', 'CLOSED');
         });
+    });
+});
+
+test('it gets all footprints limited with begin and end dates covering the current day', () => {
+    let today = new Date();
+    today.setUTCHours(0, 0, 0, 0); // we reset the current day to midnight
+
+    const params = {
+        begin: today.toISOString().slice(0, 10),
+        end: new Date(today.setDate(today.getDate() + 1))
+            .toISOString()
+            .slice(0, 10),
+    };
+
+    const timestampBegin = new Date(params.begin).getTime() / 1000; // we convert timestamp from milliseconds to seconds to fit timestamps from API
+    const timestampEnd = new Date(params.end).getTime() / 1000;
+
+    return sdk.carbon.getAllFootprints(params).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+
+        if (data.dataInfo._embedded.footprint.length > 0) {
+            data.dataInfo._embedded.footprint.forEach((e) => {
+                expect(e.createdAt).toBeGreaterThanOrEqual(timestampBegin);
+                expect(e.createdAt).toBeLessThan(timestampEnd);
+            });
+        }
     });
 });
 
@@ -344,10 +381,35 @@ test('it gets an error trying to get purchased carbon footprint with wrong finge
 test('it gets all footprints that have been purchased for one user', () => {
     return sdk.carbon.getAllPurchases().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
+
+        for (let key in ApiResponse.getIdList(data)) {
+            expect(ApiResponse.getIdList(data)[key]).toHaveProperty(
+                'fingerprint',
+            );
+        }
+
         data.dataInfo._embedded.purchase.forEach((e) => {
-            expect(e).toHaveProperty('fingerprint');
             expect(e).toHaveProperty('estimatedCarbon');
             expect(e).toHaveProperty('estimatedPrice');
+        });
+    });
+});
+
+test("it gets all projects linked to the user's account", () => {
+    return sdk.carbon.getAllProjects().then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(ApiResponse.getIdList(data).length).toBeGreaterThan(0);
+
+        for (let key in ApiResponse.getIdList(data)) {
+            expect(ApiResponse.getIdList(data)[key]).toHaveProperty(
+                'idProject',
+            );
+        }
+
+        data.dataInfo._embedded.project.forEach((e) => {
+            expect(e).toHaveProperty('brokerName');
+            expect(e).toHaveProperty('carbonPrice');
+            expect(e).toHaveProperty('country');
         });
     });
 });
