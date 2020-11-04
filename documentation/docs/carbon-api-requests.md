@@ -228,18 +228,20 @@ You can find details about how to build the object newTransportationFootprintSim
 
 ## carbon.getAllFootprints()
 
-| Param  | Type                | Description                                                                         |
-| ------ | ------------------- | ----------------------------------------------------------------------------------- |
-| params | <code>IFootprintURLParams</code> | optional, all query params to filter footprints requests based on IFootprintURLParams interface  |
+| Param  | Type                             | Description                                                                                     |
+| ------ | -------------------------------- | ----------------------------------------------------------------------------------------------- |
+| params | <code>IFootprintURLParams</code> | optional, all query params to filter footprints requests based on IFootprintURLParams interface |
 
+-   IFootprintURLParams: object with specifications of all possible params to apply to filter data :
 
--  IFootprintURLParams: object with specifications of all possible params to apply to filter data :
-  ```      
-    params = { 
-        status?: Status | null; // based on enum, choose between 'PURCHASED', 'CLOSED', 'ONGOING' footprints
-        limit?: number | null; // number of entities received inside API response per page, limit is 50 by default
-        page?: number | null; // numerotation of page, number is 1 by default
-    }
+```
+  params = {
+      status?: Status | null; // based on enum, choose between 'PURCHASED', 'CLOSED', 'ONGOING' footprints
+      limit?: number | null; // number of entities received inside API response per page, limit is 50 by default
+      page?: number | null; // numerotation of page, number is 1 by default
+      begin?: string | null; // begin date, accepted format YYYY-MM-DD, all entities received will be posterior to this date
+      end?: string | null; // end date, accepted format YYYY-MM-DD, all entities received will be anterior to this date
+  }
 ```
 
 -   get all carbon footprints, no filter applied.
@@ -421,5 +423,51 @@ You can find details about how to build the object newTransportationFootprintSim
         total_items: 50
     },
     status: 200
+}
+```
+
+## carbon.getAllProjects()
+
+-   get all carbon offsets projects from API linked to user's account.
+
+```
+    return sdk.carbon
+        .getAllProjects()
+        .then((res) => {
+            console.log(res)
+        });
+```
+
+-   API Response
+
+```
+{
+    success: true,
+    dataInfo: {
+        _links: { self: [Object] },
+        _embedded: { project: [Array] },
+        total_items: 1
+    },
+    status: 200
+}
+```
+
+-   Details of one project's object received :
+
+```
+{
+    idProject: '1',
+    name: 'Cordillera Azul National Park',
+    description: 'The Cordillera Azul project targets the deforestation drivers the national park still faces and aligns sustainable economic development with environmental protection by transforming over 3.8 million hectares of threatened forest.',
+    url: 'https://climateseed.com/',
+    createdAt: '0',
+    updatedAt: null,
+    brokerName: 'ClimateSeed',
+    carbonPrice: '706',
+    isActive: '1',
+    country: 'PE',
+    isDefault: '1',
+    picture: null,
+    _links: { self: [Object] }
 }
 ```

@@ -14,12 +14,14 @@ import { serialize } from 'typescript-json-serializer';
  * @property {string} webUrl - url to simulate or add web data footprints for this class
  * @property {string} transportationUrl - url to simulate or add transportation data footprints for this class
  * @property {string} purchasesUrl - url to make footprints purchases Api requests for this class
+ * @property {string} projectsUrl - url to make projects Api requests for this class
  */
 export class Carbon extends MainBuilder {
     static footprintUrl = '/carbon/footprints';
     static webUrl = '/carbon/web';
     static transportationUrl = '/carbon/transportation';
     static purchasesUrl = '/carbon/purchases';
+    static projectsUrl = '/carbon/projects';
 
     /**
      * ADD WEB FOOTPRINT | /carbon/web
@@ -267,6 +269,23 @@ export class Carbon extends MainBuilder {
     getAllPurchases = (): Promise<IApiResponse> => {
         return this.axiosRequest
             .get(this.buildUrl(false, Carbon.purchasesUrl))
+            .then((res) => {
+                return this.ApiResponse.formatResponse(
+                    true,
+                    res.data,
+                    res.status,
+                );
+            })
+            .catch(this.ApiResponse.formatError);
+    };
+
+    /**
+     * GET ALL PROJECTS | /carbon/projects/
+     * @returns {Promise.<IApiResponse>} - get all carbon offsets projects from API
+     */
+    getAllProjects = (): Promise<IApiResponse> => {
+        return this.axiosRequest
+            .get(this.buildUrl(false, Carbon.projectsUrl))
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,

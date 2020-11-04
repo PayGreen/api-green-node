@@ -1,7 +1,9 @@
 export enum Identifier {
-    'transportation_mode' = 'name',
     'client_id' = 'client_id',
-    'fingerprint' = 'fingerprint',
+    'footprint' = 'fingerprint',
+    'project' = 'idProject',
+    'purchase' = 'fingerprint',
     'rib' = 'idRib',
+    'transportation_mode' = 'name',
     'user' = 'username',
 }
