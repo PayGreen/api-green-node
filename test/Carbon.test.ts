@@ -13,6 +13,7 @@ import {
     WebFootprintSimulation,
 } from '../src/models';
 import { Status, Transport } from '../src/enums';
+import { IFootprintURLParams, IPurchaseURLParams } from '../src/interfaces';
 
 const sdk = new Sdk(localConfig);
 const newWebFootprintSimulation = new WebFootprintSimulation(
@@ -284,7 +285,7 @@ test('it gets all footprints with no filter', () => {
 });
 
 test('it gets all footprints with CLOSED status', () => {
-    const params = {
+    const params: IFootprintURLParams = {
         status: Status.CLOSED,
     };
 
@@ -304,21 +305,21 @@ test('it gets all footprints with CLOSED status', () => {
     });
 });
 
+let today = new Date();
+today.setUTCHours(0, 0, 0, 0); // we reset the current day to midnight
+
+const currentDayParams = {
+    begin: today.toISOString().slice(0, 10),
+    end: new Date(today.setDate(today.getDate() + 1))
+        .toISOString()
+        .slice(0, 10),
+};
+
+const timestampBegin = new Date(currentDayParams.begin).getTime() / 1000; // we convert timestamp from milliseconds to seconds to fit timestamps format from API
+const timestampEnd = new Date(currentDayParams.end).getTime() / 1000;
+
 test('it gets all footprints limited with begin and end dates covering the current day', () => {
-    let today = new Date();
-    today.setUTCHours(0, 0, 0, 0); // we reset the current day to midnight
-
-    const params = {
-        begin: today.toISOString().slice(0, 10),
-        end: new Date(today.setDate(today.getDate() + 1))
-            .toISOString()
-            .slice(0, 10),
-    };
-
-    const timestampBegin = new Date(params.begin).getTime() / 1000; // we convert timestamp from milliseconds to seconds to fit timestamps from API
-    const timestampEnd = new Date(params.end).getTime() / 1000;
-
-    return sdk.carbon.getAllFootprints(params).then((data: any) => {
+    return sdk.carbon.getAllFootprints(currentDayParams).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
 
         if (data.dataInfo._embedded.footprint.length > 0) {
@@ -331,7 +332,7 @@ test('it gets all footprints limited with begin and end dates covering the curre
 });
 
 test('it gets all footprints limited to 20 results maximum', () => {
-    const params = {
+    const params: IFootprintURLParams = {
         limit: 20,
     };
 
@@ -343,8 +344,19 @@ test('it gets all footprints limited to 20 results maximum', () => {
     });
 });
 
+test('it gets all footprints in rolling mode', () => {
+    const params: IFootprintURLParams = {
+        type: 'rolling',
+    };
+
+    return sdk.carbon.getAllFootprints(params).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.dataInfo._links.self.href).toMatch(/(type=rolling)/i);
+    });
+});
+
 test('it gets all footprints with PURCHASED status and limited to 10 results maximum', () => {
-    const params = {
+    const params: IFootprintURLParams = {
         status: Status.PURCHASED,
         limit: 10,
     };
@@ -378,7 +390,7 @@ test('it gets an error trying to get purchased carbon footprint with wrong finge
         });
 });
 
-test('it gets all footprints that have been purchased for one user', () => {
+test('it gets all footprints that have been purchased for one user with no filter', () => {
     return sdk.carbon.getAllPurchases().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
 
@@ -392,6 +404,41 @@ test('it gets all footprints that have been purchased for one user', () => {
             expect(e).toHaveProperty('estimatedCarbon');
             expect(e).toHaveProperty('estimatedPrice');
         });
+    });
+});
+
+test('it gets all purchases limited with begin and end dates covering the current day', () => {
+    return sdk.carbon.getAllPurchases(currentDayParams).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+
+        if (data.dataInfo._embedded.purchase.length > 0) {
+            data.dataInfo._embedded.purchase.forEach((e) => {
+                expect(e.createdAt).toBeGreaterThanOrEqual(timestampBegin);
+                expect(e.createdAt).toBeLessThan(timestampEnd);
+            });
+        }
+    });
+});
+
+test('it gets all purchases limited to 20 results maximum', () => {
+    const params: IPurchaseURLParams = {
+        limit: 20,
+    };
+
+    return sdk.carbon.getAllPurchases(params).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.dataInfo._embedded.purchase.length).toBeLessThanOrEqual(20);
+    });
+});
+
+test('it gets all purchases in rolling mode', () => {
+    const params: IPurchaseURLParams = {
+        type: 'rolling',
+    };
+
+    return sdk.carbon.getAllPurchases(params).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.dataInfo._links.self.href).toMatch(/(type=rolling)/i);
     });
 });
 
