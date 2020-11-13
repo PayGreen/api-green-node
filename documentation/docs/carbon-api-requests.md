@@ -241,10 +241,11 @@ You can find details about how to build the object newTransportationFootprintSim
       page?: number | null; // numerotation of page, number is 1 by default
       begin?: string | null; // begin date, accepted format YYYY-MM-DD, all entities received will be posterior to this date
       end?: string | null; // end date, accepted format YYYY-MM-DD, all entities received will be anterior to this date
+      type?: "rolling" | "strict" | null; // type of request mode, string literal types are "strict" (default mode) or "rolling", if rolling, data will be requested for the last past month
   }
 ```
 
--   get all carbon footprints, no filter applied.
+-   get all carbon footprints, no filter applied, default mode will provide data, starting from the first day of the current month.
 
 ```
     return sdk.carbon
@@ -402,11 +403,27 @@ You can find details about how to build the object newTransportationFootprintSim
 
 ## carbon.getAllPurchases()
 
--   get all carbon footprints that have been purchased by user.
+| Param  | Type                            | Description                                                                                    |
+| ------ | ------------------------------- | ---------------------------------------------------------------------------------------------- |
+| params | <code>IPurchaseURLParams</code> | optional, all query params to filter purchases requests based on IPurchasesURLParams interface |
+
+-   IPurchasesURLParams: object with specifications of all possible params to apply to filter data :
+
+```
+  params = {
+      limit?: number | null; // number of entities received inside API response per page, limit is 50 by default
+      page?: number | null; // numerotation of page, number is 1 by default
+      begin?: string | null; // begin date, accepted format YYYY-MM-DD, all entities received will be posterior to this date
+      end?: string | null; // end date, accepted format YYYY-MM-DD, all entities received will be anterior to this date
+      type?: "rolling" | "strict" | null; // type of request mode, string literal types are "strict" (default mode) or "rolling", if rolling, data will be requested for the last past month
+  }
+```
+
+-   get all carbon purchased footprints, no filter applied, default mode will provide data, starting from the first day of the current month.
 
 ```
     return sdk.carbon
-        .getAllFootprints()
+        .getAllPurchases()
         .then((res) => {
             console.log(res)
         });

@@ -1,4 +1,8 @@
-import { IApiResponse, IFootprintURLParams } from '../interfaces';
+import {
+    IApiResponse,
+    IFootprintURLParams,
+    IPurchaseURLParams,
+} from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 import {
     TransportationFootprint,
@@ -264,11 +268,14 @@ export class Carbon extends MainBuilder {
 
     /**
      * GET ALL PURCHASES | /carbon/purchases/
+     * @param {IPurchaseURLParams?} params - all query params to filter purchases requests based on IPurchaseURLParams interface
      * @returns {Promise.<IApiResponse>} - get all carbon footprints that have been purchased by user
      */
-    getAllPurchases = (): Promise<IApiResponse> => {
+    getAllPurchases = (params?: IPurchaseURLParams): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(this.buildUrl(false, Carbon.purchasesUrl))
+            .get(this.buildUrl(false, Carbon.purchasesUrl) + '?', {
+                params: params,
+            })
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,

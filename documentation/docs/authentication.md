@@ -63,9 +63,9 @@ require('dotenv').config('/.env');
 import { Sdk, Mode } from 'api-green-node';
 
 const specialConfig = {
-        mode: Mode[process.env.SDK_MODE] ?? undefined,
-        host: process.env.SDK_HOST || undefined,
-    };
+    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
+    host: process.env.SDK_HOST || null,
+};
 
 const sdk = new Sdk(specialConfig);
 ```

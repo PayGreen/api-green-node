@@ -2,6 +2,7 @@ require('dotenv').config('/.env');
 const { localConfig } = require('./config/localConfig');
 import { Sdk } from '../src';
 import { ApiResponse, Tools } from '../src/models';
+import { IReportURLParams } from '../src/interfaces';
 
 const sdk = new Sdk(localConfig);
 
@@ -17,19 +18,38 @@ test('it gets carbon reports without any parameter', () => {
     });
 });
 
-test('it gets carbon reports with only begin date as parameter', () => {
-    const today = new Date().toISOString().substring(0, 10);
-    return sdk.carbonReports.get('2020-03-29').then((data: any) => {
+test('it gets carbon reports with daily option', () => {
+    const params: IReportURLParams = {
+        daily: 1,
+    };
+
+    return sdk.carbonReports.get(params).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('ongoingFootprintCount');
-        expect(data.dataInfo).toHaveProperty('end', today);
-        expect(data.dataInfo).toHaveProperty('begin', '2020-03-29');
+        expect(data.dataInfo).toHaveProperty('daily');
+    });
+});
+
+test('it gets carbon reports without daily option', () => {
+    const params: IReportURLParams = {
+        daily: 0,
+    };
+
+    return sdk.carbonReports.get(params).then((data: any) => {
+        expect(ApiResponse.isSuccessful(data)).toBe(true);
+        expect(data.dataInfo).toHaveProperty('ongoingFootprintCount');
+        expect(data.dataInfo).not.toHaveProperty('daily');
     });
 });
 
 test('it gets carbon reports with begin and end dates as parameters', () => {
     const today = new Date().toISOString().substring(0, 10);
-    return sdk.carbonReports.get('2020-03-29', today).then((data: any) => {
+    const params: IReportURLParams = {
+        end: today,
+        begin: '2020-03-29',
+    };
+
+    return sdk.carbonReports.get(params).then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('ongoingFootprintCount');
         expect(data.dataInfo).toHaveProperty('end', today);

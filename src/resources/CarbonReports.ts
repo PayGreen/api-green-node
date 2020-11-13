@@ -1,4 +1,4 @@
-import { IApiResponse } from '../interfaces';
+import { IApiResponse, IReportURLParams } from '../interfaces';
 import { MainBuilder } from '../MainBuilder';
 
 /**
@@ -10,25 +10,14 @@ export class CarbonReports extends MainBuilder {
 
     /**
      * GET | /carbon/statistics/reports?
-     * @param {string?} beginDate - optional, if no date specified, date one month ago from current day will be used, accepted format YYYY-MM-DD
-     * @param {string?} endDate - optional, if no date specified current day will be used, accepted format YYYY-MM-DD
-     * @returns {Promise.<IApiResponse>} - get datas on last month or on a specific period
+     * @param {IReportURLParams?} params - all query params to filter report requests based on IReportURLParams interface
+     * @returns {Promise.<IApiResponse>} - get datas of last past month (eq 30/31 days) by default or on a specific period and with daily details if specified
      */
-    get = (beginDate?: string, endDate?: string): Promise<IApiResponse> => {
-        const today = new Date().toISOString().substring(0, 10);
-        const defaultEndDate = endDate || today;
+    get = (params?: IReportURLParams): Promise<IApiResponse> => {
         return this.axiosRequest
-            .get(
-                CarbonReports.url,
-                beginDate
-                    ? {
-                          params: {
-                              begin: beginDate,
-                              end: defaultEndDate,
-                          },
-                      }
-                    : null,
-            )
+            .get(CarbonReports.url + '?', {
+                params: params,
+            })
             .then((res) => {
                 return this.ApiResponse.formatResponse(
                     true,

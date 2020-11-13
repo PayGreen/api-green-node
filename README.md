@@ -93,9 +93,9 @@ require('dotenv').config('/.env');
 import { Sdk, Mode } from 'api-green-node';
 
 const specialConfig = {
-        mode: Mode[process.env.SDK_MODE] ?? undefined,
-        host: process.env.SDK_HOST || undefined,
-    };
+    mode: process.env.SDK_MODE ? Mode[process.env.SDK_MODE] : null,
+    host: process.env.SDK_HOST || null,
+};
 
 const sdk = new Sdk(specialConfig);
 ```
@@ -262,27 +262,27 @@ STEP 3 : PURCHASE (FINALIZE) THE WEB FOOTPRINT
 
 ### Get your carbon reports
 
--   If you have created and completed carbon footprints, you can now get reports and see all your carbon footprints credit purchases, filtered in many ways.
--   default mode : get automatically data from last month until today
+-   If you have created and completed/purchased carbon footprints, you can now get reports and see all your carbon footprints credit purchases.
+-   Get carbon reports from last month by default, request a specific period, or even get daily data details
 
+| Param  | Type                          | Description                                                                               |
+| ------ | ----------------------------- | ----------------------------------------------------------------------------------------- |
+| params | <code>IReportURLParams</code> | optional, all query params to filter reports requests based on IReportURLParams interface |
+
+-   IReportURLParams: object with specifications of all possible params to apply to filter data :
+
+```
+  params = {
+      begin?: string | null; // begin date, accepted format YYYY-MM-DD, all entities received will be posterior to this date
+      end?: string | null; // end date, accepted format YYYY-MM-DD, all entities received will be anterior to this date
+      daily?: 0 | 1 | null ; // numeric literal types are 0 | 1, if 1, day by day data will be provided;
+  }
+```
+
+-   get all carbon reports, no filter applied. default mode will provide data from the last past 30 days.
 ```
     return sdk.carbonReports
         .get()
-        .then((res) => {
-            console.log(res)
-        });
-```
-
--   get datas on a specific date
-
-| Param      | Type                | Description                                                                                                  |
-| ---------- | ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| beginDate? | <code>string</code> | optional, if no date specified, date one month ago from current day will be used, accepted format YYYY-MM-DD |
-| endDate?   | <code>string</code> | optional, if no date specified, current day will be used, accepted format YYYY-MM-DD                         |
-
-```
-    return sdk.carbonReports
-        .get(beginDate?, endDate?)
         .then((res) => {
             console.log(res)
         });
