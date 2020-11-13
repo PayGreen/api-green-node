@@ -289,10 +289,11 @@ We have selected two kind of carbon footprints:</p>
       page?: number | <span class="hljs-literal">null</span>; <span class="hljs-comment">// numerotation of page, number is 1 by default</span>
       begin?: string | <span class="hljs-literal">null</span>; <span class="hljs-comment">// begin date, accepted format YYYY-MM-DD, all entities received will be posterior to this date</span>
       end?: string | <span class="hljs-literal">null</span>; <span class="hljs-comment">// end date, accepted format YYYY-MM-DD, all entities received will be anterior to this date</span>
+      type?: <span class="hljs-string">"rolling"</span> | <span class="hljs-string">"strict"</span> | <span class="hljs-literal">null</span>; <span class="hljs-comment">// type of request mode, string literal types are "strict" (default mode) or "rolling", if rolling, data will be requested for the last past month</span>
   }
 </code></pre>
 <ul>
-<li>get all carbon footprints, no filter applied.</li>
+<li>get all carbon footprints, no filter applied, default mode will provide data, starting from the first day of the current month.</li>
 </ul>
 <pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.carbon
         .getAllFootprints()
@@ -450,11 +451,30 @@ We have selected two kind of carbon footprints:</p>
 }
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="carbongetallpurchases"></a><a href="#carbongetallpurchases" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>carbon.getAllPurchases()</h2>
+<table>
+<thead>
+<tr><th>Param</th><th>Type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>params</td><td><code>IPurchaseURLParams</code></td><td>optional, all query params to filter purchases requests based on IPurchasesURLParams interface</td></tr>
+</tbody>
+</table>
 <ul>
-<li>get all carbon footprints that have been purchased by user.</li>
+<li>IPurchasesURLParams: object with specifications of all possible params to apply to filter data :</li>
+</ul>
+<pre><code class="hljs">  params = {
+      limit?: number | <span class="hljs-literal">null</span>; <span class="hljs-comment">// number of entities received inside API response per page, limit is 50 by default</span>
+      page?: number | <span class="hljs-literal">null</span>; <span class="hljs-comment">// numerotation of page, number is 1 by default</span>
+      begin?: string | <span class="hljs-literal">null</span>; <span class="hljs-comment">// begin date, accepted format YYYY-MM-DD, all entities received will be posterior to this date</span>
+      end?: string | <span class="hljs-literal">null</span>; <span class="hljs-comment">// end date, accepted format YYYY-MM-DD, all entities received will be anterior to this date</span>
+      type?: <span class="hljs-string">"rolling"</span> | <span class="hljs-string">"strict"</span> | <span class="hljs-literal">null</span>; <span class="hljs-comment">// type of request mode, string literal types are "strict" (default mode) or "rolling", if rolling, data will be requested for the last past month</span>
+  }
+</code></pre>
+<ul>
+<li>get all carbon purchased footprints, no filter applied, default mode will provide data, starting from the first day of the current month.</li>
 </ul>
 <pre><code class="hljs">    <span class="hljs-keyword">return</span> sdk.carbon
-        .getAllFootprints()
+        .getAllPurchases()
         .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> {
             <span class="hljs-built_in">console</span>.log(res)
         });
