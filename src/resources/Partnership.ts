@@ -78,7 +78,7 @@ export class Partnership extends MainBuilder {
         status: PartnershipStatus,
     ): Promise<IApiResponse> => {
         const updatedPartnership = { accountStatus: PartnershipStatus[status] };
-
+        
         return this.axiosRequest
             .put(
                 this.buildUrl(true, Partnership.urlPartnership, idPartnership),

@@ -1,6 +1,8 @@
 import { IApiResponse } from './IApiResponse';
 import { IApiResponseList } from './IApiResponseList';
 import { IConfig } from './IConfig';
+import { IDonationURLParams } from './IDonationURLParams';
+import { IDonationReportsURLParams } from './IDonationReportsURLParams';
 import { IFootprintURLParams } from './IFootprintURLParams';
 import { IPurchaseURLParams } from './IPurchaseURLParams';
 import { IReportURLParams } from './IReportURLParams';
@@ -13,6 +15,8 @@ export {
     IApiResponse,
     IApiResponseList,
     IConfig,
+    IDonationURLParams,
+    IDonationReportsURLParams,
     IFootprintURLParams,
     IReportURLParams,
     IPurchaseURLParams,
