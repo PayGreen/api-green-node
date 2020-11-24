@@ -1,12 +1,13 @@
 require('dotenv').config('/.env');
-const { localConfig } = require('./config/localConfig');
 import { Sdk } from '../src';
 import { ApiResponse, Tools } from '../src/models';
 import { IReportURLParams } from '../src/interfaces';
+import { UserType } from '../src/enums';
+import autoConfig from './config/autoConfig';
 
-const sdk = new Sdk(localConfig);
+test('it gets carbon reports without any parameter', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
 
-test('it gets carbon reports without any parameter', () => {
     return sdk.carbonReports.get().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         expect(data.dataInfo).toHaveProperty('ongoingFootprintCount');
@@ -15,10 +16,12 @@ test('it gets carbon reports without any parameter', () => {
         expect(data.dataInfo).toHaveProperty('carbonEmitted');
         expect(data.dataInfo).toHaveProperty('carbonOffset');
         expect(data.dataInfo).toHaveProperty('carbonOffsetPrice');
+        expect(data.dataInfo).not.toHaveProperty('daily');
     });
 });
 
-test('it gets carbon reports with daily option', () => {
+test('it gets carbon reports without daily option', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     const params: IReportURLParams = {
         daily: 1,
     };
@@ -30,19 +33,8 @@ test('it gets carbon reports with daily option', () => {
     });
 });
 
-test('it gets carbon reports without daily option', () => {
-    const params: IReportURLParams = {
-        daily: 0,
-    };
-
-    return sdk.carbonReports.get(params).then((data: any) => {
-        expect(ApiResponse.isSuccessful(data)).toBe(true);
-        expect(data.dataInfo).toHaveProperty('ongoingFootprintCount');
-        expect(data.dataInfo).not.toHaveProperty('daily');
-    });
-});
-
-test('it gets carbon reports with begin and end dates as parameters', () => {
+test('it gets carbon reports with begin and end dates as parameters', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
     const today = new Date().toISOString().substring(0, 10);
     const params: IReportURLParams = {
         end: today,
@@ -57,7 +49,9 @@ test('it gets carbon reports with begin and end dates as parameters', () => {
     });
 });
 
-test('it gets carbon reports without any parameter, converts estimated CO2eq in tons to kilograms and estimated price in euros cents to euros', () => {
+test('it gets carbon reports without any parameter, converts estimated CO2eq in tons to kilograms and estimated price in euros cents to euros', async () => {
+    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+
     return sdk.carbonReports.get().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
         const Co2InKilos = Tools.tonsCo2ToKilosCo2(data.dataInfo.carbonEmitted);
