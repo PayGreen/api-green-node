@@ -4,6 +4,7 @@ import { Charity } from './Charity';
 import { Coordinate } from './Coordinate';
 import { Iban } from './Iban';
 import { IbanValidation } from './IbanValidation';
+import { PartnershipGroup } from './PartnershipGroup';
 import { Path } from './Path';
 import { Tools } from './Tools';
 import { TransportationFootprint } from './TransportationFootprint';
@@ -19,6 +20,7 @@ export {
     Coordinate,
     Iban,
     IbanValidation,
+    PartnershipGroup,
     Path,
     Tools,
     TransportationFootprint,

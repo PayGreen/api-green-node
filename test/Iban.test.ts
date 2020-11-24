@@ -7,10 +7,10 @@ import {
 } from '../src/models';
 import { Bank, Country, UserType } from '../src/enums';
 import { newUser } from './User.test';
-import autoConfig from './config/autoConfig';
+import { autoLocaleConfig } from './config/autoConfig';
 
 test('it gets all ibans of the current user and then gets all ids directly', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.iban.getAll().then((data: any) => {
         expect(data).toBeDefined();
@@ -21,7 +21,7 @@ test('it gets all ibans of the current user and then gets all ids directly', asy
 });
 
 test('it returns the created iban for the current user and then gets its id directly', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
     const ibanTest = new IbanModel(
         Bank['BNP Paribas Particuliers'],
         'FR7640618802980004033009519',
@@ -46,7 +46,7 @@ test('it returns the created iban for the current user and then gets its id dire
 });
 
 test('it gets one iban of a user based on its ibanId', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
     const ibanTest2 = new IbanModel(
         Bank['Banque Casino'],
         'FR7640618802980004033009519',
@@ -64,7 +64,7 @@ test('it gets one iban of a user based on its ibanId', async () => {
 });
 
 test('it sets one iban of a user as the default one', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
     const ibanTest = new IbanModel(
         Bank['La Banque Postale Particuliers'],
         'FR7640618802980004033009519',
@@ -81,7 +81,7 @@ test('it sets one iban of a user as the default one', async () => {
 });
 
 test('it returns the validated iban based on its ibanId', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
     const userTest = newUser();
     const username: string = userTest.username as string;
     const ibanTest = new IbanModel(
@@ -106,7 +106,7 @@ test('it returns the validated iban based on its ibanId', async () => {
 });
 
 test('it returns 204 status when deleting an iban', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
     const ibanTest = new IbanModel(
         Bank['La Banque Postale Particuliers'],
         'FR7640618802980004033009519',

@@ -4,10 +4,10 @@ import { Sdk } from '../src';
 import { User } from '../src/models';
 import { ApiResponse } from '../src/models/ApiResponse';
 import { Country, Mode, Role, UserType } from '../src/enums';
-import autoConfig from './config/autoConfig';
+import { autoLocaleConfig } from './config/autoConfig';
 
 test('it gets the account based on account id', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.user.getAccount().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true),
@@ -25,7 +25,7 @@ test('it gets the account based on account id', async () => {
 });
 
 test('it gets all users of one account id and then gets all ids directly', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.user.getAll().then((data: any) => {
         expect(data).toBeDefined();
@@ -36,7 +36,7 @@ test('it gets all users of one account id and then gets all ids directly', async
 });
 
 test('it cannot get all users of one account  with charity user type (role=ASSOCIATION)', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.CHARITY));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.CHARITY));
 
     return sdk.user.getAll().then((data: any) => {
         expect(data.success).toBe(false);
@@ -45,7 +45,7 @@ test('it cannot get all users of one account  with charity user type (role=ASSOC
 });
 
 test('it gets an error message because of wrong username', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.user.getOne('paygreendfd').then((data: any) => {
         expect(ApiResponse.isInvalid(data)).toBe(true),
@@ -89,7 +89,7 @@ const newUser = () => {
 const userTest = newUser();
 
 test('it returns the created user', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.user.create(userTest).then((data: any) => {
         expect(data.dataInfo).toHaveProperty('lastname', userTest.lastname),
@@ -115,7 +115,7 @@ test('it returns the updated user based on his username', async () => {
         firstname: 'matthieu',
     };
 
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
     const username: string = userTest.username as string;
 
     return sdk.user.update(updatedUser, username).then((data: any) => {
@@ -129,7 +129,7 @@ test('it returns the updated user based on his username', async () => {
 });
 
 test('it returns 204 status when deleting user', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
     const username: string = userTest.username as string;
 
     return sdk.user.delete(username).then((data: any) => {
@@ -140,7 +140,7 @@ test('it returns 204 status when deleting user', async () => {
 
 test('it gets one user based on his username and then gets his id directly', async () => {
     const userTest2 = newUser();
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.user.create(userTest2).then((data: any) => {
         const userId = data.dataInfo.username;

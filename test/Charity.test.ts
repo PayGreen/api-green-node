@@ -2,10 +2,10 @@ require('dotenv').config('/.env');
 import { Charity, Sdk } from '../src';
 import { ApiResponse } from '../src/models/ApiResponse';
 import { FieldOfAction, UserType } from '../src/enums';
-import autoConfig from './config/autoConfig';
+import { autoLocaleConfig } from './config/autoConfig';
 
 test('it gets all charities and then gets all ids directly, with shop user type (role=ADMIN or PAYGREEN)', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.charity.getAll().then((data: any) => {
         expect(data).toBeDefined();
@@ -18,7 +18,7 @@ test('it gets all charities and then gets all ids directly, with shop user type 
 });
 
 test('it gets one charity/association based on its id and then gets its id directly', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.charity.getAll().then((data: any) => {
         expect(data).toBeDefined();
@@ -39,7 +39,7 @@ test('it gets one charity/association based on its id and then gets its id direc
 // since all associations are shared among all accounts we update only temporarily a charity
 // and then reset it to its original state to keep data inside API as clean as possible :)
 test('it gets one charity/association based on its id and then updates some infos and finally resets to original data', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.charity.getAll().then((data: any) => {
         expect(data).toBeDefined();

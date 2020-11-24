@@ -4,6 +4,8 @@ import {
     CarbonReports,
     Charity,
     Iban,
+    Partnership,
+    PartnershipGroup,
     Transport,
     User,
 } from './resources';
@@ -17,6 +19,8 @@ export class Sdk {
     public charity: Charity;
     public carbonReports: CarbonReports;
     public iban: Iban;
+    public partnership: Partnership;
+    public partnershipGroup: PartnershipGroup;
     public transport: Transport;
     public user: User;
 
@@ -68,6 +72,16 @@ export class Sdk {
         );
         this.charity = new Charity(this._tokens, this._identity, this._host);
         this.iban = new Iban(this._tokens, this._identity, this._host);
+        this.partnership = new Partnership(
+            this._tokens,
+            this._identity,
+            this._host,
+        );
+        this.partnershipGroup = new PartnershipGroup(
+            this._tokens,
+            this._identity,
+            this._host,
+        );
         this.transport = new Transport(
             this._tokens,
             this._identity,

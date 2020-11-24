@@ -5,9 +5,11 @@ import {
     FieldOfAction,
     Host,
     Mode,
+    PartnershipStatus,
     Role,
     Status,
     Transport,
+    UserType,
 } from './enums';
 import {
     Address,
@@ -16,6 +18,7 @@ import {
     Coordinate,
     Iban,
     IbanValidation,
+    PartnershipGroup,
     Path,
     TransportationFootprint,
     TransportationFootprintSimulation,
@@ -26,7 +29,18 @@ import {
 } from './models';
 
 export { Sdk };
-export { Bank, Country, FieldOfAction, Host, Mode, Role, Status, Transport };
+export {
+    Bank,
+    Country,
+    FieldOfAction,
+    Host,
+    Mode,
+    PartnershipStatus,
+    Role,
+    Status,
+    Transport,
+    UserType,
+};
 export {
     Address,
     ApiResponse,
@@ -34,6 +48,7 @@ export {
     Coordinate,
     Iban,
     IbanValidation,
+    PartnershipGroup,
     Path,
     TransportationFootprint,
     TransportationFootprintSimulation,
