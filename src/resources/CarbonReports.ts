@@ -6,7 +6,7 @@ import { MainBuilder } from '../MainBuilder';
  * @property {string} url - main url to build Api requests for this class
  */
 export class CarbonReports extends MainBuilder {
-    static url: string = '/carbon/statistics/reports?';
+    static url: string = '/carbon/statistics/reports';
 
     /**
      * GET | /carbon/statistics/reports?

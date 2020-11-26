@@ -6,7 +6,7 @@ import { MainBuilder } from '../MainBuilder';
  * @property {string} urlDonationReports - main url to build Api requests for this class
  */
 export class DonationReports extends MainBuilder {
-    static urlDonationReports: string = '/donation/statistics/reports?';
+    static urlDonationReports: string = '/donation/statistics/reports';
 
     /**
      * GET | /donation/statistics/reports?
