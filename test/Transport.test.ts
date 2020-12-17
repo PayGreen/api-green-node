@@ -2,10 +2,10 @@ require('dotenv').config('/.env');
 import { Sdk } from '../src';
 import { ApiResponse } from '../src/models/ApiResponse';
 import { UserType } from '../src/enums';
-import autoConfig from './config/autoConfig';
+import { autoLocaleConfig } from './config/autoConfig';
 
 test('it gets all transports available inside the Api', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.transport.getAll().then((data: any) => {
         expect(ApiResponse.isSuccessful(data)).toBe(true);
@@ -23,7 +23,7 @@ test('it gets all transports available inside the Api', async () => {
 });
 
 test('it gets all id from transports available inside the Api', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.transport.getAll().then((data: any) => {
         expect(ApiResponse.getIdList(data).length).toBeGreaterThan(0);
@@ -35,7 +35,7 @@ test('it gets all id from transports available inside the Api', async () => {
 });
 
 test("it can't get all id from transports with charity user type (role=ASSOCIATION)", async () => {
-    const sdk = new Sdk(await autoConfig(UserType.CHARITY));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.CHARITY));
 
     return sdk.transport.getAll().then((data: any) => {
         expect(data.success).toBe(false);

@@ -1,5 +1,5 @@
 require('dotenv').config('/.env');
-import autoConfig from './config/autoConfig';
+import { autoLocaleConfig } from './config/autoConfig';
 import { ApiResponse } from '../src/models/ApiResponse';
 import { Host, Mode, UserType } from '../src/enums';
 import { Sdk } from '../src';
@@ -52,7 +52,7 @@ test('it defines host and mode by default to SANDBOX without any parameter', () 
 });
 
 test('it gets a refreshed token each time the refreshtoken() method is used and if token/refresh token are valid, else it renews all tokens with login()', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     return sdk.authentication.refreshToken(shopAccountId).then((data: any) => {
         if (data.success === true) {

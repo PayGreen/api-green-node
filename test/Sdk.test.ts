@@ -1,17 +1,17 @@
 require('dotenv').config('/.env');
 import { Sdk } from '../src';
 import { Host, Mode, UserType } from '../src/enums';
-import autoConfig from './config/autoConfig';
+import { autoLocaleConfig } from './config/autoConfig';
 
 test('Sdk has properties _tokens & _identity', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
 
     expect(sdk).toHaveProperty('_tokens');
     expect(sdk).toHaveProperty('_identity');
 });
 
 test('Sdk constructor initializes correctly with all the parameters', async () => {
-    const sdk = new Sdk(await autoConfig(UserType.SHOP));
+    const sdk = new Sdk(await autoLocaleConfig(UserType.SHOP));
     const host: string = process.env.SDK_HOST as string;
     const mode: string = process.env.SDK_MODE as string;
 
